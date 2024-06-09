@@ -130,7 +130,7 @@ export const MenuLateral = ({userMaster}) => {
                 >
                     <Option>
                         <Icono icon={faHelmetSafety} className={`${lugar==="/materiales"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Aguacate</TituloMenu>
+                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Materiales</TituloMenu>
                     </Option>
 
                 </Enlaces>
