@@ -88,7 +88,7 @@ const SubTexto=styled.h3`
   color:${theme.azul1};
 `
 const NumberPor=styled.h2`
-    color: ${theme.success};
+    color: white;
     font-size: 2.5rem;
     position: absolute;
     right: 45%;

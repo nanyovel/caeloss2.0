@@ -15,7 +15,8 @@ export default function funcionConsumible(
             // Calcula la diferencia en días redondeando hacia abajo
             const diasTranscurridos = Math.floor(diferenciaEnMilisegundos / (1000 * 60 * 60 * 24));
             
-            valor =67-diasTranscurridos/2
+            // valor =67-diasTranscurridos/2
+            valor=40
         }
         else if(tipo=='mantenimiento'){
             valor =100

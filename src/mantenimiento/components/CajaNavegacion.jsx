@@ -122,7 +122,7 @@ const CajaNavegacion = ({
          
 
             <EnlacePrincipal 
-          className={pageSelected==2?'selected':''}
+          className={pageSelected==1?'selected':''}
           name='Programa'
           to={'/mantenimiento/programa'}
             onClick={(e)=>probarURL(e)}
@@ -130,7 +130,7 @@ const CajaNavegacion = ({
             Programa
             </EnlacePrincipal>
             <EnlacePrincipal 
-          className={pageSelected==3?'selected':''}
+          className={pageSelected==2?'selected':''}
           name='Gastos'
           to={'/mantenimiento/gastos'}
             onClick={(e)=>probarURL(e)}
@@ -141,7 +141,7 @@ const CajaNavegacion = ({
               to={'/mantenimiento/combustible'} 
               name='Combustible'
               onClick={(e)=>probarURL(e)}
-              className={`${pageSelected==4?" selected":''}`}>
+              className={`${pageSelected==3?" selected":''}`}>
               Combustible
               </EnlacePrincipal>
 

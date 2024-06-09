@@ -257,6 +257,11 @@ const NumberPor=styled.h2`
         display: block;
         position: absolute;
         color:${theme.azul4Osc};
+        color: white;
+        background-color: ${theme.azul1};
+        width: 100%;
+        text-align: center;
+
         top:50%;
         left: 50%;
         transform: translate(-50%,-50%);
@@ -264,7 +269,7 @@ const NumberPor=styled.h2`
     -moz-transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%); 
-        font-size: 3rem;
+        font-size: 2rem;
         z-index:10
     }
 `
