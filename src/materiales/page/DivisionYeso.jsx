@@ -655,8 +655,6 @@ export const DivisionYeso = () => {
       }
       else if(mat.descripcion=="Madera 1''x2''x7'"){
         acc=qtyPuerta*2
-
-
       }
       else if(mat.descripcion=='Esquineros'){
         acc=qtyPuerta*4
