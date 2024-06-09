@@ -1,0 +1,265 @@
+/* ********Esenciales ****** */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+html{
+    font-size: 16px;
+}
+
+body{
+    font-family: 'Lato', sans-serif;
+    background-color: #535353;
+}
+
+.container{
+    overflow: hidden;
+    width: 800px;
+    min-height: 95vh;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    /* background-image: linear-gradient(120deg, #2b7d9e69 0%, #a4a9adde 100%), url(../img/fondo.jpg); */
+    background-color: #000;
+    background-position: center;
+    background-size: contain;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    align-items: center;
+    position: relative;
+}
+
+/************* Encabezado**************** */
+.cabecera{
+    width: 100%;
+    background-color: #207BD4;
+    border-bottom:1px solid  #00acee;
+    display: flex;    
+    height: auto;
+    padding-bottom: 10px;
+    justify-content: space-between;
+}
+
+.logo{
+    height: 45px;
+    border-radius: 5px;
+    animation: aguacate 1.1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+
+
+@keyframes aguacate{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.3);
+    }
+}
+
+.cabecera h1{
+    font-size: 3rem;
+    color: rgba(207, 194, 194, 0.712);
+    margin-left: 10px;
+}
+
+
+.cabecera h3{
+    font-size: 1rem;
+    color: yellow;
+    margin-left: 10px;
+}
+
+/***** Contenido****** */
+.contenidoCaja{
+    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    /* position: relative; */
+}
+.contenidoCaja  .contenidoCajita{
+    width: 100%;
+    height: 320px;
+    border:5px solid  #535353;
+    /* background-color: #9e2b2b5d; */
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px -1px rgba(0,0,0,0.43);
+    margin: 20px;
+    /* border: 2px solid blue; */
+}
+.contenidoCaja  .contenidoCajita:hover{
+    border:5px solid  #fff;
+}
+.contenidoCaja .contenidoEnlace{
+    /* border: 5px solid red; */
+    text-decoration: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    /* border: 2px solid yellow; */
+
+}
+
+
+
+.imagenCaja{
+    /* border: 2px solid red; */
+    display: block;
+    width: 100%;
+    height: 80%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    object-fit: contain;
+    background-position: center;
+    opacity: 0.5;
+}
+
+.transporte{
+    background: url('../img/camion.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.materiales{
+    background: url('../img/calculo3.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.transporte2{
+    background: url('../img/3.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+   
+}
+
+
+
+.imagenCaja:hover{
+    opacity: 1;
+    animation: arroz 0.5s;
+    /* animation-iteration-count: ; */
+    animation-direction: normal;
+}
+@keyframes arroz{
+    0%{
+        opacity: 0.6;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+
+.faseBeta{
+    background-color: chocolate;
+    width: 100%;
+}
+
+.textoCaja h2{
+    color:  white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 200;
+    text-align: center;
+}
+
+
+.textoCaja h2:hover{
+    text-decoration: underline #00acee;
+}
+/* .textoCaja h2:target{
+    color: #00acee;
+} */
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer .footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    background-color: #207BD4;;
+    text-align: center;
+    animation: agua 2s;
+    animation-delay: 4s;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    font-size: 14px;
+    color: white;
+    font-weight: 100;
+
+}
+
+@keyframes agua {
+    0%{
+        transform: translateY(0%);
+    }
+    100%{
+        transform: translateY(100%);
+    }
+    
+}
+
+@media screen and (max-width: 500px){
+    .contenidoCaja{
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+    }
+    .contenidoCaja .contenidoCajita{
+        width: 100%;
+    }
+    .imagenCaja img{
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 450px){
+    .container{
+        width: 100vw;
+        /* height: 100vh; */
+    }
+    .cabecera{
+        width: 100%;
+    }
+    .contenidoCaja{
+        width: 100%;
+        overflow-y: hidden;
+    }
+    .contenidoCaja .contenidoCajita{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 300px){
+    .cabecera h1{
+        font-size: 2rem;
+    }
+    .logo{
+        height: 30px;
+        
+    }
+
+    .contenidoCaja .contenidoCajita{
+        height: auto;
+    }
+}

@@ -1,0 +1,427 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+:root{
+    --azul1: #00acee;
+    --azul2: #0074d9;
+    --gris: #a4a9ad;
+    font-size: 16px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+body{
+    font-family: 'Lato', sans-serif;
+    background: #535353;
+}
+
+
+
+/* ---------- ---------- ---------- ---------- PRINCIPAL ---------- ---------- ---------- ---------- */
+
+.container{
+    width: 800px;
+    min-height: 90vh;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 5px 5px 5px -1px rgba(0,0,0,0.43);
+    background-image: linear-gradient(160deg, rgba(0, 47, 135,0.98) 0%, rgba(164, 169, 173, 0.9) 100%), url(../img/romo.png);
+    background-position: center;
+    background-size: cover;
+    object-fit: contain;
+    background-repeat: no-repeat;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.cabecera{
+    width: 100%;
+    background-color: #2b7d9e5d;
+    display: flex;    
+    height: auto;
+    padding-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--azul1);
+}
+
+.cabecera h1{
+    font-size: 2rem;
+    color: white;
+    margin-left: 10px;
+}
+
+.cabecera h1 a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.cabecera h1 a:hover{
+    text-decoration: underline;
+}
+
+.logo{
+    height: 35px;
+    border-radius: 5px;
+    animation: aguacate 1.1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+
+@keyframes aguacate{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.3);
+    }
+}
+
+
+main{
+    width: 100%;
+    align-items: center;
+}
+
+
+/* ---------- ---------- ---------- ---------- Inputs----> RADIOS ---------- ---------- ---------- ---------- */
+.entradaSection{
+    display: flex;
+    flex-direction: column;
+    padding: 15px 20px;
+    align-items: center;
+    margin-bottom: 25px
+}
+.containerRadio{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--gris);
+    margin-bottom: 30px;
+}
+
+.containerRadio h2{
+    font-size: 16px;
+    display: inline-block;
+    color: #fff;
+    margin-bottom: 8px;
+    margin-left: 20px;
+    border-bottom: 1px solid #fff;
+}
+
+.containerRadio input[type="radio"]{
+    display: none;
+}
+
+.containerRadio .labelCalculo ,
+.containerRadio .labelOrigen {
+    color: var(--azul1);
+    background-color: #163f5073;
+    padding: 5px 10px 5px 30px;
+    display: inline-block;
+    position: relative;
+    font-size: 0.9em;
+    border-radius: 3px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+    -o-transition:all 0.3s ease ;
+    transition: all 0.3s ease;
+    margin: 5px 0px;
+    
+    
+}
+
+.containerRadio .labelCalculo:hover,
+.containerRadio .labelOrigen :hover{
+    background-color: rgb(0, 116, 217,0.2);
+}
+
+.containerRadio .labelOrigen:before,
+.containerRadio .labelCalculo:before{
+    content: "";
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    background-color: none;
+    border: 3px solid var(--azul2);
+    border-radius: 50%;
+    position: absolute;
+    left: 5px;
+    top: 0px;
+    margin-top: 2px;
+}
+
+.containerRadio input[type="radio"]:checked + .labelOrigen,
+.containerRadio input[type="radio"]:checked + .labelCalculo
+{
+    padding: 5px 5px;
+    background: var(--azul2);
+    border-radius: 2px;
+    color: #fff;
+}
+
+.containerRadio input[type="radio"]:checked + .labelOrigen::before,
+.containerRadio input[type="radio"]:checked + .labelCalculo::before{
+    display: none;
+}
+
+
+/* ---------- ---------- ---------- ---------- Inputs----> SELECTS ---------- ---------- ---------- ---------- */
+.containerSelect{
+    padding: 0 60px;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.containerSelect .cajaSelect{
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    /* flex-grow: 2; */
+    position: relative;
+    height: 50px;
+}
+
+
+.containerSelect .cajaSelect select{
+    font-size: 1.2rem;
+    /* margin-bottom: 15px; */
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px -1px rgb(0 0 0 / 43%);
+    height: 30px;
+    display: inline-block;
+
+    
+}
+
+.destinoSelect{
+    position: relative;
+    left: 0;
+    transition: all ease 0.2s;
+    display: auto;
+}
+.inputKmManual{
+    position: relative;
+    border: none;
+    outline: none;
+    height: 30px;
+    border-radius: 5px;
+    padding: 15px 5px;
+    transition: all ease 0.3s;
+    top: -30px;
+    right: -300%;
+    box-shadow: 5px 5px 5px -1px rgb(0 0 0 / 43%);
+    font-size: 1rem;
+}
+
+.deslizarIzquierda{
+    left: -300%;
+    /* display: none; */
+
+}
+
+.deslizarDerecha{
+    right: 0;
+}
+
+.displayAuto{
+    display: auto;
+}
+
+.displayNone{
+    display: none;
+}
+
+.containerSelect .cajaSelect select::-webkit-scrollbar{
+    width: 7px;
+}
+.containerSelect .cajaSelect select::-webkit-scrollbar-thumb{
+    background-color: var(--azul1);
+    border-radius: 7px;
+}
+
+.containerSelect .cajaBtnCalcular{
+    flex-grow: 2;
+}
+.containerSelect .cajaBtnCalcular .btnCalcular{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1.5rem;
+
+    background-color: var(--azul1);
+    color: white;
+    border: none;
+    box-shadow: 3px 3px 3px -1px rgb(0 0 0 / 43%);
+    display: inline-block;
+    transition: all ease 0.2s;
+}
+
+.containerSelect .cajaBtnCalcular .btnCalcular:hover{
+    cursor: pointer;
+    background-color: transparent ;
+    box-shadow: 3px 0px 30px rgba(24, 120, 241,1);
+    transform: scale(1.01);
+    border: 1px solid black;
+}
+
+
+.containerSelect .cajaBtnCalcular .btnCalcular:active{
+    background-color: var(--azul1) ;
+    box-shadow: none;
+}
+
+/* ---------- ---------- ---------- ---------- OUTPUTS ---------- ---------- ---------- ---------- */
+
+.salidaSection{
+    display: grid;
+    padding: 0 10px;
+    width: 100%;
+    grid-auto-flow: column;
+    grid-template-columns: 3.6fr 1fr;
+}
+
+.salidaSection .containerMapa{
+    /* width: 400px; */
+    height: 400px;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: #0074d9;
+    position: relative;
+    box-shadow: 5px 5px 5px -1px rgba(0,0,0,0.43);
+
+}
+.salidaSection .containerMapa iframe{
+    width: 100%;
+    margin-right: 10px;
+}
+
+
+  /* -------------------------------------------------asdfghjkl */
+
+.salidaSection .containerSalida{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.salidaSection .containerSalida .cajaSalida{
+    width: 90%;
+    display: flex;
+    /* border: 1px solid red; */
+    flex-direction: column;
+    margin-bottom: 10px;
+    justify-content: center;
+    /* align-items: end; */
+}
+
+.salidaSection .containerSalida .cajaSalida input{
+    width: 100%;
+    height: 30px;
+    font-size: 1rem;
+    background-color: var(--gris);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.salidaSection .containerSalida .cajaSalida p{
+    color: white;
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width: 700px){
+    .container{
+        width: 100%;
+    }
+    .cabecera h1{
+        font-size: 1.5rem;
+    }
+    .logo{
+        height: 20px;
+    }
+    .inputKmManual{
+        height: 20px;
+    }
+    .containerSelect{
+        flex-direction: column;
+        /* border: 1px solid green; */
+        width: auto;
+        
+    }
+    .containerSelect .cajaSelect{
+        width: 100%;
+        /* width: 200px; */
+
+        /* border: 1px solid blue; */
+        /* background-color: gray; */
+        margin-bottom: 35px;
+    }
+    .entradaSection{
+        margin-bottom: 5px;
+    }
+    
+    .containerRadio{
+        flex-direction: column;
+        margin-bottom: 15px;
+
+    }
+    .containerRadio .cajaTipoCalculo{
+        margin-bottom: 12px;
+    }
+
+    .containerSelect .cajaBtnCalcular{
+        height: 50px;
+    }
+
+    .containerRadio .labelCalculo ,
+.containerRadio .labelOrigen{
+    padding: auto;
+    font-size: 0.8em;
+    padding: 5px 10px 5px 20px;
+
+}
+.containerRadio .labelOrigen:before,
+.containerRadio .labelCalculo:before{
+    width: 8px;
+    height: 8px;
+    top: 4px;
+}
+
+.salidaSection .containerSalida .cajaSalida{
+    /* border: 1px solid red; */
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.salidaSection .containerSalida .cajaSalida input{
+    width: 60%;
+}
+
+
+.salidaSection{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+}

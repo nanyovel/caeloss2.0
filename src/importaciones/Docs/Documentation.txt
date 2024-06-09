@@ -1,0 +1,171 @@
+
+****************DEFINICIONES Y USOS****************
+
+******************Alertas****************
+Definiciones:
+-Las alertas constan de un componente que se componene de 3 elementos:
+    dispatchAlerta--->Es quien dispara o apaga la alerta con true o false, se coloca true y despues de 3 segundo colocamos false
+    mensajeAlerta---->Es el mensaje que queremos mostrar
+    tipoAlerta------->Es el color de fondo que tendra la alerta que son; warning---color naranja, error---color rojo, success---color verde
+
+
+*************Fechas y horas*************
+-Para cargar fechas y horas se cargara siempre un string con este formato:  "15/04/2024 12:00:00:000 AM", para ello es importante hacerlo de la siguiente manera:
+new Date(año,mes,dia), si se ingresa un string completo entonces el resultado obtenido es una hora incorrecta, esto porque js entiende que es una zona horaria diferente etc etc
+Como sabemos para obtener las fechas en JavaScript se utiliza el conjunto new Date(), asi que obtenemos su año, mes y dia de manera llana con el metodo slice, luego esto se lo pasamos a la libreria date-fns con el metodo format() quedando de esta manera:
+--Obtener el string deseado con la fecha de hoy:
+ format(
+    (new Date())----------------------->En JavaScript devuelve la fecha de hoy
+    `dd/MM/yyyy hh:mm:ss:SSS aa`,------>Da el formato que queremos
+    {locale:es})----------------------->Selecionamos el idioma Español 
+
+--Obtener el string deseado con una fecha especifica
+
+format((
+    new Date(
+          2028,------------>annio
+          7-1,------------->mes ---se le debe restar uno en JS
+          17,-------------->dia
+        `dd/MM/yyyy hh:mm:ss:SSS aa`,----->formato
+        {locale:es})---------------------->idioma Español
+
+    Mismo resultado pero a partir de un input de html de tipo date
+    Este input da un resultado de este tipo "2024-04-15", si ese resultado lo colocamos en un estado llamado value, seria de la siguiente manera:
+ format((
+    new Date(
+          value.slice(0,4),--------------->annio
+          value.slice(5,7)-1,------------->mes
+          value.slice(8,10))),------------>dia
+        `dd/MM/yyyy hh:mm:ss:SSS aa`,----->formato
+        {locale:es})---------------------->idioma Español
+
+El formato que usa Caeloss, es decir el resultado sera el siguiente string:
+"09/02/2024 08:11:32:480 AM"
+
+
+
+--Consumir el string guardado en la base de datos
+dado que es un string solo se necesita utilizar el metodo slice y se usara de esta manera; blSelect.fechaCreacion.slice(0,10)
+
+****************Estados****************
+Definiciones
+    dbBillOfLading, dbOrdenes, dbUsuarios
+        -Array de objetos
+        -Contenido de las colecciones de la base de datos
+    blMaster, ocMaster, furgonMaster, **itemMaster**
+        -Objetos
+        -Es el documento principal que se esta mostrando, 
+        -No se edita, solo se consume de la base de datos su homologo editable son blEditable, furgonEditable etc
+    blEditable, furgonEditable, ocEditable
+        -Objetos
+        -Es un objeto que se alimenta cuando el usuario presiona editar pues copia el documento master por ejemplo blMaster esto para las pantallas de lectura y escritura, para las pantallas solo de escrituras sera el documento que va creando el usuario
+    blSelect, furgonSelect, itemSelect, ocSelect
+        -Objetos
+        -Son los objetos que se selecionan de una lista de elementos por ejemplo, en la lista de bl quieres selecionar uno de los bl para ver sus furgones entonces el bl selecionado se cargara en blSelect, al igual que cuando abres una orden de compra y clickeas en el icono del ojo para ver los despachos de ese item, el item selecionado se cargara en itemSelect
+
+    Paginas de lectura
+        -Son las paginas que no editan ni cargan informacion hacia la base de datos, por ejemplo la pagina de items
+    Paginas de escrituras
+        -Son paginas que unicamente sirven para cargar documentos hacia la base de datos es decir crear, por ejemplo la pagina donde creas las ordenes o los bls
+    Paginas de escritura y lectura
+        -Son pagina que hacen ambas funciones por ejemplo la pagina de detalle bl o detalle orden, permiten cargar los detalles de X documento pero tambien editarlos
+
+*Para las paginas que operan a modo de lectura y tambien escritura tendran dos documentos principales:
+    1-Documentos master
+        Que es el doc que estara consumiento esta pagina por ejemplo blMaster, este proviene desde la base de datos
+    2-Documento editable
+        -Que es el documento que se podra editar, al el usuario presionar editar se crea una copia del documento master hacia el documento editar,
+        -Cuando el usuario termina y presiona guardar, entonces la informacion colocada en el documento editable se envia hacia la base de datos y entonces se desactiva el modo editable, de manera que la app estara cargando nuevamente el documento master, pero esta es actualizado
+        -
+
+
+//**************CICLO DE VIDA DE FURGONES************
+// Proveedor------------------0
+// Transito Maritimo----------1
+// En Puerto------------------2
+// Recep. Almacen-------------3
+// Dpto. Importaciones--------4
+// Disponible en SAP----------5
+// 
+// Proveedor
+//  -Esto no deberia aplicar para furgones
+// 
+// Transito Maritimo
+//  -Es la fecha inicial desde que se crea el BL,
+// 
+// En puerto
+//  -Sera indicado por el dpto de importaciones, cuando se crea el BL y se coloca fecha estimada de llegada al pais
+//  -Es igual a llegada al pais
+// 
+// Recep. almacen
+//  -Sera igual a En puerto + 3 dias
+//  -Sera confirmado por almacen al recibir
+// 
+// Dpto. de import.
+//  -Sera igual a Recep. almacen + 1 dia
+//  -Sera confirmado por el almacen al enviar doc
+// 
+// Disponible en SAP
+//  -Sera igual a Dpto. de import. + 1 dia
+//  -Sera confirmado por el equipo de importaciones al concluir
+// 
+// 
+// Diferencia entre status y fechas
+// 
+// Fechas:
+// Proveedor--------------------- n/a
+// LLegada al pais--------------- Indicada por dpto. de importacion
+// LLegada almacen--------------- Indicada por dpto. de importacion
+// Llegada al dpto. Import------- Indicada por almacen
+// Llegada a SAP----------------- Indicada por dpto. de importacion
+// 
+// 
+// Aunque existen similitus entres las fechas y el ciclo de vida no es igual
+// 
+// 
+// Cuando el usu
+// 
+
+Documentacion****
+Ciclo de vida de furgones (las fechas)
+Proveedor------------------0
+Transito Maritimo----------1
+En Puerto------------------2
+Recep. Almacen-------------3
+Dpto. Importaciones--------4
+Disponible en SAP----------5
+
+Proveedor
+ -Esto no deberia aplicar para furgones
+
+Transito Maritimo
+ -Es la fecha inicial desde que se crea el BL,
+
+En puerto
+ -Sera indicado por el dpto de importaciones, cuando se crea el BL y se coloca fecha estimada de llegada al pais
+ -Es igual a llegada al pais
+
+Recep. almacen
+ -Sera igual a En puerto + 3 dias
+ -Sera confirmado por almacen al recibir
+
+Dpto. de import.
+ -Sera igual a Recep. almacen + 1 dia
+ -Sera confirmado por el almacen al enviar doc
+
+Disponible en SAP
+ -Sera igual a Dpto. de import. + 1 dia
+ -Sera confirmado por el equipo de importaciones al concluir
+
+
+Diferencia entre status y fechas
+
+Fechas:
+Proveedor--------------------- n/a
+LLegada al pais--------------- Indicada por dpto. de importacion
+LLegada almacen--------------- Indicada por dpto. de importacion
+Llegada al dpto. Import------- Indicada por almacen
+Llegada a SAP----------------- Indicada por dpto. de importacion
+
+
+Aunque existen similitus entres las fechas y el ciclo de vida no es igual

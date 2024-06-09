@@ -1,0 +1,6 @@
+
+
+.slideThree input[type=checkbox]:checked + label {
+  left: 43px;
+}
+

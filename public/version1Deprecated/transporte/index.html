@@ -1,0 +1,178 @@
+<!-- Version 2.0 ------>
+<!-- Inicio del proyecto el Domingo 12 febrero 2023 8:59AM -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style17.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
+    <meta name="keywords" content="Caeloss, ligero, calcular tranporte en cielos, Cielos, Acusticos, calculo de transporte, calculo, transporte, calculo de viajes, calculo, viajes, app de calculo de transporte,">
+    <meta name="description" content="App para calculo de transporte, calculamos el precio y tambien el costo">
+
+    <meta property="og:image" itemprop="image" content="https://www.caeloss.com/img/logo.png">
+   
+     <link rel="shortcut icon" href="https://www.caeloss.com/img/logo.png" type="image/x-icon">
+    <title>Caeloss &#8211; Calculo de transporte.</title>
+ <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E9LL8GC4RH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E9LL8GC4RH');
+</script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="cabecera">
+            <h1> <a href="https://caeloss.com/">Caeloss</a> - Transporte </h1>
+            <div>
+                <img class="logo" src="img/cielos.png" alt="Logo Cielos"><br>
+            </div>
+        </div>
+            <main>
+                <section class="entradaSection">
+                    <div class="containerRadio">
+                        <div class="cajaTipoCalculo">
+                            <h2>Tipo de calculo</h2>
+                            <p></p>
+                            <input type="radio" name="tipoCalculo" id="porDestino" checked >
+                            <label class="labelCalculo" for="porDestino" title="Tecla Q" id="labelDestino">Por destino</label>
+                            
+                            <input type="radio" name="tipoCalculo" id="porDistancia">
+                            <label class="labelCalculo" for="porDistancia" title="Tecla W" id="labelKilometros">Por kilometros</label>
+                        </div>
+                        <div class="cajaOrigen">
+                            <h2>Punto de partida</h2>
+                            <p></p>
+                            <input type="radio" name="puntoPartida" id="stoDomg" checked>
+                            <label class="labelOrigen" for="stoDomg" title="Tecla A">Sto.Dgo</label>
+                            
+                            <input type="radio" name="puntoPartida" id="pyl">
+                            <label class="labelCalculo" for="pyl" title="Tecla S">P&L</label> 
+
+                            <input type="radio" name="puntoPartida" id="santiago">
+                            <label class="labelCalculo" for="santiago" title="Tecla D">Santiago</label>
+                            
+                            <input type="radio" name="puntoPartida" id="zonaOriental">
+                            <label class="labelCalculo" for="zonaOriental" title="Tecla F">Z.O.</label>
+                            
+                            <input type="radio" name="puntoPartida" id="bavaro">
+                            <label class="labelCalculo" for="bavaro" title="Tecla G">Bavaro</label>
+                        </div>
+                    </div>
+
+                    <div class="containerSelect">
+                        <div class="cajaSelect">
+
+                            <select placeholder="destino" class="destinoSelect" name="destinoSelect" id="destinoSelect">
+                                <option value="" disabled selected>Selecione Destino</option>
+                                <option value="radio1_0a2" >Radio de 0 a 2Km</option>
+                                <option value="radio2_2a4">Radio de 2 a 4Km</option>
+                                <option value="radio3_4a6">Radio de 4 a 6Km</option>
+                                <option value="radio4_6a9">Radio de 6 a 9Km</option>
+                                <option value="radio5_9a15">Radio de 9 a 15Km</option>
+                                <option value="radio6_15a20">Radio de 15 a 20Km</option>
+                                <option value="radio7_20a30">Radio de 20 a 30Km</option>
+                                <option value="azua">Azua</option>
+                                <option value="bahoruco">Bahoruco</option>
+                                <option value="barahona">Barahona</option>
+                                <option value="dajabon">Dajabón</option>
+                                <option value="duarte">Duarte</option>
+                                <option value="el_seibo">El Seibo</option>
+                                <option value="elias_pina">Elías Piña</option>
+                                <option value="espaillat">Espaillat</option>
+                                <option value="hato_mayor">Hato Mayor</option>
+                                <option value="hermanas_mirabal">Hermanas Mirabal</option>
+                                <option value="independencia">Independencia</option>
+                                <option value="la_altagracia">La Altagracia</option>
+                                <option value="la_romana">La Romana</option>
+                                <option value="la_vega">La Vega</option>
+                                <option value="maria_trinidad_sanchez">María Trinidad Sánchez</option>
+                                <option value="monsenor_nouel">Monseñor Nouel</option>
+                                <option value="monte_plata">Monte Plata</option>
+                                <option value="montecristi">Montecristi</option>
+                                <option value="pedernales">Pedernales</option>
+                                <option value="peravia">Peravia</option>
+                                <option value="puerto_plata">Puerto Plata</option>
+                                <option value="samana">Samaná</option>
+                                <option value="san_cristobal">San Cristóbal</option>
+                                <option value="san_jose_de_ocoa">San José de Ocoa</option>
+                                <option value="san_juan">San Juan</option>
+                                <option value="san_pedro_de_macoris">San Pedro de Macorís</option>
+                                <option value="sanchez_ramirez">Sánchez Ramírez</option>
+                                <option value="santiago">Santiago</option>
+                                <option value="santiago_rodriguez">Santiago Rodríguez</option>
+                                <option value="santo_domingo" disabled>Santo Domingo</option>
+                                <option value="valverde">Valverde</option>
+
+                            </select>
+                            <input type="number" placeholder="Ingrese distancia en kilometros" id="inputKmManual" class="inputKmManual ">
+                            
+                            <select class="vehiculo" name="vehiculo" id="vehiculoSelect">
+                                <option value="" disabled >Selecione Vehiculo</option>
+                                <option value="patana">Patana 40'</option>
+                                <option value="rigido">Camion rigido 24'</option>
+                                <option value="camionCamaLarga">Camion cama larga 16'</option>
+                                <option value="camionPequeno">Camion Pequeño 10'</option>
+                                <option value="platanera" selected>Camioneta Hijet 7' (Platanera)</option>
+                            </select>
+                        </div>
+                        <div class="cajaBtnCalcular">
+                            <input title="Tecla Enter" class="btnCalcular" type="button" value="Calcular" id="btnCalcular">
+                        </div>
+
+                    
+                    </div>
+                </section>
+                    
+                    
+            
+                <section class="salidaSection">
+                    <div class="containerMapa" id="containerMapa">
+                        <!-- <img class="imgMapa" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Azua_in_Dominican_Republic.svg/1024px-Azua_in_Dominican_Republic.svg.png" alt=""> -->
+                        <iframe id="jio" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d17078.891707278366!2d-69.95806320803364!3d18.474121776362246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f80afaa363%3A0xce02965b039cab32!2sCielos%20Ac%C3%BAsticos!5e0!3m2!1sen!2sdo!4v1676347397351!5m2!1sen!2sdo" width="400" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+
+                    <div class="containerSalida" id="containerSalida">
+                            <div class="cajaSalida"> 
+                                <p>Destino</p>
+                                <input class="inputSalida" disabled type="text" id="destinoInput">
+                            </div>
+                            <div class="cajaSalida"> 
+                                <p>Precio </p>
+                                <input class="inputSalida" disabled type="text" id="precioInput">
+                            </div>
+                            <!-- <div class="cajaSalida"> 
+                                <p>Precio Minimo</p>
+                                <input class="inputSalida" disabled type="text" id="precioMinimoInput">
+                            </div> -->
+                            <div class="cajaSalida"> 
+                                <p>Costo</p>
+                                <input class="inputSalida" type="text" id="costoInput" disabled >
+                            </div>
+                            <div class="cajaSalida"> 
+                                <p>Distancia</p>
+                                <input class="inputSalida" type="text" id="distanciaInput" disabled >
+                            </div>
+                    </div>
+                </section>
+
+                
+              
+    
+            </main>
+           
+        <script src="js/codigo20.js"></script>
+        <!-- <footer>
+            <div class="footer">Copyright © 2021 Jose Perez, todos los derechos reservados.</div>
+        </footer> -->
+    
+
+    </body>
+    </html>

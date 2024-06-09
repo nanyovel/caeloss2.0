@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_header.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet">
+    <meta name="description" content="Caeloss, app en linea para realizar cálculos y brindar apoyo en el área de la construcción ligera.">
+    <meta property="og:site_name" content="Caeloss"> 
+    <meta property="og:title" content="Caeloss" /> 
+    <meta property="og:description" content="Caeloss, app en linea para realizar cálculos y brindar apoyo en el área de la construcción ligera." /> 
+    <meta property="og:type" content="website" /> 
+    <meta property="og:updated_time" content="1440432930" /> 
+    <meta property="og:image" itemprop="image" content="https://www.caeloss.com/img/logo.png"> 
+    <link rel="shortcut icon" href="https://www.caeloss.com/img/logo.png" type="image/x-icon">
+    <title>Caeloss - Macrolux</title>
+     <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E9LL8GC4RH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-E9LL8GC4RH');
+</script>
+<!--anuncios de adsense arroz -->
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3423941428592549"
+     crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+    <div class="container">
+        <div class="cabecera">
+            <h1> <a href="https://caeloss.com/">Caeloss</a> - Macrolux </h1>
+            <div>
+
+                <img class="logo" src="img/cielos.png" alt="logo cielos acusticos">
+            </div>
+        </div>
+
+        <div class="contenidoCaja">
+            <span class="barraMenu" id="barraMenu">
+                <label for="botonMenu"><i class="fas fa-bars" id="chimi"></i><i id="equis" class="fas fa-times noVisible"></i></label>
+                <input type="checkbox" id="botonMenu"></span>
+            <nav class="navegacion">
+                <ul class="menu " id="menuM">
+                    <li><a href="../">Home</a></li>
+                    <li><a href="#">Plafones/Techos</a>
+                        <ul class="submenu">
+                            <li><a href="../plafoncomercial/">Plafon Comercial</a></li>
+                            <li><a href="../plafonmachihembrado/">Machihembrado</a></li>
+                             <li><a href="../techolisosheetrock/">Techo liso Sheetrock</a></li> 
+                             <li><a href="../techolisodensglass/">Techo liso Densglass</a></li> 
+                             <li><a href="../macrolux/">Macrolux</a></li> 
+                             <li><a href="../poliacryl/">Poliacryl</a></li> 
+                         
+                        </ul>
+                    </li>
+                    <li><a href="#">Divisiones/Muros</a>
+                        <ul class="submenu">
+                            <li><a href="../divisionyeso/">Division yeso</a></li>
+                            <li><a href="../divisiondensglass/">Division Densglass</a></li>
+                         
+                        </ul>
+                    </li>
+                    <li><a href="#">Pisos/Relacionados</a>
+                        <ul class="submenu">
+                            <li><a href="../pisoslaminados/">Pisos Laminados</a></li>
+                            <li><a href="../pisosvinyl/">Pisos Vinyl</a></li>
+                            <li><a href="../decking/">Decking</a></li>
+                         
+                        </ul>
+                    </li>
+                    
+                   
+                    
+                </ul>
+            </nav>
+        </div>
+        <header>
+            
+
+        <section class="seccion-radio"> 
+           
+            <div class="wrap">
+                <form action="" class="formulario">
+                    <div class="radio">
+                        <h2>Modalidad </h2>
+                        <p></p>
+        
+                        <input type="radio" name="modo" id="ml" checked >
+                        <label for="ml" title="Tecla Q">Metros L</label>
+                
+                        <input type="radio" name="modo" id="pl">
+                        <label for="pl" title="Tecla W">Pies L</label>
+                
+                       
+                    </div>
+                
+                 
+                </form>
+            </div>
+            
+            
+            <div class="caja_error_perimetroLineal" id="errorMayor12">
+                <h4 id="textoErrorMayor12">El alto no puede ser mayor a 12mts</h4>
+            </div>
+        </section>
+        <div class="sectionCanvas">
+            <div class="contenedorCanvabroth">
+
+                <div class="cajaAnchoCanvas">
+                    <div class="cajaInputH2 cajaAnchoh2">
+                        
+                        <input type="number" max="10" maxlength="10" placeholder="Ancho"  id="ancho_habitacion" class="cajaActiva" onkeypress="return alpha(event)">
+                        <h2 class="posfijoUM" name="posfijoUM">Mts</h2>
+                    </div>
+                    
+                    <img src="img/arrowHorizontal.svg" name="flechas" alt="flecha horizontal distancia" width="400">
+                </div>
+                <div class="cajaCanvaFlechaIzquierda">
+                    <div class="flechaImg">
+                        <div class="cajaInputH2">
+                            
+                            <input type="number" max="99999" placeholder="Alto"  id="alto_habitacion" class="cajaActiva" onkeypress="return alpha(event)">
+                            <h2 class="posfijoUM" name="posfijoUM">Mts</h2>
+                        </div>
+                        <img src="img/arrowVertical.svg" name="flechas"  alt="flecha vertical distancia" height="250">
+                    </div>
+                    
+                    <canvas id="canvas" width="400" height="250" class="canvas"></canvas>
+                </div>
+            </div>
+            <div class="lateral">
+                <div name="cajaLateral">
+                    <h3 class="pedazosH3" >Pedazos: </h3> <p class="pedazosP" name="parrafoLateral"></p>
+                </div>
+                <div  name="cajaLateral">
+                    <h3 class="pedazosH3">Completivo: </h3> <p class="pedazosP" name="parrafoLateral"></p>
+                </div>
+                
+                
+                
+
+                <!-- <div>
+
+                    <h3 >Desperdicios:</h3>
+                    <p id="deperdicioss"></p>
+                </div> -->
+
+            </div>
+        </div>
+            
+            <section class="section_caja_calcular">    
+            
+                <div class="caja_calcular" id="caja_calcular" >
+                    <div class="container-calcuar" id="container-calcuar">
+                        <div class="caja_habitacion" >
+                            <div class="padre_parrafo1">
+                                <div class="padre_parrafo11" id="padre_parrafo11">
+                                    
+                            </div>
+                        </div>
+                        
+                           
+                        </div>
+                        <div class="caja_habitacion" >
+
+                       
+                        
+                        <input type="text" placeholder="Area 2" class="cajaInactiva" disabled id="caja_area2_habitacion" onkeypress="return alpha(event)">
+                        <input type="text" placeholder="Perimetro L" class="cajaInactiva" disabled id="caja_perimetro_linear" onkeypress="return alpha(event)">
+                    </div>
+                   
+
+                    
+                    
+                   
+                  
+                </div>
+                <input type="button" class="btnG" value="Calcular" id="boton_habitacion" title="Tecla Enter">
+
+            </div>
+    </section>
+        
+
+    <section class="seccion_tabla" >
+
+    
+        <table class="tabla_resultados" id="seccion_tabla">
+
+            <tr class="caja-encabezado" id="padre_encabezado">
+                <th scope="row" class="no">N°</th>
+                <th class="encabezado descripcion-ancho"><p >Descripcion</p> </th>
+                <th class="encabezado"><p> Total </p> </th>
+               
+                <!-- <th class="encabezado" ><p>D3</p> </th> -->
+            </tr>
+
+    
+            <tr id="padre_celdaA">
+                <td class="descripcion_tabla">?</td>
+                <td class="descripcion_tabla"  >Plancha 2.10 x 12mt</td>
+                <td class="celdaTotal" name="celdaA"></td>
+              
+            </tr>
+
+            <tr id="padre_celdaB">
+                <td  class="descripcion_tabla">15021</td>
+                <td class="descripcion_tabla " >Perfil H</td>
+                <td class="celdaTotal"  name="celdaB"></td>
+               
+
+            </tr>
+
+            <tr  id="padre_celdaC">
+                <td class="descripcion_tabla">15022</td>
+                <td class="descripcion_tabla" >Remate U</td>
+                <td class="celdaTotal"  name="celdaC"></td>
+              
+
+            </tr>
+
+            <tr id="padre_celdaD">
+                <td class="descripcion_tabla">08030</td>
+                <td class="descripcion_tabla" >Tornillos Neopreno</td>
+                <td class="celdaTotal"  name="celdaD"></td>
+           
+
+            </tr>
+
+            <tr id="padre_celdaE">
+                <td class="descripcion_tabla">16031</td>
+                <td class="descripcion_tabla" >Silicon clear</td>
+                <td class="celdaTotal" name="celdaE"></td>
+               
+
+            </tr>
+
+            <tr id="padre_celdaF">
+                <td class="descripcion_tabla">15048</td>
+                <td class="descripcion_tabla" >Botones</td>
+                <td class="celdaTotal"  name="celdaF"></td>
+          
+            </tr>
+
+            <tr id="padre_celdaG">
+                <td class="descripcion_tabla">15034</td>
+                <td class="descripcion_tabla" >Cinta Aluminio</td>
+                <td class="celdaTotal"  name="celdaG"></td>
+            
+            </tr>
+
+            <tr id="padre_celdaH">
+                <td class="descripcion_tabla">15023</td>
+                <td class="descripcion_tabla" >Cinta Ventana</td>
+                <td class="celdaTotal"  name="celdaH"></td>
+           
+            </tr>
+         
+
+
+        </table>
+
+</section>
+
+<section class="seccion_botones_finales">
+
+
+
+    <div class="botones_finales">     
+        <input type="button" value="Limpiar" id="btn-limpiar" class="btnG" title="Tecla Delete/Suprimir">
+        <input type="button" value="Imprimir" class="btnG" title="Tecla Ctrl + P" onclick="javascript:window.print()" />
+        <!-- <input type="button" value="Imprimir"> -->
+    </div>
+
+</section>
+<footer>
+    <a href="https://caeloss.com/">Caeloss.com</a>
+</footer>
+</div>
+<script src="https://kit.fontawesome.com/82070f8328.js" crossorigin="anonymous"></script>
+<script src="js/codigo.js"></script>
+</body>
+</html>
