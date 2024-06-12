@@ -701,12 +701,15 @@ const handleInputCabecera=(e)=>{
   
   const eliminarDoc=async()=>{
     let validacion=true
-    if(isEditando||docEncontrado==false||ocMaster.estadoDoc!=2){
+    console.log(isEditando,docEncontrado,ocMaster.estadoDoc)
+    if(isEditando||docEncontrado==false||ocMaster.estadoDoc==2){
       validacion=false
       return''
     } 
 
     if(validacion==true){
+    console.log('paso')
+      
        // Cargar DB
       const ordenActualizar = doc(db, "ordenesCompra", ocMaster.id);
       try{
