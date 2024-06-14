@@ -1,187 +1,181 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { NavLink } from 'react-router-dom'
-import { Alerta } from '../../components/Alerta'
-import { CSSLoader } from '../../components/CSSLoader'
-import { ControlesTablasMain } from '../components/ControlesTablasMain'
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { NavLink } from 'react-router-dom';
+import { CSSLoader } from '../../components/CSSLoader';
+import { ControlesTablasMain } from '../components/ControlesTablasMain';
 
 export const TablaListaTodosLosBLs = ({
   dbBillOfLading,
 }) => {
-    // // ******************** RECURSOS GENERALES ******************** //
-    const [dispatchAlerta, setDispatchAlerta]=useState(false)
-    const [mensajeAlerta, setMensajeAlerta]=useState('')
-    const [tipoAlerta, setTipoAlerta]=useState('')
+  // // ******************** RECURSOS GENERALES ******************** //
 
-    const [habilitar,setHabilitar]=useState({
-      search:true,
-    })
+  // const [habilitar,setHabilitar]=useState({
+  const habilitar={
+    search:true,
+  };
 
-    // // ************************** CODIGO LOADING ************************** //
-    const [isLoading,setIsLoading]=useState(false)
-    useEffect(()=>{
-      if(dbBillOfLading.length>0){
-        setIsLoading(false)
-      }
-      if(dbBillOfLading.length==0){
-            setIsLoading(true)
-          }
-    },[dbBillOfLading,])
-    
-    // // ************************* CONSOLIDACION ************************* //
-    
-    const [listaBLs, setListaBLs]=useState([])
-    const [initialValueBLs,setInitialValueBLs]=useState([])
+  // // ************************** CODIGO LOADING ************************** //
+  const [isLoading,setIsLoading]=useState(false);
+  useEffect(()=>{
+    if(dbBillOfLading.length>0){
+      setIsLoading(false);
+    }
+    if(dbBillOfLading.length==0){
+      setIsLoading(true);
+    }
+  },[dbBillOfLading,]);
+
+  // // ************************* CONSOLIDACION ************************* //
+
+  const [listaBLs, setListaBLs]=useState([]);
+  const [initialValueBLs,setInitialValueBLs]=useState([]);
 
   useEffect(()=>{
     // No mostrar bl eliminados
-    const blsSinEliminados=dbBillOfLading.filter((bl,index)=>{
-      return bl.estadoDoc!=2
-    })
-    
+    const blsSinEliminados=dbBillOfLading.filter((bl)=>{
+      return bl.estadoDoc!=2;
+    });
+
     // Calcular y filtrar estado del documento Abierto o Cerrado
     const blsFiltrados=(blsSinEliminados.filter((bl)=>{
-      let estadoDoc=0
+      let estadoDoc=0;
       if(bl.furgones.every(furgon=>furgon.status==5)==false){
-        estadoDoc=0
+        estadoDoc=0;
       }
       else if(bl.furgones.every(furgon=>furgon.status==5)==true){
-        estadoDoc=1
+        estadoDoc=1;
       }
       if(bl.estadoDoc==2){
-        estadoDoc=2
+        estadoDoc=2;
       }
 
       if(estadoDoc==0){
-        return bl
+        return bl;
       }
 
-    }))
+    }));
 
     //Agregar propiedad de dias restantes
     const blParsed=blsFiltrados.map((bill)=>{
       let diasLibres=bill.diasLibres;
-      let annio=bill.llegadaAlPais.slice(6,10)
-      let mes=bill.llegadaAlPais.slice(3,5)
-      let dia=bill.llegadaAlPais.slice(0,2)
+      let annio=bill.llegadaAlPais.slice(6,10);
+      let mes=bill.llegadaAlPais.slice(3,5);
+      let dia=bill.llegadaAlPais.slice(0,2);
 
-      let fechaActual= new Date()
+      let fechaActual= new Date();
 
       let llegadaAlPaisPlana=
       new Date(
         Number(annio),
         Number(mes-1), //aqui se debe rebajar uno dado que en java script los meses empiezan en 0
         Number(dia),
-      )
+      );
 
       let diasLibresEnMiliSegundos = diasLibres * 24 * 60 * 60 * 1000;
       let diferenciaMilisegundos = llegadaAlPaisPlana - fechaActual + diasLibresEnMiliSegundos;
       let diasRestantes = Math.ceil(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
-      
 
       return{
         ...bill,
         diasRestantes:diasRestantes
-      }
-    })
+      };
+    });
 
     // Ordenar por dias libres
     const blsOrdenados = blParsed.sort((a, b)=> {
       return a.diasRestantes - b.diasRestantes;
     });
 
+    setInitialValueBLs(blsOrdenados);
+    setListaBLs(blsOrdenados);
+  },[dbBillOfLading]);
 
+  // // ******************** MANEJANDO EL INPUT SEARCH ******************** //
 
-    setInitialValueBLs(blsOrdenados)
-    setListaBLs(blsOrdenados)
-  },[dbBillOfLading])
+  const [buscarDocInput, setBuscarDocInput]=useState('');
 
-// // ******************** MANEJANDO EL INPUT SEARCH ******************** //
+  const handleSearch=(e)=>{
+    let entrada=e.target.value;
+    setBuscarDocInput(entrada);
+    const textoMin=entrada.toLowerCase();
 
-const [buscarDocInput, setBuscarDocInput]=useState('')
-
-const handleSearch=(e)=>{
-  let entrada=e.target.value
-  setBuscarDocInput(entrada)
-  const textoMin=entrada.toLowerCase()
-
-  setListaBLs(initialValueBLs.filter((bl)=>{
-    if(
-      bl.numeroDoc.toLowerCase().includes(textoMin)||
+    setListaBLs(initialValueBLs.filter((bl)=>{
+      if(
+        bl.numeroDoc.toLowerCase().includes(textoMin)||
       bl.proveedor.toLowerCase().includes(textoMin)||
       bl.naviera.toLowerCase().includes(textoMin)||
       bl.puerto.toLowerCase().includes(textoMin)
-    ){
-      return bl
-    }
-  }))
+      ){
+        return bl;
+      }
+    }));
 
-  if(e.target.value==''){
-    setListaBLs(initialValueBLs)
-  }
-}
+    if(e.target.value==''){
+      setListaBLs(initialValueBLs);
+    }
+  };
 
   return (
     <>
 
-  <CabeceraListaAll>
-    <EncabezadoTabla>
-      <TituloEncabezadoTabla>
+      <CabeceraListaAll>
+        <EncabezadoTabla>
+          <TituloEncabezadoTabla>
         Lista de todos los Bill of Lading activos, ordenados por dias restantes (DR).
-      </TituloEncabezadoTabla>
-    </EncabezadoTabla>
-    
-    <ControlesTablasMain
-      habilitar={habilitar}
-      handleSearch={handleSearch}
-      buscarDocInput={buscarDocInput}
-    />
-  </CabeceraListaAll>
-  <CajaTabla>
-    <Tabla >
-      <thead>
-        <Filas className='cabeza'>
-          <CeldaHead>N°</CeldaHead>
-          <CeldaHead>Numero*</CeldaHead>
-          <CeldaHead >Proveedor</CeldaHead>
-          <CeldaHead>Naviera</CeldaHead>
-          <CeldaHead>Puerto</CeldaHead>
-          <CeldaHead title='Dias Libres'>DL</CeldaHead>
-          <CeldaHead title='Dias Restantes'>DR</CeldaHead>
-          <CeldaHead>Llegada al pais</CeldaHead>
-        </Filas>
-      </thead>
-      <tbody>
-        {
-        listaBLs.map((bl, index)=>{
-            return(
-                    <Filas 
-                      key={index} 
-                      className={`body ${bl.diasRestantes<2?'negativo':''}`}
-                      >
-                        <CeldasBody>{index+1}</CeldasBody>
-                        <CeldasBody 
-                            data-id={index}
-                            >
-                              <Enlaces 
-                                to={`/importaciones/maestros/billoflading/${bl.numeroDoc}`}
-                                target="_blank"
-                                >
-                                {bl.numeroDoc}
+          </TituloEncabezadoTabla>
+        </EncabezadoTabla>
 
-                              </Enlaces>
-                            </CeldasBody>
-                        <CeldasBody 
-                          title={bl.proveedor}
-                          className='proveedor'>{bl.proveedor}</CeldasBody>
-                        <CeldasBody>{bl.naviera}</CeldasBody>
-                        <CeldasBody>{bl.puerto}</CeldasBody>
-                        <CeldasBody>{bl.diasLibres}</CeldasBody>
-                        <CeldasBody>{bl.diasRestantes}</CeldasBody>
-                        
-                        <CeldasBody>{bl.llegadaAlPais.slice(0,10)}</CeldasBody>
-                        {/* <CeldasBody>
+        <ControlesTablasMain
+          habilitar={habilitar}
+          handleSearch={handleSearch}
+          buscarDocInput={buscarDocInput}
+        />
+      </CabeceraListaAll>
+      <CajaTabla>
+        <Tabla >
+          <thead>
+            <Filas className='cabeza'>
+              <CeldaHead>N°</CeldaHead>
+              <CeldaHead>Numero*</CeldaHead>
+              <CeldaHead >Proveedor</CeldaHead>
+              <CeldaHead>Naviera</CeldaHead>
+              <CeldaHead>Puerto</CeldaHead>
+              <CeldaHead title='Dias Libres'>DL</CeldaHead>
+              <CeldaHead title='Dias Restantes'>DR</CeldaHead>
+              <CeldaHead>Llegada al pais</CeldaHead>
+            </Filas>
+          </thead>
+          <tbody>
+            {
+              listaBLs.map((bl, index)=>{
+                return(
+                  <Filas
+                    key={index}
+                    className={`body ${bl.diasRestantes<2?'negativo':''}`}
+                  >
+                    <CeldasBody>{index+1}</CeldasBody>
+                    <CeldasBody
+                      data-id={index}
+                    >
+                      <Enlaces
+                        to={`/importaciones/maestros/billoflading/${bl.numeroDoc}`}
+                        target="_blank"
+                      >
+                        {bl.numeroDoc}
+
+                      </Enlaces>
+                    </CeldasBody>
+                    <CeldasBody
+                      title={bl.proveedor}
+                      className='proveedor'>{bl.proveedor}</CeldasBody>
+                    <CeldasBody>{bl.naviera}</CeldasBody>
+                    <CeldasBody>{bl.puerto}</CeldasBody>
+                    <CeldasBody>{bl.diasLibres}</CeldasBody>
+                    <CeldasBody>{bl.diasRestantes}</CeldasBody>
+
+                    <CeldasBody>{bl.llegadaAlPais.slice(0,10)}</CeldasBody>
+                    {/* <CeldasBody>
                           <IconoREDES
                             data-id={index}
                             onClick={(e)=>mostrarFurgones(e)}
@@ -189,41 +183,34 @@ const handleSearch=(e)=>{
                             👁️
                           </IconoREDES>
                         </CeldasBody> */}
-                    </Filas>
-                )
-            })
-        }
-      </tbody>
-    </Tabla>
-    </CajaTabla>
-        {
-          isLoading?
+                  </Filas>
+                );
+              })
+            }
+          </tbody>
+        </Tabla>
+      </CajaTabla>
+      {
+        isLoading?
           <CajaLoader>
             <CSSLoader/>
           </CajaLoader>
-            :
-            ''
-        }
-    
-    <Alerta
-      estadoAlerta={dispatchAlerta}
-      tipo={tipoAlerta}
-      mensaje={mensajeAlerta}
-    />
-
+          :
+          ''
+      }
     </>
-  )
-}
+  );
+};
 
 const CajaLoader=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const CabeceraListaAll=styled.div`
     background-color: ${theme.azulOscuro1Sbetav};
-`
+`;
 
 const EncabezadoTabla =styled.div`
   margin-top: 20px;
@@ -233,7 +220,7 @@ const EncabezadoTabla =styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-`
+`;
 
 const CajaTabla=styled.div`
     overflow-x: scroll;
@@ -255,7 +242,7 @@ const CajaTabla=styled.div`
         border-radius: 7px;
         } 
 
-`
+`;
 
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
@@ -271,7 +258,7 @@ const Tabla = styled.table`
     margin-bottom: 130px;
     
   }
-  `
+  `;
 
 const Filas =styled.tr`
   &.body{
@@ -296,7 +283,7 @@ const Filas =styled.tr`
   &.negativo{
     color: ${theme.danger}
   }
-`
+`;
 
 const CeldaHead= styled.th`
   padding: 3px 8px;
@@ -307,8 +294,8 @@ const CeldaHead= styled.th`
     width: 300px;
   }
 
-`
-  const CeldasBody = styled.td`
+`;
+const CeldasBody = styled.td`
     font-size: 0.9rem;
     height: 25px;
     border: 1px solid black;
@@ -329,11 +316,7 @@ const CeldaHead= styled.th`
       max-width: 200px;
     }
 
-`
-const IconoREDES =styled.p`
-  cursor: pointer;
-
-`
+`;
 
 const Enlaces=styled(NavLink)`
 color: inherit;
@@ -342,7 +325,7 @@ text-decoration: none;
   text-decoration: underline;
 }
 
-`
+`;
 const TituloEncabezadoTabla=styled.h2`
   color: #757575;
   font-size: 1.2rem;
@@ -351,4 +334,4 @@ const TituloEncabezadoTabla=styled.h2`
   &.subTitulo{
     font-size: 1rem;
   }
-`
+`;

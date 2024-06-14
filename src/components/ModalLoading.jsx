@@ -1,20 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
-import { CSSLoader } from './CSSLoader'
+import styled from 'styled-components';
+import { CSSLoader } from './CSSLoader';
 
 export const ModalLoading = ({completa}) => {
- 
+
   return (
-        completa?
-          <Container>
-            <CSSLoader/>
-          </Container>
+    completa?
+      <Container>
+        <CSSLoader/>
+      </Container>
       :
       <Container className='imcompleta'>
       </Container>
-  )
-}
+  );
+};
 
 const Container=styled.div`
     width: 900px;
@@ -31,4 +29,4 @@ const Container=styled.div`
       height: 100%;
       backdrop-filter: blur(0px);
     }
-`
+`;

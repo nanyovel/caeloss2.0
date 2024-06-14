@@ -1,69 +1,65 @@
-import React, { useEffect, useState } from 'react'
-import { Header } from '../components/Header'
-import theme from '../../theme'
-import styled from 'styled-components'
-import ImagenComingSoon from './../../public/img/buildApp.svg'
-import funcionConsumible from '../../consumible'
+import { useEffect, useState } from 'react';
+import { Header } from '../components/Header';
+import theme from '../../theme';
+import styled from 'styled-components';
+import ImagenComingSoon from './../../public/img/buildApp.svg';
+import funcionConsumible from '../../consumible';
 
 export const Mantenimiento = (
 
 ) => {
-  
+
   useEffect(()=>{
     document.title = "Caeloss - Mantenimiento";
     return () => {
-      document.title = "Caeloss"; 
+      document.title = "Caeloss";
     };
-  },[])
-  const [hijosBarra,setHijosBarra]=useState([])
-  const [porcentaje,setPorcentaje]=useState('')
+  },[]);
+  const [porcentaje,setPorcentaje]=useState('');
 
   useEffect(()=>{
-    let newHijo=[]
-    setPorcentaje(100-funcionConsumible('transporte').valorNumber)
+    let newHijo=[];
+    setPorcentaje(100-funcionConsumible('transporte').valorNumber);
     for(let i=0;i<porcentaje;i++){
-      newHijo.push('')
-    
+      newHijo.push('');
+
     }
-    setHijosBarra(newHijo)
-  },[porcentaje])
+  },[porcentaje]);
   return (
     <>
       <Header titulo={'Sistema de gestion de Mantenimiento'}/>
       <CajaPorcentaje>
-      <CajaTitulo>
+        <CajaTitulo>
 
-        <Titulo>Coming soon...</Titulo>
-      </CajaTitulo>
+          <Titulo>Coming soon...</Titulo>
+        </CajaTitulo>
         <br />
         <br />
         <BarraProgres>
           <NumberPor>
             {0+'%'}
           </NumberPor>
-               <HijosBarra ></HijosBarra>
-              
-            
-          </BarraProgres>
+          <HijosBarra ></HijosBarra>
+        </BarraProgres>
       </CajaPorcentaje>
-          <CajaImg>
-            <Img src={ImagenComingSoon}/>
-          </CajaImg>
+      <CajaImg>
+        <Img src={ImagenComingSoon}/>
+      </CajaImg>
     </>
-  )
-}
+  );
+};
 const CajaPorcentaje=styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 20px;
   flex-direction: column;
-`
+`;
 
 const CajaTitulo=styled.div`
   width: 100%;
   display: block;
-`
+`;
 
 const Titulo=styled.h2`
   color: ${theme.azul2};
@@ -73,17 +69,17 @@ const Titulo=styled.h2`
   &.qty{
     font-size: 3rem;
   }
-`
-// 
-// 
-// 
+`;
+//
+//
+//
 
 const NumberPor=styled.h2`
     color: ${theme.success};
     font-size: 2.5rem;
     position: absolute;
     right: 45%;
-`
+`;
 
 const BarraProgres=styled.div`
   display: flex;
@@ -92,11 +88,11 @@ const BarraProgres=styled.div`
   width: 100%;
   height: 50px;
   justify-content: start;
-`
+`;
 const HijosBarra=styled.div`
   background-color: ${theme.azul2};
   width: 0.5%;
-`
+`;
 
 const CajaImg=styled.div`
   width: 90%;
@@ -112,10 +108,10 @@ const CajaImg=styled.div`
   box-shadow: 2px 2px 5px 0px rgba(255, 184, 5, 0.75);
   /* -webkit-box-shadow: 1px 1px 2px 0px rgba(255, 184, 5, 0.75); */
   /* -moz-box-shadow: 1px 1px 2px 0px rgba(255, 184, 5, 0.75); */
-`
+`;
 const Img=styled.img`
   width: 50%;
   object-fit: contain;
   
   
-`
+`;

@@ -1,159 +1,126 @@
-import React, { useEffect,  useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alerta } from '../../components/Alerta'
-import { getAuth } from 'firebase/auth'
+import { useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Alerta } from '../../components/Alerta';
 
 const CajaNavegacion = ({
   pageSelected=false,
-  userMaster,
 }) => {
 
-
-
   let location = useLocation();
-  const[nombrePage,setNombrePage]=useState('')
-  const[alertaMismaPage,setAlertaMismaPage]=useState(false)
-  const navegacion = useNavigate()
-
-  
-  const auth=getAuth()
-  const usuario=auth.currentUser
-
-  
-
-  const [accesoFullIMS, setAccesoFullIMS]=useState(false)
-  useEffect(()=>{
-        const usuarioDB=userMaster
-        
-              
-        if(usuarioDB){
-          usuarioDB.privilegios.forEach((pri)=>{
-            if (pri.code === "fullAccessIMS" && pri.valor === true) {
-              setAccesoFullIMS(true)
-            }
-          })
-        }
-      
-    
-  },[usuario,userMaster])
-
-
-
+  const[nombrePage,setNombrePage]=useState('');
+  const[alertaMismaPage,setAlertaMismaPage]=useState(false);
+  const navegacion = useNavigate();
 
   // ---------------
 
   const probarURL=(e)=>{
-    e.preventDefault()
-    let mismaPagina=false
-    setNombrePage(e.target.name)
+    e.preventDefault();
+    let mismaPagina=false;
+    setNombrePage(e.target.name);
     switch (e.target.name) {
-      case 'Equipos':
-        if(location.pathname=='/mantenimiento'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/mantenimiento')
-        }
-        break;
-      case 'Programa':
-        if(location.pathname=='/mantenimiento/programa'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/mantenimiento/programa')
-        }
-        break;
-      case 'Gastos':
-        if(location.pathname=='/mantenimiento/gastos'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/mantenimiento/gastos')
-        }
-        break;
+    case 'Equipos':
+      if(location.pathname=='/mantenimiento'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/mantenimiento');
+      }
+      break;
+    case 'Programa':
+      if(location.pathname=='/mantenimiento/programa'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/mantenimiento/programa');
+      }
+      break;
+    case 'Gastos':
+      if(location.pathname=='/mantenimiento/gastos'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/mantenimiento/gastos');
+      }
+      break;
 
-      case 'Combustible':
-        if(location.pathname=='/mantenimiento/combustible'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/mantenimiento/combustible')
-        }
-        break;
-      case 'Tickets':
-        if(location.pathname=='/mantenimiento/tickets'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/mantenimiento/tickets')
-        }
-        break;
-      default:
-        break;
+    case 'Combustible':
+      if(location.pathname=='/mantenimiento/combustible'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/mantenimiento/combustible');
+      }
+      break;
+    case 'Tickets':
+      if(location.pathname=='/mantenimiento/tickets'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/mantenimiento/tickets');
+      }
+      break;
+    default:
+      break;
     }
 
     if(mismaPagina){
-      setAlertaMismaPage(true)
+      setAlertaMismaPage(true);
       setTimeout(() => {
-        setAlertaMismaPage(false)
+        setAlertaMismaPage(false);
       }, 3000);
     }
 
+  };
 
-    
-}
- 
   return (
     <>
       <ContenedorSeguirItem>
         <TituloSeguimiento>Paginas:</TituloSeguimiento>
         <CajaBotones>
-          <EnlacePrincipal 
+          <EnlacePrincipal
             className={pageSelected==0?'selected':''}
             name='Equipos'
             to={'/mantenimiento'}
             onClick={(e)=>probarURL(e)}
-            >
+          >
                Equipos
-              </EnlacePrincipal>
-         
+          </EnlacePrincipal>
 
-            <EnlacePrincipal 
-          className={pageSelected==1?'selected':''}
-          name='Programa'
-          to={'/mantenimiento/programa'}
+          <EnlacePrincipal
+            className={pageSelected==1?'selected':''}
+            name='Programa'
+            to={'/mantenimiento/programa'}
             onClick={(e)=>probarURL(e)}
           >
             Programa
-            </EnlacePrincipal>
-            <EnlacePrincipal 
-          className={pageSelected==2?'selected':''}
-          name='Gastos'
-          to={'/mantenimiento/gastos'}
+          </EnlacePrincipal>
+          <EnlacePrincipal
+            className={pageSelected==2?'selected':''}
+            name='Gastos'
+            to={'/mantenimiento/gastos'}
             onClick={(e)=>probarURL(e)}
           >
             Gastos
-            </EnlacePrincipal>
-            <EnlacePrincipal 
-              to={'/mantenimiento/combustible'} 
-              name='Combustible'
-              onClick={(e)=>probarURL(e)}
-              className={`${pageSelected==3?" selected":''}`}>
+          </EnlacePrincipal>
+          <EnlacePrincipal
+            to={'/mantenimiento/combustible'}
+            name='Combustible'
+            onClick={(e)=>probarURL(e)}
+            className={`${pageSelected==3?" selected":''}`}>
               Combustible
-              </EnlacePrincipal>
+          </EnlacePrincipal>
 
-            <EnlacePrincipal 
-              to={'/mantenimiento/tickets'} 
-              name='Tickets'
-              onClick={(e)=>probarURL(e)}
-              className={`${pageSelected==4?" selected":''}`}>
+          <EnlacePrincipal
+            to={'/mantenimiento/tickets'}
+            name='Tickets'
+            onClick={(e)=>probarURL(e)}
+            className={`${pageSelected==4?" selected":''}`}>
               Tickets
-              </EnlacePrincipal>
+          </EnlacePrincipal>
 
-          </CajaBotones>
+        </CajaBotones>
       </ContenedorSeguirItem>
 
       <Alerta
@@ -162,15 +129,11 @@ const CajaNavegacion = ({
         mensaje={`Ya se encuentra en la pagina ${nombrePage}.`}
       />
     </>
-  )
-}
+  );
+};
 
-export default CajaNavegacion
+export default CajaNavegacion;
 
-
-const ContenedorParametrizados= styled.div`
-  width: 49%;
-`
 const ContenedorSeguirItem = styled.div`
   /* width: 45%; */
   background-color: ${theme.azulTransparente2};
@@ -181,7 +144,7 @@ const ContenedorSeguirItem = styled.div`
     padding: 10px 2px;
   }
 
-`
+`;
 
 const TituloSeguimiento = styled.p`
   color: white;
@@ -189,7 +152,7 @@ const TituloSeguimiento = styled.p`
   display: inline-block;
   margin-bottom: 5px;
 
-`
+`;
 
 const CajaBotones =styled.div`
   /* border: 1px solid red; */
@@ -197,9 +160,7 @@ const CajaBotones =styled.div`
   gap: 2px;
   /* border: 1px solid red; */
   flex-wrap: wrap;
-`
-
-
+`;
 
 const EnlacePrincipal = styled(Link)`
   /* margin: 8px; */
@@ -255,7 +216,4 @@ const EnlacePrincipal = styled(Link)`
   
 
   
-`
-
-const Icono=styled(FontAwesomeIcon)`
-`
+`;

@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react'
 import { styled, keyframes } from 'styled-components';
 import theme from '../../theme';
 
 export const Alerta = ({tipo, mensaje,estadoAlerta}) => {
-    return (
-        <>  {
-                estadoAlerta &&
+  return (
+    <>  {
+      estadoAlerta &&
                     <ContenedorAlerta >
-                        <Texto className={tipo}>{mensaje}</Texto>
+                      <Texto className={tipo}>{mensaje}</Texto>
                     </ContenedorAlerta>
-            }
-        </>
-  )
-}
+    }
+    </>
+  );
+};
 const slideDown = keyframes`
     0% {
         transform: translateY(-1.25rem); /* 20px */
@@ -34,7 +33,7 @@ const slideDown = keyframes`
         opacity: 1;
     }
 `;
- 
+
 const ContenedorAlerta = styled.div`
     z-index: 1000;
     width: 100%;
@@ -46,9 +45,9 @@ const ContenedorAlerta = styled.div`
     align-items: center;
     animation: ${slideDown} 4s ease forwards;
  
- `
+ `;
 
- const Texto=styled.p`
+const Texto=styled.p`
  /* background: ${theme.warning}; */
  color: #fff;
  padding: 1.25rem 2.5rem; /* 20px 40px */
@@ -70,4 +69,4 @@ background-color: #000;
     background: ${theme.info};
  }
 
- `
+ `;

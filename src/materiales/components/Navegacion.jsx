@@ -1,52 +1,51 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
+import { useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
 import {Link,} from "react-router-dom";
-import menuX from './../../../public/img/xImg.png'
-import menuHamburg from './../../../public/img/rayas.svg'
-
+import menuX from './../../../public/img/xImg.png';
+import menuHamburg from './../../../public/img/rayas.svg';
 
 export const Navegacion = ({home}) => {
-  const [menuOpen,setMenuOpen]=useState(false)
+  const [menuOpen,setMenuOpen]=useState(false);
   const toggleMobil=()=>{
-    setMenuOpen(!menuOpen)
-  }
+    setMenuOpen(!menuOpen);
+  };
   return (
-    
-        <Container className={menuOpen||home?'abierto':''}>
-          <CajaMenuHamburg >
-            <Img 
-              className={menuOpen==false?'rayas':''}
-              onClick={()=>toggleMobil()}
-              src={menuOpen?menuX:menuHamburg} 
-              />
-          </CajaMenuHamburg>
-            <ListaMenu>
-              <ItemsDeMenu className={home?'home':''}>
-                  <EnlaceMenu to="/materiales">Home</EnlaceMenu>
-                  <Submenu className={home?'home':''}>
 
-                  </Submenu>
-              </ItemsDeMenu> 
-              <ItemsDeMenu className={home?'home':''}>
-                  <EnlaceMenu>Plafones y techos</EnlaceMenu>
-                  <Submenu className={`salirSubMenu ${home?'home':''}`}>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/plafoncomercial">Plafon Comercial</EnlaceSubmenu></li>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/plafonmachihembrado">Machihembrado</EnlaceSubmenu></li>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/techolisosheetrock/">Techo liso Sheetrock</EnlaceSubmenu></li>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/techolisodensglass/">Techo liso Densglass</EnlaceSubmenu></li>
-                            {/* <li><EnlaceSubmenu to="/materiales/macrolux/">Macrolux</EnlaceSubmenu></li> */}
-                            {/* <li><EnlaceSubmenu to="/materiales/poliacryl/">Poliacryl</EnlaceSubmenu></li> */}
-                  </Submenu >
-              </ItemsDeMenu> 
-              <ItemsDeMenu className={home?'home':''}>
-                  <EnlaceMenu>Divisiones y muros</EnlaceMenu>
-                 <Submenu className={`salirSubMenu ${home?'home':''}`}>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/divisionyeso/">Divisiones Yeso</EnlaceSubmenu></li>
-                            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/divisiondensglass/">Division Fibrocemento</EnlaceSubmenu></li>
-                  </Submenu>
-              </ItemsDeMenu> 
-              {/* <ItemsDeMenu className={home?'home':''}>
+    <Container className={menuOpen||home?'abierto':''}>
+      <CajaMenuHamburg >
+        <Img
+          className={menuOpen==false?'rayas':''}
+          onClick={()=>toggleMobil()}
+          src={menuOpen?menuX:menuHamburg}
+        />
+      </CajaMenuHamburg>
+      <ListaMenu>
+        <ItemsDeMenu className={home?'home':''}>
+          <EnlaceMenu to="/materiales">Home</EnlaceMenu>
+          <Submenu className={home?'home':''}>
+
+          </Submenu>
+        </ItemsDeMenu>
+        <ItemsDeMenu className={home?'home':''}>
+          <EnlaceMenu>Plafones y techos</EnlaceMenu>
+          <Submenu className={`salirSubMenu ${home?'home':''}`}>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/plafoncomercial">Plafon Comercial</EnlaceSubmenu></li>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/plafonmachihembrado">Machihembrado</EnlaceSubmenu></li>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/techolisosheetrock/">Techo liso Sheetrock</EnlaceSubmenu></li>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/techolisodensglass/">Techo liso Densglass</EnlaceSubmenu></li>
+            {/* <li><EnlaceSubmenu to="/materiales/macrolux/">Macrolux</EnlaceSubmenu></li> */}
+            {/* <li><EnlaceSubmenu to="/materiales/poliacryl/">Poliacryl</EnlaceSubmenu></li> */}
+          </Submenu >
+        </ItemsDeMenu>
+        <ItemsDeMenu className={home?'home':''}>
+          <EnlaceMenu>Divisiones y muros</EnlaceMenu>
+          <Submenu className={`salirSubMenu ${home?'home':''}`}>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/divisionyeso/">Divisiones Yeso</EnlaceSubmenu></li>
+            <li><EnlaceSubmenu onClick={()=>toggleMobil()} to="/materiales/divisiondensglass/">Division Fibrocemento</EnlaceSubmenu></li>
+          </Submenu>
+        </ItemsDeMenu>
+        {/* <ItemsDeMenu className={home?'home':''}>
                   <EnlaceMenu>Pisos/Relacionados</EnlaceMenu>
                  <Submenu className={`salirSubMenu ${home?'home':''}`}>
                             <li><EnlaceSubmenu to="/materiales/pisoslaminados/">Piso Laminado</EnlaceSubmenu></li>
@@ -54,12 +53,11 @@ export const Navegacion = ({home}) => {
                             <li><EnlaceSubmenu to="/materiales/decking">Decking</EnlaceSubmenu></li>
                   </Submenu>
               </ItemsDeMenu>  */}
-            </ListaMenu>
-        </Container>
+      </ListaMenu>
+    </Container>
 
-      
-  )
-}
+  );
+};
 const CajaMenuHamburg=styled.div`
   /* background-color: white; */
   display: none;
@@ -73,13 +71,13 @@ const CajaMenuHamburg=styled.div`
   @media screen and (max-width:550px){
     display: flex;
   }
-`
+`;
 const Img=styled.img`
   height:30px ;
   &.rayas{
     height: 45px;
   }
-`
+`;
 
 const Container = styled.nav`
   width: 100%;
@@ -104,14 +102,14 @@ const Container = styled.nav`
     }
 
 
-`
+`;
 const ListaMenu = styled.ul`
     list-style-type: none !important;
     list-style: none !important;
     @media screen and (max-width: 400px) {
       font-size: 1.1rem;
     }
-`
+`;
 
 const ItemsDeMenu = styled.li`
   position: relative;
@@ -132,7 +130,7 @@ const ItemsDeMenu = styled.li`
     flex-direction: column;
   }
 
-`
+`;
 
 const EnlaceMenu = styled(Link)`
   display: block;
@@ -152,7 +150,7 @@ const EnlaceMenu = styled(Link)`
 
     
   }
-`
+`;
 
 const Submenu = styled.ul`
 list-style: none;
@@ -184,7 +182,7 @@ border-radius: 10px;
       font-size: 0.9rem;
   }
     
-`
+`;
 const EnlaceSubmenu= styled(Link)`
   display: block;
 	padding: 8px;
@@ -208,7 +206,5 @@ const EnlaceSubmenu= styled(Link)`
   @media screen and (max-width: 220px){
     max-width: 95%;
   }
-`
-
-
+`;
 

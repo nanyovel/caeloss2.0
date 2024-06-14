@@ -2,18 +2,16 @@
 let botonMenu = document.getElementById("botonMenu");
 let menuM = document.getElementById("menuM");
 let chimi = document.getElementById("chimi");
-let equis = document.getElementById("equis")
+let equis = document.getElementById("equis");
 
 botonMenu.addEventListener("click", mostrar);
 
 function mostrar(){
-    menuM.classList.toggle("moverDerecha")
-    chimi.classList.toggle("noVisible");
-    equis.classList.toggle("noVisible")
+  menuM.classList.toggle("moverDerecha");
+  chimi.classList.toggle("noVisible");
+  equis.classList.toggle("noVisible");
 }
 
-
-
 if(window.screen.width<800){
-    document.getElementById('cajaMensajeNovedad').classList.add('ocultarCaja')
+  document.getElementById('cajaMensajeNovedad').classList.add('ocultarCaja');
 }

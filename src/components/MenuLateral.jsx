@@ -1,166 +1,160 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { styled } from 'styled-components'
-import {Link, useLocation, useParams, NavLink} from "react-router-dom";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import theme from '../../theme'
-import {faHelmetSafety,  faTruckFast,faEarthAmericas,faGasPump,faRoute, faFileLines,faCircleInfo, faFolder, faScrewdriver, faScrewdriverWrench, faHouse, faPersonWalkingDashedLineArrowRight, faRightToBracket, faChartSimple  } from '@fortawesome/free-solid-svg-icons'
+import { useRef, useState } from 'react';
+import { styled } from 'styled-components';
+import { useLocation, NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import theme from '../../theme';
+import {faHelmetSafety, faTruckFast,faEarthAmericas, faScrewdriverWrench, faHouse,faChartSimple } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '../context/AuthContext';
-import { BotonQuery } from './BotonQuery';
+import { ElementoPrivilegiado } from '../routes/ElementoPrivilegiado';
 
 export const MenuLateral = ({userMaster}) => {
-    let oneRef= useRef()
-    const [menuAbierto, cambiarMenuAbierto]= useState(false)
-  
-    let location = useLocation();
-    let lugar = location.pathname;
+  let oneRef= useRef();
+  const [menuAbierto, cambiarMenuAbierto]= useState(false);
 
-    const {usuario}=useAuth()
+  let location = useLocation();
+  let lugar = location.pathname;
 
-    // Obtener usuario de base de datos si ya esta creado
-    const [userDB, setUserDB]=useState({})
-    const [privilegios, setPrivilegios]=useState({
-        fullDashBoard:false
-    })
+  const {usuario}=useAuth();
 
-    useEffect(()=>{
-        if(usuario,userMaster){
-            const usuarioDB=userMaster
+  // Obtener usuario de base de datos si ya esta creado
+  // const [userDB, setUserDB]=useState({});
+  // const [privilegios, setPrivilegios]=useState({
+  //   fullDashBoard:false
+  // });
 
-            let proceder=false
-            usuarioDB?.privilegios?.forEach(pri=>{
-              if (pri.code === "fullAccessDashboard" && pri.valor === true) {
-                proceder=true
-              }
-            })
+  // useEffect(()=>{
+  //   if(usuario,userMaster){
+  //     const usuarioDB=userMaster;
 
-        // Si el usuario tiene 
-        setUserDB(usuarioDB)
-        if(proceder==true){
-            setPrivilegios({
-                ...privilegios,
-                fullDashBoard:true
-            })
-          }
-         
-        }
-    },[userMaster,usuario])
-  
+  //     let proceder=false;
+  //     usuarioDB?.privilegios?.forEach(pri=>{
+  //       if (pri.code === "fullAccessDashboard" && pri.valor === true) {
+  //         proceder=true;
+  //       }
+  //     });
+
+  //     // Si el usuario tiene
+  //     setUserDB(usuarioDB);
+  //     if(proceder==true){
+  //       setPrivilegios({
+  //         ...privilegios,
+  //         fullDashBoard:true
+  //       });
+  //     }
+
+  //   }
+  // },[userMaster]);
+
   return (
-    <Body > 
-       
-        <MenuSide className={`
-            ${menuAbierto? " arrru" : ""}`} 
-            dataset='menuSide' 
-            ref={oneRef} 
-            onMouseEnter={()=>cambiarMenuAbierto(true)} 
-            onMouseLeave={()=>cambiarMenuAbierto(false)}
+    <Body >
+
+      <MenuSide className={`
+            ${menuAbierto? " arrru" : ""}`}
+      dataset='menuSide'
+      ref={oneRef}
+      onMouseEnter={()=>cambiarMenuAbierto(true)}
+      onMouseLeave={()=>cambiarMenuAbierto(false)}
+      >
+        {
+          usuario?
+            <Enlaces
+              to={'/perfil'}
+              className={'perfil'}
+
             >
+              <Option className='fotoPerfil' >
                 {
-                    usuario?
-                        <Enlaces 
-                            to={'/perfil'}  
-                            className={'perfil'}
-
-                        >
-                        <Option className='fotoPerfil' >
-                            {
-                                userDB?.urlFotoPerfil?
-                                    <Img src={userDB.urlFotoPerfil}/>
-                                :
-                                <Icono icon={faUser} className={`${lugar==="/perfil"? "iconoSelect" : ""}`}/>
-                            }
-                            <TituloMenu className={menuAbierto?'menuAbierto':''}>
-                                {
-                                    usuario?
-                                    (
-                                        userDB?.nombre?
-                                            userDB.nombre
-                                        :
-                                        'Perfil'
-                                        //     userDB?.userName?
-                                        //     userDB.userName
-                                        // :
-                                        // 'User perfil'
-                                    )
-                                    :
-                                    'Perfil'
-                                    }
-                            </TituloMenu>
-                        </Option>
-                    </Enlaces>
+                  userMaster?.urlFotoPerfil?
+                    <Img src={userMaster.urlFotoPerfil}/>
                     :
+                    <Icono icon={faUser} className={`${lugar==="/perfil"? "iconoSelect" : ""}`}/>
+                }
+                <TituloMenu className={menuAbierto?'menuAbierto':''}>
+                  {
+                    usuario?
+                      (
+                        userMaster?.nombre?
+                          userMaster.nombre
+                          :
+                          'Perfil'
+                    //     userDB?.userName?
+                    //     userDB.userName
+                    // :
+                    // 'User perfil'
+                      )
+                      :
+                      'Perfil'
+                  }
+                </TituloMenu>
+              </Option>
+            </Enlaces>
+            :
 
-                        <Enlaces 
-                            to={'/acceder'} 
-                            className={'fotoPerfil'}
-                        >
-                        <Option >
-                            <Icono icon={faUser} className={`${lugar==="/acceder"? "iconoSelect" : ""}`}/>
-                            <TituloMenu className={menuAbierto?'menuAbierto':''}>Acceder</TituloMenu>
-                        </Option>
-                    </Enlaces>
-                    }
-            <NamePage>
-                <BoxBarsMenu onClick={()=>cambiarMenuAbierto(!menuAbierto)} >
-                    <Linea1 className={`${menuAbierto? " activeline1" : ""}`} ></Linea1>
-                    <Linea2 className={`${menuAbierto? " activeline2" : ""}`}></Linea2>
-                    <Linea3 className={`${menuAbierto? " activeline3" : ""}`}></Linea3>
-                </BoxBarsMenu>
-            </NamePage>
-            <CajaOptionMenu >
-                
+            <Enlaces
+              to={'/acceder'}
+              className={'fotoPerfil'}
+            >
+              <Option >
+                <Icono icon={faUser} className={`${lugar==="/acceder"? "iconoSelect" : ""}`}/>
+                <TituloMenu className={menuAbierto?'menuAbierto':''}>Acceder</TituloMenu>
+              </Option>
+            </Enlaces>
+        }
+        <NamePage>
+          <BoxBarsMenu onClick={()=>cambiarMenuAbierto(!menuAbierto)} >
+            <Linea1 className={`${menuAbierto? " activeline1" : ""}`} ></Linea1>
+            <Linea2 className={`${menuAbierto? " activeline2" : ""}`}></Linea2>
+            <Linea3 className={`${menuAbierto? " activeline3" : ""}`}></Linea3>
+          </BoxBarsMenu>
+        </NamePage>
+        <CajaOptionMenu >
 
-                    <Enlaces to={'/'}  
-                    >
-                    <Option >
-                        <Icono icon={faHouse} className={`${lugar==="/"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Inicio</TituloMenu>
-                    </Option>
-                </Enlaces>
+          <Enlaces to={'/'}
+          >
+            <Option >
+              <Icono icon={faHouse} className={`${lugar==="/"? "iconoSelect" : ""}`}/>
+              <TituloMenu className={menuAbierto?'menuAbierto':''}>Inicio</TituloMenu>
+            </Option>
+          </Enlaces>
 
-                
+          <Enlaces to={'/materiales'}
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active" : ""
+            }
+          >
+            <Option>
+              <Icono icon={faHelmetSafety} className={`${lugar==="/materiales"? "iconoSelect" : ""}`}/>
+              <TituloMenu className={menuAbierto?'menuAbierto':''}>Materiales</TituloMenu>
+            </Option>
 
-
-
-                <Enlaces to={'/materiales'}  
-                     className={({ isActive, isPending }) =>
-                     isPending ? "pending" : isActive ? "active" : ""
-                   }
-                >
-                    <Option>
-                        <Icono icon={faHelmetSafety} className={`${lugar==="/materiales"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Materiales</TituloMenu>
-                    </Option>
-
-                </Enlaces>
-                {
-                    usuario?.emailVerified&&
+          </Enlaces>
+          {
+            usuario?.emailVerified&&
                 <Enlaces to={'/fletes'} >
-                    <Option>
-                        <Icono icon={faTruckFast} className={`${lugar==="/fletes"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Fletes</TituloMenu>
-                    </Option>
+                  <Option>
+                    <Icono icon={faTruckFast} className={`${lugar==="/fletes"? "iconoSelect" : ""}`}/>
+                    <TituloMenu className={menuAbierto?'menuAbierto':''}>Fletes</TituloMenu>
+                  </Option>
 
                 </Enlaces>
-                }
-                
-                {
-                    usuario?.emailVerified&&
+          }
+
+          {
+            usuario?.emailVerified&&
                 <Enlaces to={'/importaciones'} placeholder='Modulo Nuevo'
-                      className={({ isActive, isPending }) =>
-                      isPending ? "pending" : isActive ? "active" : ""
-                    }
+                  className={({ isActive, isPending }) =>
+                    isPending ? "pending" : isActive ? "active" : ""
+                  }
                 >
-                    <Option>
-                        <Icono icon={faEarthAmericas} className={`${lugar==="/importaciones"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Importaciones</TituloMenu>
-                    </Option>
+                  <Option>
+                    <Icono icon={faEarthAmericas} className={`${lugar==="/importaciones"? "iconoSelect" : ""}`}/>
+                    <TituloMenu className={menuAbierto?'menuAbierto':''}>Importaciones</TituloMenu>
+                  </Option>
                 </Enlaces >
-                }
+          }
 
-
-                {/* <Enlaces to={'/transportes'} >
+          {/* <Enlaces to={'/transportes'} >
                     <Option>
                         <Icono icon={faRoute} className={`icono debajo ${lugar==="/transportes"? "iconoSelect" : ""}`}/>
                         <Icono icon={faFileLines} className={`icono encima ${lugar==="/transportes"? "iconoSelect" : ""}`}/>
@@ -168,14 +162,14 @@ export const MenuLateral = ({userMaster}) => {
                     </Option>
 
                 </Enlaces> */}
-                <Enlaces to={'/mantenimiento'} >
-                    <Option>
-                        <Icono icon={faScrewdriverWrench} className={` ${lugar==="/mantenimiento"? "iconoSelect" : ""}`}/>
-                        <TituloMenu className={menuAbierto?'menuAbierto':''}>Mantenimiento</TituloMenu>
-                    </Option>
+          <Enlaces to={'/mantenimiento'} >
+            <Option>
+              <Icono icon={faScrewdriverWrench} className={` ${lugar==="/mantenimiento"? "iconoSelect" : ""}`}/>
+              <TituloMenu className={menuAbierto?'menuAbierto':''}>Mantenimiento</TituloMenu>
+            </Option>
 
-                </Enlaces>
-                {/* <Enlaces to={'/documentacion'}>
+          </Enlaces>
+          {/* <Enlaces to={'/documentacion'}>
                     <Option>
                         <Icono icon={faCircleInfo} className={`icono ${lugar==="/documentacion"? "iconoSelect" : ""}`}/>
                         <TituloMenu className={menuAbierto?'menuAbierto':''}>Documentacion</TituloMenu>
@@ -183,8 +177,7 @@ export const MenuLateral = ({userMaster}) => {
 
                 </Enlaces> */}
 
-
-                {/* <Anclas target='_blank' href={'/version1/'}>
+          {/* <Anclas target='_blank' href={'/version1/'}>
                     <Option>
                         <Icono icon={faFolder} className={`icono ${lugar==="/version1"? "iconoSelect" : ""}`}/>
                         <TituloMenu className={menuAbierto?'menuAbierto':''}>Version 1</TituloMenu>
@@ -192,33 +185,31 @@ export const MenuLateral = ({userMaster}) => {
 
                 </Anclas> */}
 
-                
-                {
-                    usuario?.emailVerified&&
-                    (
-                        privilegios.fullDashBoard?
-                        <Enlaces to={'/dashboard'} 
+          {
+            usuario?.emailVerified&&
+                        <ElementoPrivilegiado
+                          privilegioReq='fullAccessDashboard'
+                          userMaster={userMaster}
+                        >
+                          <Enlaces to={'/dashboard'}
                             className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""}>
+                              isPending ? "pending" : isActive ? "active" : ""}>
                             <Option>
-                                <Icono icon={faChartSimple} className={`${lugar==="/dashboard"? "iconoSelect" : ""}`}/>
-                                <TituloMenu className={menuAbierto?'menuAbierto':''}>Dashboard</TituloMenu>
+                              <Icono icon={faChartSimple} className={`${lugar==="/dashboard"? "iconoSelect" : ""}`}/>
+                              <TituloMenu className={menuAbierto?'menuAbierto':''}>Dashboard</TituloMenu>
                             </Option>
-                        </Enlaces >
-                    :
-                    ''
-                    )
-                
-                }
-               
-               {/* ------------------- */}
-            </CajaOptionMenu>
+                          </Enlaces >
+                        </ElementoPrivilegiado>
+          }
 
-        </MenuSide>
-       
+          {/* ------------------- */}
+        </CajaOptionMenu>
+
+      </MenuSide>
+
     </Body>
-  )
-}
+  );
+};
 
 const Body = styled.div`
     margin-left: 80px;
@@ -229,7 +220,7 @@ const Body = styled.div`
     /* border: 1px solid red; */
 
    
-`
+`;
 const MenuSide = styled.div`
     width: 60px;
     height: 100%;
@@ -273,7 +264,7 @@ const MenuSide = styled.div`
         background-color: #19b4ef;
         border-radius: 7px;
         } 
-`
+`;
 
 const NamePage = styled.div`
     padding: 0 30px 0 30px;
@@ -292,7 +283,7 @@ const NamePage = styled.div`
         /* position: fixed; */
     }
   
-`
+`;
 
 const BoxBarsMenu=styled.div`
     width: 30px;
@@ -319,7 +310,7 @@ const BoxBarsMenu=styled.div`
         bottom: 20px;
         position: fixed;
     }
-`
+`;
 
 const Linea= styled.span`
     display: block;
@@ -344,19 +335,19 @@ const Linea= styled.span`
         margin-left: 5px;
         transform: rotate(-45deg) translate(0px, 2px);
     }
-`
+`;
 const Linea1=styled(Linea)`
-`
+`;
 const Linea2=styled(Linea)`
-`
+`;
 const Linea3=styled(Linea)`
-`
+`;
 
 const CajaOptionMenu= styled.div`
      padding: 20px 0;
     position: absolute;
     top: 90px;
-`
+`;
 const Enlaces = styled(NavLink)`
     color: #ffffffb2;
     display: block;
@@ -410,46 +401,7 @@ const Enlaces = styled(NavLink)`
             background-color: ${theme.hover1};
         }
     }
-`
-
-const Anclas=styled.a`
-    color: #ffffffb2;
-    display: block;
-    position: relative;
-    transition: color 25ms;
-    border-bottom: 3px solid transparent;
-    padding: 0 25px;
-    width: 200px;
-    &:hover{
-        color: white;
-        border-bottom: 3px solid ${theme.azul2};
-    }
-
-    h4{
-        position: absolute;
-        left: 40px;
-        font-weight: 200;
-    }
-    &:hover{
-        cursor: pointer;
-    }
-    &.nuevo{
-        border: 1px solid ${theme.azul2};
-    }
-    h2{
-        font-size: 1rem;
-        text-decoration: none;
-        font-weight: 200;
-        z-index: 5;
-        padding: 5px;
-        background-color: ${theme.azul2};
-    }
-    text-decoration: none;
-    &.active{
-        color: red;
-        color: ${theme.azul2};
-    }
-`
+`;
 
 const Icono = styled(FontAwesomeIcon)`
     &.debajo{
@@ -463,14 +415,14 @@ const Icono = styled(FontAwesomeIcon)`
         left: 8%;
     }
 
-`
+`;
 
 const TituloMenu =styled.h4`
     display: none;
     &.menuAbierto{
         display: block;
     }
-`
+`;
 const Option = styled.div`
     padding: 20px 0px;
     display: flex;
@@ -489,7 +441,7 @@ const Option = styled.div`
         width: 100%;
         height: 100%;
     }
-`
+`;
 const Img=styled.img`
     width: 40px;
     height: 40px;
@@ -500,4 +452,4 @@ const Img=styled.img`
     /* transform: translate(-30%,0); */
     
 
-`
+`;

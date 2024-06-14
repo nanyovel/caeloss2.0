@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { BtnGeneralButton } from '../../components/BtnGeneralButton'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { addDoc, collection, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
-import db from '../../firebase/firebaseConfig'
-
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { NavLink } from 'react-router-dom';
+import { collection, onSnapshot,} from 'firebase/firestore';
+import db from '../../firebase/firebaseConfig';
 
 export const TablaMultiDespachos = (
   {
@@ -17,126 +16,126 @@ export const TablaMultiDespachos = (
     setNClases,
   }
 ) => {
-  const [dbBillOfLading, setdbBillOfLading]=useState([])
+  const [dbBillOfLading, setdbBillOfLading]=useState([]);
 
   useEffect(() => {
     onSnapshot(
       collection(db, 'billOfLading'),
       (snapShot)=>{
-        console.log('Se ejecuto snapshop')
+        console.log('Se ejecuto snapshop');
         const areglobl = snapShot.docs.map((documento)=>{
-          return{...documento.data(), id:documento.id}
-        })
-        setdbBillOfLading(areglobl)
+          return{...documento.data(), id:documento.id};
+        });
+        setdbBillOfLading(areglobl);
       },
       (error)=>{
-        console.log(error)
+        console.log(error);
       }
-    )
-}, [])
+    );
+  }, []);
 
-console.log(despachoSelect)
+  console.log(despachoSelect);
 
-let newDespacho=despachoSelect
-dbBillOfLading.map((bl,indexBL)=>{
- bl.furgones.map((furgon,indexFurgon)=>{
-  despachoSelect.map((desp,indexDesp)=>{
-    if(desp.furgon==furgon.numeroDoc){
-      newDespacho[indexDesp].status=furgon.status
-    }
-  }) 
- })
-})
-despachoSelect=newDespacho
+  let newDespacho=despachoSelect;
+  dbBillOfLading.map((bl)=>{
+    bl.furgones.map((furgon)=>{
+      despachoSelect.map((desp,indexDesp)=>{
+        if(desp.furgon==furgon.numeroDoc){
+          newDespacho[indexDesp].status=furgon.status;
+        }
+      });
+    });
+  });
+  despachoSelect=newDespacho;
 
-const cancelar=()=>{
-  setNClases([])
-  setHasDespachos(false)
-}
+  const cancelar=()=>{
+    setNClases([]);
+    setHasDespachos(false);
+  };
 
   return (
     <>
-    <EncabezadoTabla>
-      <TituloEncabezadoTabla>
-        <BtnNormal 
-          type='button'
-          className={'borrada'}
-          onClick={()=>cancelar()}
+      <EncabezadoTabla>
+        <TituloEncabezadoTabla>
+          <BtnNormal
+            type='button'
+            className={'borrada'}
+            onClick={()=>cancelar()}
           >
             <Icono icon={faXmark}/>
             Cancelar
           </BtnNormal>
-        
-        {`Entregas del ítem ${despachoSelect[0].codigo} ${despachoSelect[0].descripcion}`}
-      </TituloEncabezadoTabla>
-    </EncabezadoTabla>
-    
-    <CajaTabla>
-    <Tabla ref={tablaDespachos}>
-        <thead>
-            <Filas className='cabeza'>
-                <CeldaHead >N°</CeldaHead>
-                <CeldaHead >Codigo*</CeldaHead>
-                <CeldaHead >Descripcion</CeldaHead>
-                <CeldaHead >Qty</CeldaHead>
-                <CeldaHead >Contenedor*</CeldaHead>
-                <CeldaHead >Status</CeldaHead>
-            </Filas>
-        </thead>
-        <tbody>
-          {
-            despachoSelect.map((desp,index)=>{
-              return(
-                <Filas key={index} className='body'>
-                  <CeldasBody>{index+1}</CeldasBody>
-                  <CeldasBody
-                  >
-                    <Enlaces 
-                      to={`/importaciones/maestros/articulos/${desp.codigo}`}
-                      target="_blank"
-                      >
-                      {desp.codigo}
-                    </Enlaces>
-                  </CeldasBody>
-                  <CeldasBody className='descripcion'>{desp.descripcion}</CeldasBody>
-                  <CeldasBody>{desp.qty}</CeldasBody>
-                  <CeldasBody 
-                    >
-                      <Enlaces 
-                      to={`/importaciones/maestros/contenedores/${desp.furgon}`}
-                      target="_blank"
-                      >
-                      {desp.furgon}
-                    </Enlaces>
 
-                  </CeldasBody>
-                  <CeldasBody>
-                    {
-                      desp.status==1?
-                      'Transito Maritimo'
-                      :
-                      desp.status==2?
-                      'En Almacen'
-                      :
-                      desp.status==3?
-                      'En dpto Importacion'
-                      :
-                      desp.status==4?
-                      'Material en SAP'
-                      :
-                      ''
-                    }
-                  </CeldasBody>
-                </Filas>
-              )
-            })
-          }
-        </tbody>
-    </Tabla>
-    </CajaTabla>
+          {`Entregas del ítem ${despachoSelect[0].codigo} ${despachoSelect[0].descripcion}`}
+        </TituloEncabezadoTabla>
+      </EncabezadoTabla>
+
+      <CajaTabla>
+        <Tabla ref={tablaDespachos}>
+          <thead>
+            <Filas className='cabeza'>
+              <CeldaHead >N°</CeldaHead>
+              <CeldaHead >Codigo*</CeldaHead>
+              <CeldaHead >Descripcion</CeldaHead>
+              <CeldaHead >Qty</CeldaHead>
+              <CeldaHead >Contenedor*</CeldaHead>
+              <CeldaHead >Status</CeldaHead>
+            </Filas>
+          </thead>
+          <tbody>
+            {
+              despachoSelect.map((desp,index)=>{
+                return(
+                  <Filas key={index} className='body'>
+                    <CeldasBody>{index+1}</CeldasBody>
+                    <CeldasBody
+                    >
+                      <Enlaces
+                        to={`/importaciones/maestros/articulos/${desp.codigo}`}
+                        target="_blank"
+                      >
+                        {desp.codigo}
+                      </Enlaces>
+                    </CeldasBody>
+                    <CeldasBody className='descripcion'>{desp.descripcion}</CeldasBody>
+                    <CeldasBody>{desp.qty}</CeldasBody>
+                    <CeldasBody
+                    >
+                      <Enlaces
+                        to={`/importaciones/maestros/contenedores/${desp.furgon}`}
+                        target="_blank"
+                      >
+                        {desp.furgon}
+                      </Enlaces>
+
+                    </CeldasBody>
+                    <CeldasBody>
+                      {
+                        desp.status==1?
+                          'Transito Maritimo'
+                          :
+                          desp.status==2?
+                            'En Almacen'
+                            :
+                            desp.status==3?
+                              'En dpto Importacion'
+                              :
+                              desp.status==4?
+                                'Material en SAP'
+                                :
+                                ''
+                      }
+                    </CeldasBody>
+                  </Filas>
+                );
+              })
+            }
+          </tbody>
+        </Tabla>
+      </CajaTabla>
     </>
-  )
-}
+  );
+};
 
 const CajaTabla=styled.div`
     overflow-x: scroll;
@@ -161,9 +160,7 @@ const CajaTabla=styled.div`
      
        
         margin-bottom: 45px;
-`
-
-
+`;
 
 const Tabla = styled.table`
 
@@ -175,9 +172,8 @@ const Tabla = styled.table`
   margin-bottom: 30px;
   /* background-color: ${theme.azulOscuro1Sbetav3}; */
   border: 1px solid #000;
-  `
+  `;
 
-  
 const CeldaHead= styled.th`
 padding: 3px 8px;
 text-align: center;
@@ -193,7 +189,7 @@ border: 1px solid black;
 &:nth-child(4) {
  width: 60px;
 }
-`
+`;
 const Filas =styled.tr`
   &.body{
     font-weight: normal;
@@ -212,7 +208,7 @@ const Filas =styled.tr`
     background-color: ${theme.azulOscuro1Sbetav};
   }
   color: ${theme.azul1};
-`
+`;
 
 const CeldasBody = styled.td`
 border: 1px solid black;
@@ -235,7 +231,7 @@ text-align: center;
   }
 }
 
-`
+`;
 const EncabezadoTabla =styled.div`
   margin-top: 20px;
   background-color: ${theme.azulOscuro1Sbetav};
@@ -244,13 +240,13 @@ const EncabezadoTabla =styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-`
+`;
 const TituloEncabezadoTabla=styled.h2`
   color: #757575;
   font-size: 1.2rem;
   font-weight: normal;
 
-`
+`;
 const BtnNormal=styled(BtnGeneralButton)`
 &.borrada{
   background-color: red;
@@ -277,11 +273,11 @@ const BtnNormal=styled(BtnGeneralButton)`
     margin: 0;
     /* height: 30px; */
   }
-`
+`;
 
 const Icono=styled(FontAwesomeIcon)`
   margin-right: 10px;
-`
+`;
 const Enlaces=styled(NavLink)`
 color: inherit;
 text-decoration: none;
@@ -289,4 +285,4 @@ text-decoration: none;
   text-decoration: underline;
 }
 
-`
+`;

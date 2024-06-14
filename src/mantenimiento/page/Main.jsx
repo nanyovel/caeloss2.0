@@ -1,7 +1,5 @@
-import React from 'react'
-import { Header } from '../../components/Header'
-import CajaNavegacion from '../components/CajaNavegacion'
-import { ControlesTablasMain } from '../components/ControlesTablasMain'
+import { Header } from '../../components/Header';
+import CajaNavegacion from '../components/CajaNavegacion';
 
 export const MainMante = ({
   dbUsuario,
@@ -16,7 +14,6 @@ export const MainMante = ({
         userMaster={userMaster}
       />
       {/* <ControlesTablasMain/> */}
-    
     </>
-  )
-}
+  );
+};

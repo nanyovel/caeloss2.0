@@ -1,6 +1,6 @@
-import { styled } from 'styled-components'
-import theme from '../../theme'
-import imgArrow2 from './../importaciones/img/arrowRight2.png'
+import { styled } from 'styled-components';
+import theme from '../../theme';
+import imgArrow2 from './../importaciones/img/arrowRight2.png';
 
 export const OpcionUnica = ({
   titulo,
@@ -12,19 +12,18 @@ export const OpcionUnica = ({
   dosMobil,
   width,
   flete,
-  masPeque,
   marginRight
 }) => {
-  
+
   return (
-    <ContenedorParametro 
+    <ContenedorParametro
       className={`
         ${dosMobil?' dosMobil ':''}
         ${width<550&&flete?' flete ':''}
         ${width>550&&flete?' masPeque ':''}
         ${marginRight?' marginRight ':''}
       `}
-      >
+    >
       {
         titulo?
           <div>
@@ -32,20 +31,20 @@ export const OpcionUnica = ({
               className={
                 tipo=='ciclo'&&
                 arrayOpciones[0].select==true?
-                'final'
-                :
-                tipo=='ciclo'&&
+                  'final'
+                  :
+                  tipo=='ciclo'&&
                 arrayOpciones[1].select==true?
-                'final'
-                :
-                ''
+                    'final'
+                    :
+                    ''
               }
-              >{titulo}</TituloParametro>
+            >{titulo}</TituloParametro>
           </div>
-        :
-        ''
+          :
+          ''
       }
-      <CajaParametro  
+      <CajaParametro
         className={`
           ${tipo=='ciclo'?' step ':''}
           ${width<550&&flete?' flete ':''}
@@ -53,70 +52,66 @@ export const OpcionUnica = ({
         
         `}>
         {tipo!='ciclo'&&
-        
+
           arrayOpciones.map((opcion, index)=>{
-              return(
-                <CajaBlanco key={`${index}`}>
-                  <Radio 
-                    className='inputRed' 
-                    type="radio" 
-                    name={name} 
-                    data-id={index} 
-                    value={index}
-                    onChange={(e)=>handleOpciones(e)}
-                    checked={opcion.select}
-                    id={opcion.nombre} 
-                  />
-                  <Label 
-                    htmlFor={opcion.nombre}  
-                    >
-                    {opcion.nombre}
-                  </Label>
-                </CajaBlanco>
-                )
+            return(
+              <CajaBlanco key={`${index}`}>
+                <Radio
+                  className='inputRed'
+                  type="radio"
+                  name={name}
+                  data-id={index}
+                  value={index}
+                  onChange={(e)=>handleOpciones(e)}
+                  checked={opcion.select}
+                  id={opcion.nombre}
+                />
+                <Label
+                  htmlFor={opcion.nombre}
+                >
+                  {opcion.nombre}
+                </Label>
+              </CajaBlanco>
+            );
           })
         }
-     
-            {
-              tipo=='ciclo'&&
+
+        {
+          tipo=='ciclo'&&
               arrayOpciones.map((step,index)=>{
                 return(
                   <CajitaStep key={index}>
-                    <CajaStep 
-                      data-id={index} 
+                    <CajaStep
+                      data-id={index}
                       onClick={(e)=>selectScreen(e)}
                     >
                       <Imagen
                         src={step.img}
-                        data-id={index} 
+                        data-id={index}
                         title={step.title}
                         className={step.select==true?'selected':''}
                       />
-                        <TextoStep 
-                          className={step.select==true?'visible':''}
-                          data-id={index} 
-                          >
-                          {step.nombre}
-                        </TextoStep>
-                     
+                      <TextoStep
+                        className={step.select==true?'visible':''}
+                        data-id={index}
+                      >
+                        {step.nombre}
+                      </TextoStep>
+
                     </CajaStep>
                     <ImagenFlecha src={imgArrow2} />
 
                   </CajitaStep>
-                )
+                );
               })
-            }
-       
-            </CajaParametro>
+        }
+
+      </CajaParametro>
     </ContenedorParametro>
-  )
-}
+  );
+};
 
-
-
-
-
-  const TituloParametro=styled.h2`
+const TituloParametro=styled.h2`
     font-size: 16px;
     font-weight: 400;
     display: inline-block;
@@ -131,12 +126,11 @@ export const OpcionUnica = ({
 
     }
     transform: ease 0.2s;
-  `
-
+  `;
 
 const Radio = styled.input`
 display: none;
-`
+`;
 
 const Label = styled.label`
   color: #bebbbb;
@@ -246,9 +240,9 @@ ${Radio}:checked + &&::before{
     padding: 2px 5px 2px 20px;
   }
 
-`
+`;
 const CajaBlanco=styled.div`
-`
+`;
 
 const ContenedorParametro= styled.div`
 
@@ -296,7 +290,7 @@ const ContenedorParametro= styled.div`
   }
 
   
-`
+`;
 
 const CajaParametro = styled.div`
   display: flex;
@@ -326,7 +320,7 @@ const CajaParametro = styled.div`
       row-gap: 20px;
     }
   }
-`
+`;
 
 const CajitaStep=styled.div`
   display: flex;
@@ -342,7 +336,7 @@ const CajitaStep=styled.div`
     width: 33%;
     
   }
-`
+`;
 const CajaStep=styled.div`
   background-color: ${theme.azulOscuro1Sbetav};
   border-radius: 10px 0 10px 0;
@@ -359,7 +353,7 @@ const CajaStep=styled.div`
     
   }
     
-`
+`;
 const Imagen=styled.img`
   width: 70%; 
   transition: ease 0.2s;
@@ -375,11 +369,11 @@ const Imagen=styled.img`
     }
   }
 
-`
+`;
 const ImagenFlecha=styled.img`
   width: 15px;
   height: 20px;
-`
+`;
 const TextoStep=styled.h2`
   font-size: 0.4rem;
   /* color: transparent; */
@@ -393,4 +387,4 @@ const TextoStep=styled.h2`
       margin-left: 30px;
     }
   }
-`
+`;

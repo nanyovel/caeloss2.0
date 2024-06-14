@@ -1,89 +1,80 @@
-import React, { useEffect,useState } from 'react'
-import { Link } from 'react-router-dom'
-import { styled } from 'styled-components'
-import { collection, doc, onSnapshot, setDoc, writeBatch } from 'firebase/firestore'
-import db from '../firebase/firebaseConfig'
-import funcionConsumible from '../../consumible'
-import theme from '../../theme'
-import ImgCerrado from '../../public/img/candadoCerrado.png'
-import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
+import funcionConsumible from '../../consumible';
+import theme from '../../theme';
+import ImgCerrado from '../../public/img/candadoCerrado.png';
 
 export const CardHome = ({
-    ImagenCard, 
-    titulo, 
-    ruta, 
-    nuevo, 
-    title,
-    incompleto,
-    tipo,
-    bloqueado
+  ImagenCard,
+  titulo,
+  ruta,
+  nuevo,
+  title,
+  incompleto,
+  tipo,
+  bloqueado
 }) => {
-
-
-
-
 
   return (
     <>
-    {
+      {
         !bloqueado?
-        <Card 
+          <Card
             title={title}
             className={`${incompleto?'incompleto':''}`}
-            
-            >
+
+          >
             <EnlacePrincipal to={`${ruta}`}>
-                <CajaImagen className={incompleto?'incompleto':''}>
-                        <Imagen src={ImagenCard}/>
-                        <CajaPorcentaje 
-                            className={`
+              <CajaImagen className={incompleto?'incompleto':''}>
+                <Imagen src={ImagenCard}/>
+                <CajaPorcentaje
+                  className={`
                                 ${incompleto?'incompleto':''}
                                 ${tipo}
                                 `}>
-                        </CajaPorcentaje>
-                        <NumberPor className={incompleto?'incompleto':''}>
-                            {100-funcionConsumible(tipo).valorNumber+'%'}
-                        </NumberPor>
-                        {
-                            nuevo?
-                        <CajaNuevo 
-                            className={nuevo?'nuevo':''}>
-                                <NuevoTexto>Nuevo</NuevoTexto>
+                </CajaPorcentaje>
+                <NumberPor className={incompleto?'incompleto':''}>
+                  {100-funcionConsumible(tipo).valorNumber+'%'}
+                </NumberPor>
+                {
+                  nuevo?
+                    <CajaNuevo
+                      className={nuevo?'nuevo':''}>
+                      <NuevoTexto>Nuevo</NuevoTexto>
 
+                    </CajaNuevo>
+                    :
+                    null
+                }
+              </CajaImagen>
 
-                        </CajaNuevo>
-                        :
-                        null
-                        }
-                </CajaImagen> 
-                  
-                <div>
-                    <TextoCard>{titulo}</TextoCard>
-                </div>
+              <div>
+                <TextoCard>{titulo}</TextoCard>
+              </div>
 
-            </EnlacePrincipal> 
-        </Card>
-        :
-        <Card 
+            </EnlacePrincipal>
+          </Card>
+          :
+          <Card
             // title={title}
             className={`${incompleto?'incompleto':''}`}
-            
-            >
+
+          >
             <EnlacePrincipal to={`${ruta}`}>
-                <CajaImagen className={incompleto?'incompleto':''}>
-                        {
-                            bloqueado?
-                            <Imagen className='bloqueado' src={ImgCerrado}/>
-                            :
-                            null
-                        }
-                </CajaImagen> 
-            </EnlacePrincipal> 
-        </Card>
-    }
+              <CajaImagen className={incompleto?'incompleto':''}>
+                {
+                  bloqueado?
+                    <Imagen className='bloqueado' src={ImgCerrado}/>
+                    :
+                    null
+                }
+              </CajaImagen>
+            </EnlacePrincipal>
+          </Card>
+      }
     </>
-  )
-}
+  );
+};
 
 const Card = styled.div`
      width: 20%;
@@ -115,7 +106,7 @@ const Card = styled.div`
         }
    
 
-`
+`;
 const EnlacePrincipal = styled(Link)`
     text-decoration: none;
     /* opacity: 0.5; */
@@ -135,7 +126,7 @@ const EnlacePrincipal = styled(Link)`
         opacity: 1;
     }
 }
-`
+`;
 
 const CajaImagen = styled.div`
     display: block;
@@ -155,7 +146,7 @@ const CajaImagen = styled.div`
     background-position: center;
 
    
-`
+`;
 
 const TextoCard = styled.h2`
     color:  white;
@@ -171,21 +162,17 @@ const TextoCard = styled.h2`
 }
     
     
-`
+`;
 
 const Imagen = styled.img`
     width: 100%;
     height: 80%;
-    /* border: 1px solid red; */
     object-fit: contain;
     position: absolute;
-    /* top: 0; */
     z-index:1;
-    
   
-`
+`;
 const CajaNuevo=styled.div`
-    /* background-color: red; */
     &.nuevo{
     background-color: #ada5a550;
     width: 100%;
@@ -195,46 +182,22 @@ const CajaNuevo=styled.div`
     top: 50%;
 
     }
-`
+`;
 const NuevoTexto=styled.h2`
     background-color: red;
     width: 100%;
     text-align: center;
     color: white;
 
-`
+`;
 
-const TextoNuevo = styled.p`
-    
-    position: absolute;
-    color: #fff;
-    
-    /* -webkit-transform: rotate(-22deg);
-    -moz-transform: rotate(-22deg);
-    -ms-transform: rotate(-22deg);
-    -o-transform: rotate(-22deg); */
-    /* transform: rotate(-22deg); */
-    height: 40px;
-    padding: 20px 0 0 0;
-    text-align: center;
-    background-color: red;
-    width: 100%;
-    margin: 0;
-    font-size: 0.9rem;
-    border:1px solid black;
-    /* left: -55px; */
-    top: -15px;
-`
 const CajaPorcentaje=styled.div`
- 
     &.incompleto{
         position: absolute;
         width: 100%;
         background-color: #ada5a550;
         top: 0;
-        /* left: -50px; */
         backdrop-filter: blur(10px);
-        /* border: 5px solid red; */
     }
     &.transporte{
         height: ${funcionConsumible('transporte').valorPorcentaja};
@@ -244,12 +207,8 @@ const CajaPorcentaje=styled.div`
         border-radius:15px 0 15px 0;
         height: ${funcionConsumible('mantenimiento').valorPorcentaja};
     }
-    /* background-color: red; */
-
-    /* border: 1px solid; */
     z-index:5;
-    /* z-index:100; */
-`
+`;
 
 const NumberPor=styled.h2`
     display: none;
@@ -266,10 +225,10 @@ const NumberPor=styled.h2`
         left: 50%;
         transform: translate(-50%,-50%);
         -webkit-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%); 
+        -moz-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        -o-transform: translate(-50%,-50%); 
         font-size: 2rem;
         z-index:10
     }
-`
+`;

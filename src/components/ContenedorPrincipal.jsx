@@ -1,46 +1,41 @@
-import { styled } from "styled-components"
-import React, { useEffect, useRef } from 'react'
-import { useLocation } from "react-router-dom"
-import theme from "../../theme"
-
+import { styled } from "styled-components";
+import { useEffect, useRef } from 'react';
+import { useLocation } from "react-router-dom";
+import theme from "../../theme";
 
 export const ContenedorPrincipal = ({children}) => {
-        const location=useLocation()
-  const {pathname}=location
+  const location=useLocation();
+  const {pathname}=location;
 
-  const contenedorPrincipalRef=useRef(null)
+  const contenedorPrincipalRef=useRef(null);
 
   useEffect(() => {
     if(contenedorPrincipalRef.current){
-      contenedorPrincipalRef.current.scrollTo(0,0)
+      contenedorPrincipalRef.current.scrollTo(0,0);
     }
-  
-  
-  }, [pathname, contenedorPrincipalRef.current])
-  
+
+  }, [pathname]);
 
   return (
     <ContenedorPrincipalCaja ref={contenedorPrincipalRef}>
 
       {
-            children
+        children
       }
-      
+
     </ContenedorPrincipalCaja>
-  )
-}
+  );
+};
 
 const ContenedorPrincipalCaja = styled.div`
       display: block;
       position: relative;
       width: 900px;
       height: 100vh;
-      /* 0padding: 1px; */
       margin: auto;
       border: 1px solid ${theme.azul1};
       border-radius: 10px;
       overflow-x: hidden;
-      /* overflow-y: scroll; */
       background-color: ${theme.azulOscuro1Sbetav4};
       /* background-image: linear-gradient(20deg, #525256dc 0%, #626569eb 100%); */
       background-position: top;
@@ -82,5 +77,5 @@ const ContenedorPrincipalCaja = styled.div`
         width: 100%;
         margin: 0;
       }
-  `
-  export default ContenedorPrincipal;
+  `;
+export default ContenedorPrincipal;

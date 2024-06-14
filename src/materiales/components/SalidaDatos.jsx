@@ -1,55 +1,53 @@
-import React from 'react'
-import { styled } from 'styled-components'
-import theme from '../../../theme'
+import { styled } from 'styled-components';
+import theme from '../../../theme';
 import { v4 as uuidv4 } from 'uuid';
 
 export const SalidaDatos = ({
-  hab, 
-  datos, 
+  hab,
+  datos,
   totalSumatoria,
-  functPrincipal, 
-  hasDisableItem, 
+  functPrincipal,
+  hasDisableItem,
   parametroA,
   setAlertaFaltaPerimetro,
-  setDatos,
   casiCero,
 }) => {
-  let depositObjetoSumando={}
+  let depositObjetoSumando={};
 
   return (
     <>
-    <SeccionTabla>
-    <TablaResultados>
-            <tbody>
-              <Fila className='caja-encabezado'>
-                  <ThNo scope="row" className="no" >
+      <SeccionTabla>
+        <TablaResultados>
+          <tbody>
+            <Fila className='caja-encabezado'>
+              <ThNo scope="row" className="no" >
                         N°
-                  </ThNo>
-                  <Th key={uuidv4()}>
+              </ThNo>
+              <Th key={uuidv4()}>
                     Descripcion
-                  </Th>
-                  <Th key={uuidv4()}>
+              </Th>
+              <Th key={uuidv4()}>
                       Total
-                      </Th>
-                  {
-                    hab.map((habitacion, index)=>{
-                      return(<Th key={uuidv4()}>{`D${index+1}`}</Th>)
-                    })
-                  }
-              </Fila>
-             
-                {
-                totalSumatoria?.map((item, indexMat)=>{
-                  if(item.material==true){
-                    return(
+              </Th>
+              {
+                hab.map((habitacion, index)=>{
+                  return(<Th key={uuidv4()}>{`D${index+1}`}</Th>);
+                })
+              }
+            </Fila>
+
+            {
+              totalSumatoria?.map((item, indexMat)=>{
+                if(item.material==true){
+                  return(
                     <Fila key={uuidv4()}>
                       {/* Imprime el codigo del producto o un - */}
                       <Ths className={`${hasDisableItem(totalSumatoria[indexMat])} codigo`}>
                         {
                           totalSumatoria[indexMat]?.deshabilitado?
-                          '-'
-                          :
-                          totalSumatoria[indexMat].codigo
+                            '-'
+                            :
+                            totalSumatoria[indexMat].codigo
                         }
                       </Ths>
 
@@ -59,109 +57,103 @@ export const SalidaDatos = ({
                           totalSumatoria[indexMat].nombre
                         }
                       </Ths>
-                        {/* Imprime colunma total */}
-                        {
-                          <CeldaTotalA 
-                            className={`${hasDisableItem(totalSumatoria[indexMat])}`} 
-                            key={indexMat+'romo'}
-                          >  
-                            {
-                              totalSumatoria[indexMat].deshabilitado==true?
+                      {/* Imprime colunma total */}
+                      {
+                        <CeldaTotalA
+                          className={`${hasDisableItem(totalSumatoria[indexMat])}`}
+                          key={indexMat+'romo'}
+                        >
+                          {
+                            totalSumatoria[indexMat].deshabilitado==true?
                               '-'
                               :
                               totalSumatoria[indexMat].total(datos)==casiCero?0:totalSumatoria[indexMat].total(datos)
-                            }
-                            
-                          </CeldaTotalA>
-                        }
-                       
-                        {
+                          }
+
+                        </CeldaTotalA>
+                      }
+
+                      {
                         datos.map((objet, indexHab)=>{
-                          
+
                           if(item.diferido==true){
                             if(objet.madera==''){
 
-                           
-                            return(
-                              <Celda 
-                              key={indexHab+'roco'} 
-                            className={hasDisableItem(totalSumatoria[indexMat])}
-                              > 
-                            <TextoCelda >{''}</TextoCelda> 
-                            </Celda>
-                            )
-                          }
+                              return(
+                                <Celda
+                                  key={indexHab+'roco'}
+                                  className={hasDisableItem(totalSumatoria[indexMat])}
+                                >
+                                  <TextoCelda >{''}</TextoCelda>
+                                </Celda>
+                              );
+                            }
                             else{
 
-                           
-                            return(
-                              <Celda 
-                              key={indexHab+'roco'} 
-                            className={hasDisableItem(totalSumatoria[indexMat])}
-                              > 
-                            <TextoCelda >{0}</TextoCelda> 
-                            </Celda>
-                            )
+                              return(
+                                <Celda
+                                  key={indexHab+'roco'}
+                                  className={hasDisableItem(totalSumatoria[indexMat])}
+                                >
+                                  <TextoCelda >{0}</TextoCelda>
+                                </Celda>
+                              );
+                            }
                           }
-                        }
-                          
-                          depositObjetoSumando=functPrincipal(datos[indexHab])  //----->Objeto calculo completo todos materiales
+
+                          depositObjetoSumando=functPrincipal(datos[indexHab]); //----->Objeto calculo completo todos materiales
                           // console.log(depositObjetoSumando)
-                          let resultado=(depositObjetoSumando[Object.keys(datos[indexHab])[indexMat]])    //------->cantidad o resultado a imprimir en cada cerlda
+                          let resultado=(depositObjetoSumando[Object.keys(datos[indexHab])[indexMat]]); //------->cantidad o resultado a imprimir en cada cerlda
 
                           if(resultado===0){
-                            resultado=''
+                            resultado='';
                           }
                           if(resultado==casiCero){
-                            resultado=0
+                            resultado=0;
                           }
-                          
+
                           if(totalSumatoria[indexMat].deshabilitado){
-                            resultado='-'
+                            resultado='-';
                           }
                           return(
-                          <Celda 
-                            key={indexHab+'roco'} 
-                            className={hasDisableItem(totalSumatoria[indexMat])}
-                          > 
-                            <TextoCelda >{resultado}</TextoCelda> 
-                          </Celda>
-                          )
+                            <Celda
+                              key={indexHab+'roco'}
+                              className={hasDisableItem(totalSumatoria[indexMat])}
+                            >
+                              <TextoCelda >{resultado}</TextoCelda>
+                            </Celda>
+                          );
                         })
-                        
-                      }
-                     
 
-                   
+                      }
+
                       {
                         hab.map((objeto)=>{
                           if(setAlertaFaltaPerimetro){
 
-                          
-                          if(parametroA==2||parametroA==3){
-                            if(objeto.area>0&&objeto.perimetro==''){
-                              setAlertaFaltaPerimetro(true)
-                              setTimeout(() => {
-                                setAlertaFaltaPerimetro(false)
-                              }, 3000);
+                            if(parametroA==2||parametroA==3){
+                              if(objeto.area>0&&objeto.perimetro==''){
+                                setAlertaFaltaPerimetro(true);
+                                setTimeout(() => {
+                                  setAlertaFaltaPerimetro(false);
+                                }, 3000);
+                              }
                             }
-                          }
                           }
                         })
                       }
-                    </Fila>)
-                   }
-                  })
+                    </Fila>);
                 }
-             
-              </tbody>
-          </TablaResultados>
-          </SeccionTabla>
-              </>
-          
-  )
-}
+              })
+            }
 
+          </tbody>
+        </TablaResultados>
+      </SeccionTabla>
+    </>
+
+  );
+};
 
 const TablaResultados=styled.table`
     border: 1px solid ${theme.azulTransparente};
@@ -175,7 +167,7 @@ const TablaResultados=styled.table`
     /* background-color: red; */
     border-radius: 10px;
     
-    `
+    `;
 const Th=styled.th`
     width: auto;
     color: ${theme.azul1};
@@ -186,20 +178,15 @@ const Th=styled.th`
     border-radius: 0 5px 0 0 ;
   }
     
-    `
+    `;
 const ThNo = styled(Th)`
   width: 60px;
-  `
+  `;
 
 const Fila=styled.tr`
 
-  `
-const EncabezadoTabla = styled.p`
-  color: inherit;
-  border: 1px solid black;
-  font-weight: 400;
-  
-  `
+  `;
+
 const Ths = styled.td`
 font-weight: 200;
   /* color: ${theme.azul2}; */
@@ -219,7 +206,7 @@ font-weight: 200;
     text-align: center;
   }
 
-`
+`;
 
 const CeldaTotalA=styled.th`
   border: 1px solid #163f50;
@@ -229,7 +216,7 @@ const CeldaTotalA=styled.th`
     background-color: ${theme.fondo};
   }
 
-`
+`;
 
 const Celda=styled.th`
    border: 1px solid #163f50;
@@ -241,12 +228,12 @@ const Celda=styled.th`
     &.desabilitado{
     background-color: ${theme.fondo};
   }
-`
+`;
 const TextoCelda = styled.p`
   color: #686868;
   font-weight: lighter;
  
-`
+`;
 
 const SeccionTabla = styled.section`
 margin-bottom: 25px;
@@ -262,4 +249,4 @@ border-radius: 10px;
   background-color: #19b4ef;
   border-radius: 7px;
 }
-`
+`;

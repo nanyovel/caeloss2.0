@@ -1,6 +1,5 @@
-import React from 'react'
-import { Header } from '../components/Header'
-import { TutorialesParcial } from './TutorialesParcial'
+import { Header } from '../components/Header';
+import { TutorialesParcial } from './TutorialesParcial';
 
 export const Tutoriales = ({
   setDBTutoriales,
@@ -10,14 +9,14 @@ export const Tutoriales = ({
 }) => {
   return (
     <>
-        <Header titulo='Tutoriales'/>
-        <TutorialesParcial
-          setDBTutoriales={setDBTutoriales}
-          dbTutoriales={dbTutoriales}
-          dbUsuario={dbUsuario}
-          userMaster={userMaster}
-        
-        />
+      <Header titulo='Tutoriales'/>
+      <TutorialesParcial
+        setDBTutoriales={setDBTutoriales}
+        dbTutoriales={dbTutoriales}
+        dbUsuario={dbUsuario}
+        userMaster={userMaster}
+
+      />
     </>
-  )
-}
+  );
+};

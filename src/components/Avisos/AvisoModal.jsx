@@ -1,37 +1,35 @@
-import React from 'react'
-import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import theme from '../../../theme'
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import theme from '../../../theme';
 
 export const AvisoModal = ({
-    children,
-    tituloMain,
-    tituloSecond,
-    setHasModal,
-    hasModal,
+  children,
+  tituloMain,
+  tituloSecond,
+  setHasModal,
+  hasModal,
 }) => {
   return (
 
     <ContenedorAvisoModal className={hasModal==true?'':'activo'}>
-    <CajaAviso>
-      <CajaEncabezado>
+      <CajaAviso>
+        <CajaEncabezado>
 
-        <TituloAviso>{tituloMain}</TituloAviso>
-        <CajaX>
+          <TituloAviso>{tituloMain}</TituloAviso>
+          <CajaX>
             <Icono icon={faXmark} onClick={()=>setHasModal(false)}/>
-        </CajaX>
-      </CajaEncabezado>
-      <TituloAviso className='subtitulo'>{tituloSecond}</TituloAviso>
-       {children}
-              {/* <CajaImg>
+          </CajaX>
+        </CajaEncabezado>
+        <TituloAviso className='subtitulo'>{tituloSecond}</TituloAviso>
+        {children}
+        {/* <CajaImg>
             <Img src={ImagenBuildWeb}/>
               </CajaImg> */}
-        </CajaAviso>
-      </ContenedorAvisoModal>
-  )
-}
-
+      </CajaAviso>
+    </ContenedorAvisoModal>
+  );
+};
 
 const ContenedorAvisoModal=styled.div`
   background-color: #32353868;
@@ -60,17 +58,16 @@ const ContenedorAvisoModal=styled.div`
         display: none;
         background-color: red;
       }
-`
+`;
 
 const CajaAviso=styled.div`
   width: 80%;
   height: 80%;
-  /* background-color: ${theme.azulOscuro1Sbetav}; */
   background-color: #000b1a;
   border: 2px solid ${theme.warning};
   border-radius: 15px 0 15px 0;
   padding: 20px;
-`
+`;
 
 const TituloAviso=styled.h2`
   color: ${theme.azul2};
@@ -83,46 +80,16 @@ const TituloAviso=styled.h2`
     width: 100%;
     text-align: center;
   }
-
-`
-
-const CajaImg=styled.div`
-  width: 100%;
-  /* height: 500px; */
-  display: flex;
-  justify-content: center;
-  /* border: 1px solid red; */
-`
-
-const Img=styled.img`
-  width: 300px;
-  object-fit: contain;
-  
-  
-`
-
-const CajaTexto =styled.div`
-  border: 1px solid ${theme.warning};
-  padding: 10px;
-  width: 100%;
-  margin-bottom: 10px;
-  box-shadow: 2px 2px 5px 0px rgba(255, 184, 5, 0.75);
-  -webkit-box-shadow: 2px 2px 5px 0px rgba(255, 184, 5, 0.75);
-  -moz-box-shadow: 2px 2px 5px 0px rgba(255, 184, 5, 0.75);
-  
-`
-const Parrafo=styled.p`
-  color: ${theme.azul1}
-`
+`;
 
 const CajaEncabezado =styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-`
+`;
 const CajaX =styled.div`
   
-`
+`;
 
 const Icono=styled(FontAwesomeIcon)`
   color: red;
@@ -136,20 +103,4 @@ const Icono=styled(FontAwesomeIcon)`
     border: 1px solid ${theme.azul2};
     border-radius: 4px 0 4px 0;
   }
-`
-
-const SemiTitulo=styled.span`
-  font-weight: bold;
-  text-decoration: underline;
-  color: ${theme.azul1}
-`
-
-const CajaTextoPunto=styled.div`
-  color: ${theme.azul1};
-  /* border: 1px solid red; */
-  padding-left: 20px;
-  
-`
-const ListaOrden=styled.ol`
-  padding-left: 30px;
-`
+`;

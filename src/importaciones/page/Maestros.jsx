@@ -1,262 +1,255 @@
-import { Header } from '../../components/Header'
-import CajaNavegacion from '../components/CajaNavegacion'
-import React, { useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BtnGeneralButton } from '../../components/BtnGeneralButton'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import imgFurgon from './../img/chinaEurope.png'
-import imgOrdenCompra from './../img/ordenCompra2.jpg'
-import imgEasyFinish from './../img/easyFinish2.png'
-import docBl from './../img/docBL.png'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { Alerta } from '../../components/Alerta'
+import { Header } from '../../components/Header';
+import CajaNavegacion from '../components/CajaNavegacion';
+import { useEffect, useState } from 'react';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import imgFurgon from './../img/chinaEurope.png';
+import imgOrdenCompra from './../img/ordenCompra2.jpg';
+import imgEasyFinish from './../img/easyFinish2.png';
+import docBl from './../img/docBL.png';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Alerta } from '../../components/Alerta';
 
 export const Maestros = ({dbUsuario,userMaster}) => {
 
-  
   useEffect(()=>{
     document.title = "Caeloss - Importaciones";
     return () => {
-      document.title = "Caeloss"; 
+      document.title = "Caeloss";
     };
-  },[])
+  },[]);
 
-  
-  const [alertaFaltaFurgon, setAlertaFaltaFurgon]=useState(false)
-    const [alertaFaltaArticulo, setAlertaFaltaArticulo]=useState(false)
-    const [alertaFaltaOrdenCompra, setAlertaFaltaOrdenCompra]=useState(false)
-    const [alertaFaltaBL, setAlertaFaltaBL]=useState(false)
-    const navegacion = useNavigate()
-  
-    // const [focusOn, setFocusOn]=useState('');
-    const [valueFurgon, setValueFurgon]=useState('')
-    const [valueArticulo, setValueArticulo]=useState('')
-    const [valueOrdenCompra, setValueOrdenCompra]=useState('')
-    const [valueBillOfLading, setValueBillOfLading]=useState('')
+  const [alertaFaltaFurgon, setAlertaFaltaFurgon]=useState(false);
+  const [alertaFaltaArticulo, setAlertaFaltaArticulo]=useState(false);
+  const [alertaFaltaOrdenCompra, setAlertaFaltaOrdenCompra]=useState(false);
+  const [alertaFaltaBL, setAlertaFaltaBL]=useState(false);
+  const navegacion = useNavigate();
 
-    const handleInput=(e)=>{
-      const {value, name}=e.target
-      let valorParsed=value.replace(' ','')
-        if(name=='contenedor'){
-          setValueFurgon((valorParsed).toUpperCase())
-        }
-        else if(name=='articulo'){
-          setValueArticulo(valorParsed)
-        }
-        else if(name=='ordenCompra'){
-          setValueOrdenCompra(valorParsed)
-        }
-        else if(name=='billOfLading'){
-          setValueBillOfLading((valorParsed).toUpperCase())
-        }
+  // const [focusOn, setFocusOn]=useState('');
+  const [valueFurgon, setValueFurgon]=useState('');
+  const [valueArticulo, setValueArticulo]=useState('');
+  const [valueOrdenCompra, setValueOrdenCompra]=useState('');
+  const [valueBillOfLading, setValueBillOfLading]=useState('');
+
+  const handleInput=(e)=>{
+    const {value, name}=e.target;
+    let valorParsed=value.replace(' ','');
+    if(name=='contenedor'){
+      setValueFurgon((valorParsed).toUpperCase());
+    }
+    else if(name=='articulo'){
+      setValueArticulo(valorParsed);
+    }
+    else if(name=='ordenCompra'){
+      setValueOrdenCompra(valorParsed);
+    }
+    else if(name=='billOfLading'){
+      setValueBillOfLading((valorParsed).toUpperCase());
+    }
+  };
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    if(e.target.name=='formContenedor'){
+      if(valueFurgon==''){
+        setAlertaFaltaFurgon(true);
+        setTimeout(() => {
+          setAlertaFaltaFurgon(false);
+        }, 3000);
       }
-
-      const handleSubmit=(e)=>{
-        e.preventDefault()
-        if(e.target.name=='formContenedor'){
-          if(valueFurgon==''){
-            setAlertaFaltaFurgon(true)
-            setTimeout(() => {
-              setAlertaFaltaFurgon(false)
-            }, 3000);
-          }
-          else{
-            let nuevoFurgon=valueFurgon.toUpperCase()
-            nuevoFurgon=nuevoFurgon.replace(/ /g,'')
-            nuevoFurgon=nuevoFurgon.replace(/-/g,'')
-            navegacion('contenedores/'+nuevoFurgon)
-          }
-        }
-        else if(e.target.name=='formArticulo'){
-          if(valueArticulo==''){
-            setAlertaFaltaArticulo(true)
-            setTimeout(() => {
-              setAlertaFaltaArticulo(false)
-            }, 3000);
-          }
-          else{
-          navegacion('articulos/'+valueArticulo)
-        }
+      else{
+        let nuevoFurgon=valueFurgon.toUpperCase();
+        nuevoFurgon=nuevoFurgon.replace(/ /g,'');
+        nuevoFurgon=nuevoFurgon.replace(/-/g,'');
+        navegacion('contenedores/'+nuevoFurgon);
       }
-        else if(e.target.name=='formOrdenCompra'){
-          if(valueOrdenCompra==''){
-            setAlertaFaltaOrdenCompra(true)
-            setTimeout(() => {
-              setAlertaFaltaOrdenCompra(false)
-            }, 3000);
-          }
-          else{
-    
-          navegacion('ordenescompra/'+valueOrdenCompra)
-        }}
-        else if(e.target.name=='formBillOfLading'){
-          if(valueBillOfLading==''){
-            setAlertaFaltaBL(true)
-            setTimeout(() => {
-              setAlertaFaltaBL(false)
-            }, 3000);
-          }
-          else{
-            console.log(valueBillOfLading)
-          navegacion('billoflading/'+valueBillOfLading)
-        }}
+    }
+    else if(e.target.name=='formArticulo'){
+      if(valueArticulo==''){
+        setAlertaFaltaArticulo(true);
+        setTimeout(() => {
+          setAlertaFaltaArticulo(false);
+        }, 3000);
       }
-  
+      else{
+        navegacion('articulos/'+valueArticulo);
+      }
+    }
+    else if(e.target.name=='formOrdenCompra'){
+      if(valueOrdenCompra==''){
+        setAlertaFaltaOrdenCompra(true);
+        setTimeout(() => {
+          setAlertaFaltaOrdenCompra(false);
+        }, 3000);
+      }
+      else{
 
+        navegacion('ordenescompra/'+valueOrdenCompra);
+      }}
+    else if(e.target.name=='formBillOfLading'){
+      if(valueBillOfLading==''){
+        setAlertaFaltaBL(true);
+        setTimeout(() => {
+          setAlertaFaltaBL(false);
+        }, 3000);
+      }
+      else{
+        console.log(valueBillOfLading);
+        navegacion('billoflading/'+valueBillOfLading);
+      }}
+  };
 
   return (
     <>
-    <Header titulo='Sistema gestion de importaciones' subTitulo='Consultas'/>
-    <ContainerNav>
+      <Header titulo='Sistema gestion de importaciones' subTitulo='Consultas'/>
+      <ContainerNav>
 
-      <CajaNavegacion  
-        titulo='Tipo de consulta'
-        parametros={false}
-        pageSelected={1}
-        dbUsuario={dbUsuario}
-        userMaster={userMaster}
-      />
-    </ContainerNav>
+        <CajaNavegacion
+          titulo='Tipo de consulta'
+          parametros={false}
+          pageSelected={1}
+          dbUsuario={dbUsuario}
+          userMaster={userMaster}
+        />
+      </ContainerNav>
 
-<ContainerMain>
-    <CajaQueryGeneral>
-    <Titulo>Consultar Contenedor</Titulo>
-      <CajaDetalle>
-        <div>
-            <form action="" onSubmit={(e)=>handleSubmit(e)} name='formContenedor'>
-            <Texto>Ingrese numero de Contenedor:</Texto>
-            <Input 
-              type='text'
-              name='contenedor'
-              autoComplete='off'
-            //   onFocus={(e)=>handler(e)}
-              value={valueFurgon}
-              onChange={handleInput}
-              
-              />
-            <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
-            </form>
-        </div>
+      <ContainerMain>
+        <CajaQueryGeneral>
+          <Titulo>Consultar Contenedor</Titulo>
+          <CajaDetalle>
+            <div>
+              <form action="" onSubmit={(e)=>handleSubmit(e)} name='formContenedor'>
+                <Texto>Ingrese numero de Contenedor:</Texto>
+                <Input
+                  type='text'
+                  name='contenedor'
+                  autoComplete='off'
+                  //   onFocus={(e)=>handler(e)}
+                  value={valueFurgon}
+                  onChange={handleInput}
 
-        <CajaImagen>
-          <Enlaces
-            to={`/importaciones/maestros/contenedores/`}
-            target="_blank"
-          >
-            <ImagenMostrar src={imgFurgon} />
-          </Enlaces>
-        </CajaImagen>
+                />
+                <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
+              </form>
+            </div>
 
-      </CajaDetalle>
-    </CajaQueryGeneral>
+            <CajaImagen>
+              <Enlaces
+                to={`/importaciones/maestros/contenedores/`}
+                target="_blank"
+              >
+                <ImagenMostrar src={imgFurgon} />
+              </Enlaces>
+            </CajaImagen>
 
-    <CajaQueryGeneral>
-      <Titulo>Consultar Articulo</Titulo>
-      <CajaDetalle>
-      <div>
-        <Texto>Ingrese codigo del producto:</Texto>
-          <form action="" onSubmit={(e)=>handleSubmit(e)} name='formArticulo'>
-            <Input 
-              type='text'
-              name='articulo'
-              autoComplete='off'
-            //   onFocus={(e)=>handler(e)}
-              value={valueArticulo}
-              onChange={handleInput}
-              />
-          <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
-          </form>
-          </div>
-          <CajaImagen>
-          <Enlaces
-            to={`/importaciones/maestros/articulos/`}
-            target="_blank"
-          >
-            <ImagenMostrar2 src={imgEasyFinish} />
-            </Enlaces>
-          </CajaImagen>
-      </CajaDetalle>
-    </CajaQueryGeneral>
-    <CajaQueryGeneral>
-      <Titulo>Consultar orden de compra</Titulo>
-      <CajaDetalle>
-      <div>
-        <Texto>Ingrese numero de orden de compra:</Texto>
-          <form action="" onSubmit={(e)=>handleSubmit(e)} name='formOrdenCompra'>
-            <Input 
-              type='text'
-              name='ordenCompra'
-              autoComplete='off'
-            //   onFocus={(e)=>handler(e)}
-              value={valueOrdenCompra}
-              onChange={handleInput}
-              />
-          <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
-          </form>
-          </div>
-          <CajaImagen>
-          <Enlaces
-            to={`/importaciones/maestros/ordenescompra/`}
-            target="_blank"
-          >
-            <ImagenMostrar2 src={imgOrdenCompra} className='noPng' />
-          </Enlaces>
-          </CajaImagen>
-      </CajaDetalle>
-    </CajaQueryGeneral>
-    <CajaQueryGeneral className='ultima'>
-      <Titulo>Consultar Bill of Lading</Titulo>
-      <CajaDetalle>
-      <div>
-        <Texto>Ingrese numero de Bill of Lading:</Texto>
-          <form action="" onSubmit={(e)=>handleSubmit(e)} name='formBillOfLading'>
-            <Input 
-              type='text'
-              name='billOfLading'
-              autoComplete='off'
-            //   onFocus={(e)=>handler(e)}
-              value={valueBillOfLading}
-              onChange={handleInput}
-              />
-          <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
-          </form>
-          </div>
-          <CajaImagen>
-          <Enlaces
-            to={`/importaciones/maestros/billoflading/`}
-            target="_blank"
-          >
-            <ImagenMostrar src={docBl} className='docBl' />
-            </Enlaces>
-          </CajaImagen>
-      </CajaDetalle>
-    </CajaQueryGeneral>
+          </CajaDetalle>
+        </CajaQueryGeneral>
 
-    <Alerta
-      estadoAlerta={alertaFaltaFurgon}
-      tipo={'warning'}
-      mensaje={'Por favor indica un numero de contenedor.'}/>
-    <Alerta
-      estadoAlerta={alertaFaltaArticulo}
-      tipo={'warning'}
-      mensaje={'Por favor indica codigo del material que necesitas.'}/>
-    <Alerta
-      estadoAlerta={alertaFaltaOrdenCompra}
-      tipo={'warning'}
-      mensaje={'Ingresa numero de orden compra.'}/>
-    <Alerta
-      estadoAlerta={alertaFaltaBL}
-      tipo={'warning'}
-      mensaje={'Ingresa numero de Bill of Lading.'}/>
-    
-   
-  </ContainerMain>
+        <CajaQueryGeneral>
+          <Titulo>Consultar Articulo</Titulo>
+          <CajaDetalle>
+            <div>
+              <Texto>Ingrese codigo del producto:</Texto>
+              <form action="" onSubmit={(e)=>handleSubmit(e)} name='formArticulo'>
+                <Input
+                  type='text'
+                  name='articulo'
+                  autoComplete='off'
+                  //   onFocus={(e)=>handler(e)}
+                  value={valueArticulo}
+                  onChange={handleInput}
+                />
+                <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
+              </form>
+            </div>
+            <CajaImagen>
+              <Enlaces
+                to={`/importaciones/maestros/articulos/`}
+                target="_blank"
+              >
+                <ImagenMostrar2 src={imgEasyFinish} />
+              </Enlaces>
+            </CajaImagen>
+          </CajaDetalle>
+        </CajaQueryGeneral>
+        <CajaQueryGeneral>
+          <Titulo>Consultar orden de compra</Titulo>
+          <CajaDetalle>
+            <div>
+              <Texto>Ingrese numero de orden de compra:</Texto>
+              <form action="" onSubmit={(e)=>handleSubmit(e)} name='formOrdenCompra'>
+                <Input
+                  type='text'
+                  name='ordenCompra'
+                  autoComplete='off'
+                  //   onFocus={(e)=>handler(e)}
+                  value={valueOrdenCompra}
+                  onChange={handleInput}
+                />
+                <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
+              </form>
+            </div>
+            <CajaImagen>
+              <Enlaces
+                to={`/importaciones/maestros/ordenescompra/`}
+                target="_blank"
+              >
+                <ImagenMostrar2 src={imgOrdenCompra} className='noPng' />
+              </Enlaces>
+            </CajaImagen>
+          </CajaDetalle>
+        </CajaQueryGeneral>
+        <CajaQueryGeneral className='ultima'>
+          <Titulo>Consultar Bill of Lading</Titulo>
+          <CajaDetalle>
+            <div>
+              <Texto>Ingrese numero de Bill of Lading:</Texto>
+              <form action="" onSubmit={(e)=>handleSubmit(e)} name='formBillOfLading'>
+                <Input
+                  type='text'
+                  name='billOfLading'
+                  autoComplete='off'
+                  //   onFocus={(e)=>handler(e)}
+                  value={valueBillOfLading}
+                  onChange={handleInput}
+                />
+                <BtnEjecutar type='submit'>Consultar</BtnEjecutar>
+              </form>
+            </div>
+            <CajaImagen>
+              <Enlaces
+                to={`/importaciones/maestros/billoflading/`}
+                target="_blank"
+              >
+                <ImagenMostrar src={docBl} className='docBl' />
+              </Enlaces>
+            </CajaImagen>
+          </CajaDetalle>
+        </CajaQueryGeneral>
 
+        <Alerta
+          estadoAlerta={alertaFaltaFurgon}
+          tipo={'warning'}
+          mensaje={'Por favor indica un numero de contenedor.'}/>
+        <Alerta
+          estadoAlerta={alertaFaltaArticulo}
+          tipo={'warning'}
+          mensaje={'Por favor indica codigo del material que necesitas.'}/>
+        <Alerta
+          estadoAlerta={alertaFaltaOrdenCompra}
+          tipo={'warning'}
+          mensaje={'Ingresa numero de orden compra.'}/>
+        <Alerta
+          estadoAlerta={alertaFaltaBL}
+          tipo={'warning'}
+          mensaje={'Ingresa numero de Bill of Lading.'}/>
+
+      </ContainerMain>
 
     </>
-  )
-}
+  );
+};
 const ContainerNav = styled.div`
   width: 95%;
   display: flex;
@@ -274,14 +267,14 @@ const ContainerNav = styled.div`
     width: 99%;
   
   }
-`
+`;
 
 const ContainerMain=styled.div`
   width: 100%;
   min-height: 200px;
   padding: 10px;
   padding-left: 15px;
-`
+`;
 const CajaQueryGeneral=styled.div`
   width: 100%;
   min-height: 100px;
@@ -295,14 +288,14 @@ const CajaQueryGeneral=styled.div`
     margin-bottom: 100px;
   }
 
-`
+`;
 const Titulo=styled.h2`
   text-decoration: underline;
   color: #fff;
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: ${theme.azul2};
-`
+`;
 
 const CajaDetalle=styled.div`
   background-color: ${theme.azulOscuro1Sbetav3};
@@ -317,7 +310,7 @@ const CajaDetalle=styled.div`
       flex-direction: column-reverse;
     
   }
-`
+`;
 const Input=styled.input`
   height: 25px;
   border-radius: 5px;
@@ -334,19 +327,19 @@ const Input=styled.input`
   background-color: ${theme.azulOscuro1Sbetav2};
   color: ${theme.azul2};
   padding: 10px;
-`
+`;
 
 const Texto=styled.p`
   color: white;
   margin-bottom: 4px;
   color: ${theme.azul1};
-`
+`;
 const BtnEjecutar=styled(BtnGeneralButton)`
   font-size: 1rem;
   display: inline-block;
   height: 30px;
   text-decoration: underline;
-`
+`;
 
 const CajaImagen =styled.div`
   width: 40%;
@@ -368,7 +361,7 @@ const CajaImagen =styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 const ImagenMostrar=styled.img`
   width: 100%;
   object-fit: contain;
@@ -379,7 +372,7 @@ const ImagenMostrar=styled.img`
    
     
   }
-`
+`;
 
 const ImagenMostrar2=styled(ImagenMostrar)`
 width: 60%;
@@ -393,7 +386,7 @@ transform: translate(50%,-15%);
    
     
   }
-`
+`;
 const Enlaces=styled(NavLink)`
   color: inherit;
   text-decoration: none;
@@ -409,4 +402,4 @@ const Enlaces=styled(NavLink)`
     
   }
 
-`
+`;

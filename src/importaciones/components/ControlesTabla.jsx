@@ -1,143 +1,141 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { BtnGeneralButton } from '../../components/BtnGeneralButton'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFloppyDisk, faTrashCan } from '@fortawesome/free-regular-svg-icons'
-import {  faBroom, faMagnifyingGlass, faPencil,  faXmark } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFloppyDisk, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faBroom, faMagnifyingGlass, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export const ControlesTabla = ({
-    isEditando,
-    crearFurgon,
-    docMaster,
-    inputBuscarRef,
-    tipo,
-    handleInput,
-    buscarDoc,
-    buscarDocInput,
-    editar,
-    cancelar,
-    guardarCambios,
-    funcionAdvert,
-    limpiarTabla,
-    userMaster
+  isEditando,
+  crearFurgon,
+  docMaster,
+  inputBuscarRef,
+  tipo,
+  handleInput,
+  buscarDoc,
+  buscarDocInput,
+  editar,
+  cancelar,
+  guardarCambios,
+  funcionAdvert,
+  limpiarTabla,
+  userMaster
 }) => {
 
   return (
     <CajaBotones>
       {
         tipo!=='detalleFurgon'&&tipo!=='detalleItem'&&userMaster?.privilegios[0]?.valor==true?
-        <>
-        {
-        isEditando==false?
-        <>
-          <BtnNormal
-            type='button'
-            className={docMaster?.eliminated==true?'editaEliminada':''}
-            onClick={()=>editar()}
-          >
-            <Icono icon={faPencil}/>
+          <>
+            {
+              isEditando==false?
+                <>
+                  <BtnNormal
+                    type='button'
+                    className={docMaster?.eliminated==true?'editaEliminada':''}
+                    onClick={()=>editar()}
+                  >
+                    <Icono icon={faPencil}/>
             Editar
-          </BtnNormal>
-          <BtnNormal 
-            type='button'
-            data-nombre='eliminarDoc'
-            className={docMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
-            onClick={(e)=>funcionAdvert(e)}
-          >
-            <Icono icon={faTrashCan}/>
+                  </BtnNormal>
+                  <BtnNormal
+                    type='button'
+                    data-nombre='eliminarDoc'
+                    className={docMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
+                    onClick={(e)=>funcionAdvert(e)}
+                  >
+                    <Icono icon={faTrashCan}/>
             Eliminar
-          </BtnNormal>
-        </>
-        :
-        <>
-          <BtnNormal
-            type='button'
-            className={docMaster?.eliminated==true?'editaEliminada':''}
-            onClick={()=>guardarCambios()}
-          >
-            <Icono icon={faFloppyDisk}/>
+                  </BtnNormal>
+                </>
+                :
+                <>
+                  <BtnNormal
+                    type='button'
+                    className={docMaster?.eliminated==true?'editaEliminada':''}
+                    onClick={()=>guardarCambios()}
+                  >
+                    <Icono icon={faFloppyDisk}/>
             Guardar
-          </BtnNormal>
+                  </BtnNormal>
 
-          <BtnNormal 
-            type='button'
-            className={docMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
-            onClick={()=>cancelar()}
-          >
-            <Icono icon={faXmark}/>
+                  <BtnNormal
+                    type='button'
+                    className={docMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
+                    onClick={()=>cancelar()}
+                  >
+                    <Icono icon={faXmark}/>
             Cancelar
-          </BtnNormal>
-        </>
-        }
+                  </BtnNormal>
+                </>
+            }
 
-        </>
-        :
-        ''
+          </>
+          :
+          ''
       }
 
-
-        <ContenedorBuscar className={isEditando?'editando':''}>
-          <Texto>
+      <ContenedorBuscar className={isEditando?'editando':''}>
+        <Texto>
             Buscar: {''}
-          </Texto>
-          <InputBuscar 
-            className={
-              isEditando?
+        </Texto>
+        <InputBuscar
+          className={
+            isEditando?
               'deshabilitado'
               :
               ''
-            }
-            ref={inputBuscarRef}
-            type='text'
-            name='buscarDocInput'
-            value={buscarDocInput}
-            onChange={(e)=>handleInput(e)}
-            onKeyUp={(e)=>buscarDoc(e)}
-          />
-          <BtnNormal
-            type='submit'
-            className={`buscar ${isEditando?'editando':''}`}
-            onClick={()=>buscarDoc()}
-            >
+          }
+          ref={inputBuscarRef}
+          type='text'
+          name='buscarDocInput'
+          value={buscarDocInput}
+          onChange={(e)=>handleInput(e)}
+          onKeyUp={(e)=>buscarDoc(e)}
+        />
+        <BtnNormal
+          type='submit'
+          className={`buscar ${isEditando?'editando':''}`}
+          onClick={()=>buscarDoc()}
+        >
           <Icono icon={faMagnifyingGlass}/>
             Buscar
-          </BtnNormal>
-        </ContenedorBuscar>
-            {
-              isEditando&&tipo=='detalleBL'?
-              <>
-                <BtnNormal 
-                  name='adicionar'
-                  onClick={(e)=>crearFurgon(e)}
-                  className='mas'
-                >
+        </BtnNormal>
+      </ContenedorBuscar>
+      {
+        isEditando&&tipo=='detalleBL'?
+          <>
+            <BtnNormal
+              name='adicionar'
+              onClick={(e)=>crearFurgon(e)}
+              className='mas'
+            >
                   +
-                </BtnNormal>
-              </>
-              :
-              isEditando&&tipo=='ordenCompra'?
-              <>
-                <BtnNormal 
-                  name='limpiarTabla'
-                  onClick={(e)=>limpiarTabla(e)}
-                  className='limpiarTabla'
-                >
-                  <Icono icon={faBroom}/>
+            </BtnNormal>
+          </>
+          :
+          isEditando&&tipo=='ordenCompra'?
+            <>
+              <BtnNormal
+                name='limpiarTabla'
+                onClick={(e)=>limpiarTabla(e)}
+                className='limpiarTabla'
+              >
+                <Icono icon={faBroom}/>
                   Limpiar
-                </BtnNormal>
-              </>
-              :
-              ''
-            }
+              </BtnNormal>
+            </>
+            :
+            ''
+      }
     </CajaBotones>
-  )
-}
+  );
+};
 
 const CajaBotones =styled.div`
   background-color: ${theme.azulOscuro1Sbetav};
   padding-left: 15px;
-`
+`;
 const BtnNormal=styled(BtnGeneralButton)`
 &.borrada{
   background-color: red;
@@ -171,12 +169,11 @@ const BtnNormal=styled(BtnGeneralButton)`
   &.mas{
     width: 50px;
   }
-`
-
+`;
 
 const Icono=styled(FontAwesomeIcon)`
   margin-right: 10px;
-`
+`;
 
 const Texto=styled.h2`
   color: inherit;
@@ -184,7 +181,7 @@ const Texto=styled.h2`
   display: inline-block;
   margin-right: 4px;
 
-`
+`;
 const InputBuscar=styled.input`
   border: none;
   outline: none;
@@ -199,7 +196,7 @@ const InputBuscar=styled.input`
     background-color: ${theme.fondo};
     color: black;
   }
-`
+`;
 
 const ContenedorBuscar=styled.div`
   background-color: ${theme.azulOscuro1Sbetav3};
@@ -211,5 +208,5 @@ const ContenedorBuscar=styled.div`
     background-color: #5e5d60;
     color: black;
   }
-`
+`;
 // 206

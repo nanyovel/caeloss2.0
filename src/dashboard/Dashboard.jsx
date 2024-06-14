@@ -1,131 +1,124 @@
-import React, { useEffect, useState } from 'react'
-import { Header } from '../components/Header'
+import { useEffect, useState } from 'react';
+import { Header } from '../components/Header';
 import styled from 'styled-components';
 import theme from '../../theme';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import { NavLink} from 'react-router-dom';
 import { BotonQuery } from '../components/BotonQuery';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { BtnGeneralButton } from '../components/BtnGeneralButton';
 import { OpcionUnica } from '../components/OpcionUnica';
 
-
-export const Dashboard = ({extraerGrupoPorCondicion }) => {
+export const Dashboard = ({useDocByCondition }) => {
   // Extrar un grupo de documentos por una condicion
-  const [dbUsuario,setDBUsuario]=useState()
+  const [dbUsuario,setDBUsuario]=useState();
 
-  extraerGrupoPorCondicion('usuarios', setDBUsuario, "userName","!=","null")
-  
-    const [userList, setUserList]=useState([])
+  useDocByCondition('usuarios', setDBUsuario, "userName","!=","null");
 
-  
-    useEffect(()=>{
-      if(dbUsuario){
-      const dbUserES6=dbUsuario.map((user)=>{
-        const annio=user.fechaRegistro.slice(6,10)
-        const mes=user.fechaRegistro.slice(3,5)
-        const dia=user.fechaRegistro.slice(0,2)
-        let hora=user.fechaRegistro.slice(11,13)
-        let minutos=user.fechaRegistro.slice(14,16)
-        let segundos=user.fechaRegistro.slice(17,19)
-        const tipo=user.fechaRegistro.slice(24,27)
+  const [userList, setUserList]=useState([]);
 
-        if(hora!=12){
-          if(tipo=='PM'){
-            hora=Number(hora)+12
-          }
-        }
-        if(hora==12){
-          if(tipo=='AM'){
-            hora=0
-          }
-        }
-
-        const fechaES6= new Date(annio,mes-1,dia,hora,minutos,segundos)
-
-        return{
-          ...user,
-          fechaRegistro:fechaES6
-        }
-      })
-
+  useEffect(()=>{
     // Función de comparación para ordenar por fecha de registro
     function compararFechas(a, b) {
       return a.fechaRegistro - b.fechaRegistro;
     }
+    if(dbUsuario){
+      const dbUserES6=dbUsuario.map((user)=>{
+        const annio=user.fechaRegistro.slice(6,10);
+        const mes=user.fechaRegistro.slice(3,5);
+        const dia=user.fechaRegistro.slice(0,2);
+        let hora=user.fechaRegistro.slice(11,13);
+        let minutos=user.fechaRegistro.slice(14,16);
+        let segundos=user.fechaRegistro.slice(17,19);
+        const tipo=user.fechaRegistro.slice(24,27);
 
-    // Ordenar el array de usuarios por fecha de registro
-    
-    setUserList(dbUserES6.sort(compararFechas))
-  }
-    },[dbUsuario])
+        if(hora!=12){
+          if(tipo=='PM'){
+            hora=Number(hora)+12;
+          }
+        }
+        if(hora==12){
+          if(tipo=='AM'){
+            hora=0;
+          }
+        }
 
-    const [arrayOpciones,setArrayOpciones]=useState([
-      {
-        nombre:'Usuarios',
-        opcion: 0,
-        select:true,
-      },
-      {
-        nombre:'Visitas',
-        opcion: 1,
-        select:false,
-      },
+        const fechaES6= new Date(annio,mes-1,dia,hora,minutos,segundos);
 
-     
-    ])
-    
-    const handleOpciones=(e)=>{
-      let index=Number(e.target.dataset.id)
-      setArrayOpciones(prevOpciones => 
-        prevOpciones.map((opcion, i) => ({
-          ...opcion,
-          select: i === index,
-        }))
-      );
+        return{
+          ...user,
+          fechaRegistro:fechaES6
+        };
+      });
+
+      // Ordenar el array de usuarios por fecha de registro
+
+      setUserList(dbUserES6.sort(compararFechas));
     }
+  },[dbUsuario]);
+
+  const [arrayOpciones,setArrayOpciones]=useState([
+    {
+      nombre:'Usuarios',
+      opcion: 0,
+      select:true,
+    },
+    {
+      nombre:'Visitas',
+      opcion: 1,
+      select:false,
+    },
+
+  ]);
+
+  const handleOpciones=(e)=>{
+    let index=Number(e.target.dataset.id);
+    setArrayOpciones(prevOpciones =>
+      prevOpciones.map((opcion, i) => ({
+        ...opcion,
+        select: i === index,
+      }))
+    );
+  };
 
   return (
     <Contenedor>
-        <Header titulo={'Dashboard'}/>
-        <BotonQuery userList={userList}/>
-        <OpcionUnica
-           titulo='Pantallas'
-           name='grupoA'
-           arrayOpciones={arrayOpciones}
-           handleOpciones={handleOpciones}
-        />
-     
-      
+      <Header titulo={'Dashboard'}/>
+      <BotonQuery userList={userList}/>
+      <OpcionUnica
+        titulo='Pantallas'
+        name='grupoA'
+        arrayOpciones={arrayOpciones}
+        handleOpciones={handleOpciones}
+      />
+
       {
         arrayOpciones[0].select&&
         <>
-        <CajaEncabezado>
-          <TituloEncabezado>Lista de todos los usuarios</TituloEncabezado>
-        </CajaEncabezado>
+          <CajaEncabezado>
+            <TituloEncabezado>Lista de todos los usuarios</TituloEncabezado>
+          </CajaEncabezado>
 
-        <CajaTabla>
-      <Tabla >
-        <thead>
-          <Filas className='cabeza'>
-            <CeldaHead>N°</CeldaHead>
-            <CeldaHead>Username*</CeldaHead>
-            <CeldaHead>Nombre</CeldaHead>
-            <CeldaHead >Apellido</CeldaHead>
-            <CeldaHead >Dpto</CeldaHead>
-            <CeldaHead >Registro</CeldaHead>
-          </Filas>
-        </thead>
-        <tbody>
-          {
-            userList.length>0&&
+          <CajaTabla>
+            <Tabla >
+              <thead>
+                <Filas className='cabeza'>
+                  <CeldaHead>N°</CeldaHead>
+                  <CeldaHead>Username*</CeldaHead>
+                  <CeldaHead>Nombre</CeldaHead>
+                  <CeldaHead >Apellido</CeldaHead>
+                  <CeldaHead >Dpto</CeldaHead>
+                  <CeldaHead >Registro</CeldaHead>
+                </Filas>
+              </thead>
+              <tbody>
+                {
+                  userList.length>0&&
             userList.map((user,index)=>{
               return(
                 <Filas key={index}>
                   <CeldasBody>{index+1}</CeldasBody>
                   <CeldasBody >
-                    <Enlaces 
+                    <Enlaces
                       to={`/dashboard/usuarios/${user.userName}`}
                       target="_blank">
                       {user.userName}
@@ -137,106 +130,103 @@ export const Dashboard = ({extraerGrupoPorCondicion }) => {
                   <CeldasBody className='registro'>
                     {format(user.fechaRegistro,`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es})}</CeldasBody>
                 </Filas>
-              )
+              );
             })
-          }
-        </tbody>
-    </Tabla>
-    </CajaTabla>
-    </>
-  }
-  {
-    arrayOpciones[1].select&&
+                }
+              </tbody>
+            </Tabla>
+          </CajaTabla>
+        </>
+      }
+      {
+        arrayOpciones[1].select&&
     <>
       <CajaEncabezado>
-          <TituloEncabezado>Tabla de visitas de usuarios</TituloEncabezado>
-        </CajaEncabezado>
-        {
-          userList.map((user,index)=>{
-            const urlCount = {};
+        <TituloEncabezado>Tabla de visitas de usuarios</TituloEncabezado>
+      </CajaEncabezado>
+      {
+        userList.map((user,index)=>{
+          const urlCount = {};
 
-            // Recorrer el array y contar las URLs
-            console.log(user)
-            user?.registrosActividad?.visitas?.forEach(item => {
-              if (urlCount[item.url]) {
-                urlCount[item.url]++;
-              } else {
-                urlCount[item.url] = 1;
-              }
-            });
+          // Recorrer el array y contar las URLs
+          console.log(user);
+          user?.registrosActividad?.visitas?.forEach(item => {
+            if (urlCount[item.url]) {
+              urlCount[item.url]++;
+            } else {
+              urlCount[item.url] = 1;
+            }
+          });
 
-            // Crear un nuevo array con las URLs únicas y su cantidad
-            const resultArray = Object.keys(urlCount).map(url => ({
-              url,
-              qty: urlCount[url]
-            }));
+          // Crear un nuevo array con las URLs únicas y su cantidad
+          const resultArray = Object.keys(urlCount).map(url => ({
+            url,
+            qty: urlCount[url]
+          }));
 
-            // Ordenar el array resultante de mayor a menor cantidad
-            resultArray.sort((a, b) => b.qty - a.qty);
+          // Ordenar el array resultante de mayor a menor cantidad
+          resultArray.sort((a, b) => b.qty - a.qty);
 
+          return(
+            <div key={index}>
+              <TextoTitulo>{
+                user.nombre?
+                  user.nombre
+                  :
+                  user.userName
 
-            return(
-              <div key={index}>
-                  <TextoTitulo>{
-                    user.nombre?
-                    user.nombre
-                    :
-                    user.userName
-                    
-                    }</TextoTitulo>
+              }</TextoTitulo>
 
-                 <Tabla>
-                  <thead>
-                    <Filas>
-                      <CeldaHead>URL</CeldaHead>
-                      <CeldaHead>QTY</CeldaHead>
-                    </Filas>
+              <Tabla>
+                <thead>
+                  <Filas>
+                    <CeldaHead>URL</CeldaHead>
+                    <CeldaHead>QTY</CeldaHead>
+                  </Filas>
 
-                  </thead>
-                  <tbody>
-                    {
-                      resultArray.map((url,i)=>{
-                        return(
-                          <Filas key={i}>
-                            <CeldasBody>
-                              {url.url}
-                            </CeldasBody>
-                            <CeldasBody>
-                              {url.qty}
-                            </CeldasBody>
-                          </Filas>
-                        )
-                      })
-                    }
-                  </tbody>
-                 </Tabla>
-                    
-                  
-                </div>
-            )
-          })
-        }
-        
+                </thead>
+                <tbody>
+                  {
+                    resultArray.map((url,i)=>{
+                      return(
+                        <Filas key={i}>
+                          <CeldasBody>
+                            {url.url}
+                          </CeldasBody>
+                          <CeldasBody>
+                            {url.qty}
+                          </CeldasBody>
+                        </Filas>
+                      );
+                    })
+                  }
+                </tbody>
+              </Tabla>
+
+            </div>
+          );
+        })
+      }
+
     </>
-  }
+      }
     </Contenedor>
-  )
-}
-
+  );
+};
 
 const Contenedor=styled.div`
 width: 95%;
   overflow: auto;
   margin: auto;
   margin-bottom: 85px;
-`
+`;
 const CajaEncabezado=styled.div`
   padding: 15px;
-`
+`;
 const TituloEncabezado=styled.h2`
   color: ${theme.azul2};
   border-bottom: 2px solid ${theme.azul2};
-`
+`;
 
 const CajaTabla=styled.div`
     overflow-x: scroll;
@@ -258,14 +248,14 @@ const CajaTabla=styled.div`
         border-radius: 7px;
         } 
 
-`
+`;
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   margin-left: 5px;
 
   /* margin: auto; */
-  `
+  `;
 
 const Filas =styled.tr`
   &.body{
@@ -287,7 +277,7 @@ const Filas =styled.tr`
     background-color: ${theme.azulOscuro1Sbetav};
   }
   color: ${theme.azul1};
-`
+`;
 
 const CeldaHead= styled.th`
   padding: 3px 8px;
@@ -298,7 +288,7 @@ const CeldaHead= styled.th`
     width: 300px;
   }
 
-`
+`;
 const CeldasBody = styled.td`
 border: 1px solid black;
 font-size: 0.9rem;
@@ -325,7 +315,7 @@ text-align: center;
       text-decoration: underline;
   }
 }
-`
+`;
 
 const Enlaces=styled(NavLink)`
 color: inherit;
@@ -334,7 +324,7 @@ text-decoration: none;
   text-decoration: underline;
 }
 
-`
+`;
 const TextoTitulo=styled.h2`
   color:${theme.azul2}
-`
+`;

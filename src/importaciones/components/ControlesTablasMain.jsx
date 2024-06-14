@@ -1,134 +1,125 @@
-import React, { useRef, useState } from 'react'
-import theme from '../../../theme'
-import styled from 'styled-components'
+import theme from '../../../theme';
+import styled from 'styled-components';
 
 export const ControlesTablasMain = ({
-    handleSearch,
-    handleRadio,
-    arrayOpciones,
-    buscarDocInput,
-    statusDocInput,
-    destinoDocInput,
-    listDestinos,
-    habilitar,
-    handleOpciones,
-    handleDestino,
-    tipo,
+  handleSearch,
+  arrayOpciones,
+  buscarDocInput,
+  statusDocInput,
+  destinoDocInput,
+  listDestinos,
+  habilitar,
+  handleOpciones,
+  handleDestino,
+  tipo,
 }) => {
-
 
   return (
     <Container className={tipo}>
       {
-    habilitar.opcionesUnicas&&
+        habilitar.opcionesUnicas&&
         <CajaParametro className={tipo}>
-           {
-            arrayOpciones.map((opcion,index)=>{
-                return (
-                <CajaBlanco key={index}>
-                    <Radio 
-                    
-                      type="radio" 
-                      name={'enviados'} 
-                      data-id={index} 
-                      value={index}
-                      onChange={(e)=>handleOpciones(e)}
-                      checked={opcion.select}
-                      id={opcion.nombre} 
-                       
-                    />
-                    <Label 
-                      htmlFor={opcion.nombre}  
-                      >
-                      {opcion.nombre}
-                    </Label>
-                </CajaBlanco>)
-            })
-           }
-        </CajaParametro>
-          }
-
-
-
-  <ContenedorInputTextMenuDesplegable className={tipo}>
-      {
-        habilitar.search&&
-        <ContenedorBuscar className={tipo}>
-      <TituloBuscar>
-        Buscar
-      </TituloBuscar>
-       <InputBuscar
-          onChange={(e)=>handleSearch(e)}
-          value={buscarDocInput}
-          name='inputBuscar'
-          className={tipo}
-          autoComplete='off'
-          />
-       </ContenedorBuscar>
-        }
-       
-
           {
-           habilitar.status&&
+            arrayOpciones.map((opcion,index)=>{
+              return (
+                <CajaBlanco key={index}>
+                  <Radio
+
+                    type="radio"
+                    name={'enviados'}
+                    data-id={index}
+                    value={index}
+                    onChange={(e)=>handleOpciones(e)}
+                    checked={opcion.select}
+                    id={opcion.nombre}
+
+                  />
+                  <Label
+                    htmlFor={opcion.nombre}
+                  >
+                    {opcion.nombre}
+                  </Label>
+                </CajaBlanco>);
+            })
+          }
+        </CajaParametro>
+      }
+
+      <ContenedorInputTextMenuDesplegable className={tipo}>
+        {
+          habilitar.search&&
+        <ContenedorBuscar className={tipo}>
+          <TituloBuscar>
+        Buscar
+          </TituloBuscar>
+          <InputBuscar
+            onChange={(e)=>handleSearch(e)}
+            value={buscarDocInput}
+            name='inputBuscar'
+            className={tipo}
+            autoComplete='off'
+          />
+        </ContenedorBuscar>
+        }
+
+        {
+          habilitar.status&&
             <ContenedorBuscar className={tipo}>
-            <TituloBuscar>
+              <TituloBuscar>
               Status
-            </TituloBuscar>
+              </TituloBuscar>
               <MenuDesplegable
-                onChange={(e)=>{handleSearch(e)}}
+                onChange={(e)=>{handleSearch(e);}}
                 name='cicloVida'
                 value={statusDocInput}
                 className={tipo}
-                >
-              <Opciones  value="">Todos</Opciones>
-              <Opciones disabled  value="0">Proveedor</Opciones>
-              <Opciones  value="1">Transito Maritimo</Opciones>
-              <Opciones value="2">En Puerto</Opciones>
-              <Opciones  value="3">Recepcion Almacen</Opciones>
-              <Opciones  value="4">Dpto Importaciones</Opciones>
-              <Opciones value="5" disabled>Concluido en SAP✅</Opciones>
-            </MenuDesplegable>
-          </ContenedorBuscar>
-          }
-          {
-            habilitar.destino&&
+              >
+                <Opciones value="">Todos</Opciones>
+                <Opciones disabled value="0">Proveedor</Opciones>
+                <Opciones value="1">Transito Maritimo</Opciones>
+                <Opciones value="2">En Puerto</Opciones>
+                <Opciones value="3">Recepcion Almacen</Opciones>
+                <Opciones value="4">Dpto Importaciones</Opciones>
+                <Opciones value="5" disabled>Concluido en SAP✅</Opciones>
+              </MenuDesplegable>
+            </ContenedorBuscar>
+        }
+        {
+          habilitar.destino&&
             <ContenedorBuscar className={tipo}>
-            <TituloBuscar>
+              <TituloBuscar>
               Destino
-            </TituloBuscar>
+              </TituloBuscar>
               <MenuDesplegable
                 className={tipo
 
-
-              }
+                }
                 onChange={tipo=='enPuerto'||tipo=='almacen'?
-                  (e)=>{handleDestino(e)}
+                  (e)=>{handleDestino(e);}
                   :
-                  (e)=>{handleSearch(e)}
+                  (e)=>{handleSearch(e);}
                 }
                 name='destino'
                 value={destinoDocInput}
-                >
-                  <Opciones  value="">Todos</Opciones>
-                  {
-                    listDestinos.map((dest,index)=>{
-                      return (
-                        <Opciones key={index} value={dest.toLowerCase()}>{dest}</Opciones>
-                      )
-                    })
-                  }
-            
-            </MenuDesplegable>
-          </ContenedorBuscar>
-                
-              }
-              </ContenedorInputTextMenuDesplegable>
+              >
+                <Opciones value="">Todos</Opciones>
+                {
+                  listDestinos.map((dest,index)=>{
+                    return (
+                      <Opciones key={index} value={dest.toLowerCase()}>{dest}</Opciones>
+                    );
+                  })
+                }
 
+              </MenuDesplegable>
+            </ContenedorBuscar>
 
+        }
+      </ContenedorInputTextMenuDesplegable>
 
     </Container>
-  )
-}
+  );
+};
 
 const Container=styled.div`
   display: flex;
@@ -213,7 +204,7 @@ const Container=styled.div`
   }
 
 
-`
+`;
 const CajaParametro = styled.div`
   display: flex;
   &.articulo{
@@ -285,11 +276,11 @@ const CajaParametro = styled.div`
       flex-wrap: wrap;
       
     }
-`
+`;
 
 const Radio = styled.input`
   display: none;
-`
+`;
 
 const Label = styled.label`
   color: #bebbbb;
@@ -330,10 +321,10 @@ const Label = styled.label`
   ${Radio}:checked + &&::before{
   display: none;
   }
-  `
+  `;
 const CajaBlanco=styled.div`
 
-`
+`;
 const ContenedorInputTextMenuDesplegable=styled.div`
   display: flex;
 
@@ -383,7 +374,7 @@ const ContenedorInputTextMenuDesplegable=styled.div`
   margin-right: 5px;
  
 
-`
+`;
 
 const ContenedorBuscar=styled.div`
   /* width: 95%; */
@@ -437,7 +428,7 @@ const ContenedorBuscar=styled.div`
     /* margin-bottom: 5px; */
   }
 
-`
+`;
 
 const TituloBuscar=styled.h2`
   color: white;
@@ -450,7 +441,7 @@ const TituloBuscar=styled.h2`
     font-size: 14px;
     
   }
-`
+`;
 
 const InputBuscar=styled.input`
   border: none;
@@ -489,7 +480,7 @@ const InputBuscar=styled.input`
   &.enPuertoAvanzar{
     width: 125px;
   }
-`
+`;
 const MenuDesplegable=styled.select`
   outline: none;
   border: none;
@@ -536,11 +527,10 @@ const MenuDesplegable=styled.select`
     width: 140px;
 
   }
- `
+ `;
 
- const Opciones =styled.option`
+const Opciones =styled.option`
   border: none;
   background-color: ${theme.azulOscuro1Sbetav};
- `
-
+ `;
 

@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { NavLink } from 'react-router-dom'
-import { CSSLoader } from '../../components/CSSLoader'
-import { Alerta } from '../../components/Alerta'
-import { addDoc, collection, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
-import db from '../../firebase/firebaseConfig'
-import { ControlesTablasMain } from '../components/ControlesTablasMain'
-import FuncionStatus from '../components/FuncionStatus'
-import { BotonQuery } from '../../components/BotonQuery'
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { NavLink } from 'react-router-dom';
+import { CSSLoader } from '../../components/CSSLoader';
+import { ControlesTablasMain } from '../components/ControlesTablasMain';
+import FuncionStatus from '../components/FuncionStatus';
+// import { BotonQuery } from '../../components/BotonQuery';
 
 export const TablaListaTodosLosItems = ({
   dbOrdenes,
   dbBillOfLading,
 }) => {
+  // console.log('itemssss')
   const [width, setWidth] = useState(window.innerWidth);
-  const [hasModal, setHasModal]=useState(true)
+  // const [hasModal, setHasModal]=useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,129 +26,120 @@ export const TablaListaTodosLosItems = ({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); 
-  
-
+  }, []);
 
   // // ******************** RECURSOS GENERALES ******************** //
-  const [dispatchAlerta, setDispatchAlerta]=useState(false)
-  const [mensajeAlerta, setMensajeAlerta]=useState('')
-  const [tipoAlerta, setTipoAlerta]=useState('')
 
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading,setIsLoading]=useState(false);
 
-    // El menu desplegable status tiene su funcionalidad completa y todo, lo desactive para sencillez del equipo de comercial
-  const [habilitar,setHabilitar]=useState({
-    search:true,
-    // status:true,
-    opcionesUnicas:true
-  })
+  // El menu desplegable status tiene su funcionalidad completa y todo, lo desactive para sencillez del equipo de comercial
+  // const [habilitar,setHabilitar]=useState({
+  //   search:true,
+  //   // status:true,
+  //   opcionesUnicas:true
+  // });
 
+  // // ************************** CODIGO LOADING ************************** //
+  useEffect(()=>{
+    if(dbOrdenes.length>0&&dbBillOfLading.length>0){
+      setIsLoading(false);
+    }
+    if(dbOrdenes.length==0&&dbBillOfLading.length==0){
+      setIsLoading(true);
+    }
+  },[dbBillOfLading,dbOrdenes]);
 
-    // // ************************** CODIGO LOADING ************************** //
-    useEffect(()=>{
-      if(dbOrdenes.length>0&&dbBillOfLading.length>0){
-        setIsLoading(false)
-      }
-      if(dbOrdenes.length==0&&dbBillOfLading.length==0){
-            setIsLoading(true)
-          }
-    },[dbBillOfLading,dbOrdenes])
+  // // ************************** CONSOLIDACION ************************** //
+  const [initialValueMatBL,setInitialValueMatBL]=useState([]);
+  const [matBL,setMatBL]=useState([]);
 
-    // // ************************** CONSOLIDACION ************************** //
-    const [initialValueMatBL,setInitialValueMatBL]=useState([])
-    const [matBL,setMatBL]=useState([])
+  const [initialValueMatOC,setInitialValueMatOC]=useState([]);
+  const [matOC,setMatOC]=useState([]);
 
-    const [initialValueMatOC,setInitialValueMatOC]=useState([])
-    const [matOC,setMatOC]=useState([])
-
-    useEffect(() => {
+  useEffect(() => {
     // Obtener materiales de BL
-      let materialesBL = [];
-      for (const bill of dbBillOfLading) {
-        if(bill.estadoDoc!=2){
-          for (const furgon of bill.furgones) {
-            if(furgon.status!=5){
-              for (const material of furgon.materiales) {
-                materialesBL=[
-                  ...materialesBL,
-                  {
-                    ...material,
-                    furgon:furgon.numeroDoc,
-                    proveedor:bill.proveedor ,
-                    llegadaSap:furgon.llegadaSap,
-                    status:furgon.status
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-      setInitialValueMatBL(materialesBL)
-      
-      // Obtener materiales de ordenes de compra
-      let materialesOC = [];
-      for(const orden of dbOrdenes){
-        if(orden.estadoDoc!=2){
-          for(const material of orden.materiales){
-            let cantidadPendiente=0
-            let cantidadDespachada=0
-            if(material.despachos.length>0){
-              material.despachos.forEach(desp=>{
-                cantidadDespachada+=desp.qty
-              })
-            }
-            cantidadPendiente=material.qty-cantidadDespachada
-            // Si ya se despacho la cantidad completa de este item
-            if(cantidadPendiente!=0){
-              materialesOC=[
-                ...materialesOC,
+    let materialesBL = [];
+    for (const bill of dbBillOfLading) {
+      if(bill.estadoDoc!=2){
+        for (const furgon of bill.furgones) {
+          if(furgon.status!=5){
+            for (const material of furgon.materiales) {
+              materialesBL=[
+                ...materialesBL,
                 {
                   ...material,
-                  ordenCompra:orden.numeroDoc,
-                  proveedor:orden.proveedor,
-                  qtyPendiente:cantidadPendiente,
-                  qtyDespachada:cantidadDespachada,
+                  furgon:furgon.numeroDoc,
+                  proveedor:bill.proveedor ,
+                  llegadaSap:furgon.llegadaSap,
+                  status:furgon.status
                 }
-              ]
+              ];
             }
           }
         }
       }
-      setInitialValueMatOC(materialesOC)
+    }
+    setInitialValueMatBL(materialesBL);
 
-      setMatBL(materialesBL)
-      setMatOC(materialesOC)
-    }, [dbBillOfLading,dbOrdenes])
+    // Obtener materiales de ordenes de compra
+    let materialesOC = [];
+    for(const orden of dbOrdenes){
+      if(orden.estadoDoc!=2){
+        for(const material of orden.materiales){
+          let cantidadPendiente=0;
+          let cantidadDespachada=0;
+          if(material.despachos.length>0){
+            material.despachos.forEach(desp=>{
+              cantidadDespachada+=desp.qty;
+            });
+          }
+          cantidadPendiente=material.qty-cantidadDespachada;
+          // Si ya se despacho la cantidad completa de este item
+          if(cantidadPendiente!=0){
+            materialesOC=[
+              ...materialesOC,
+              {
+                ...material,
+                ordenCompra:orden.numeroDoc,
+                proveedor:orden.proveedor,
+                qtyPendiente:cantidadPendiente,
+                qtyDespachada:cantidadDespachada,
+              }
+            ];
+          }
+        }
+      }
+    }
+    setInitialValueMatOC(materialesOC);
 
-
-
+    setMatBL(materialesBL);
+    setMatOC(materialesOC);
+  }, [dbBillOfLading,dbOrdenes]);
 
   // // ******************** MANEJANDO EL INPUT SEARCH ******************** //
-  const [buscarDocInput, setBuscarDocInput]=useState('')
-  const [statusDocInput,setStatusDocInput]=useState('')
+  const [buscarDocInput, setBuscarDocInput]=useState('');
+  const [statusDocInput,setStatusDocInput]=useState('');
 
   const handleSearch=(e)=>{
     let shadowMatBL=[];
     let shadowMatOC=[];
-    let entradaMaster=e.target.value.toLowerCase()
-    let entradaSlave1=''
+    let entradaMaster=e.target.value.toLowerCase();
+    let entradaSlave1='';
 
     if(e.target.name=='inputBuscar'){
-      setBuscarDocInput(entradaMaster)
-      entradaSlave1=statusDocInput.toLowerCase()
+      setBuscarDocInput(entradaMaster);
+      entradaSlave1=statusDocInput.toLowerCase();
     }
     else if(e.target.name=='cicloVida'){
-      setStatusDocInput(entradaMaster)
-      entradaSlave1=buscarDocInput.toLowerCase()
+      setStatusDocInput(entradaMaster);
+      entradaSlave1=buscarDocInput.toLowerCase();
     }
 
     if(arrayOpciones[0].select==true){
       if(e.target.name=='inputBuscar'){
-          shadowMatBL=(initialValueMatBL.filter((item)=>{
+        shadowMatBL=(initialValueMatBL.filter((item)=>{
           if(
-              item.codigo.toLowerCase().includes(entradaMaster)||
+            item.codigo.toLowerCase().includes(entradaMaster)||
               item.descripcion.toLowerCase().includes(entradaMaster)||
               item.qty.toString().includes(entradaMaster)||
               item.furgon.toLowerCase().includes(entradaMaster)||
@@ -158,31 +147,30 @@ export const TablaListaTodosLosItems = ({
               item.ordenCompra.toLowerCase().includes(entradaMaster)||
               item.comentarios.toLowerCase().includes(entradaMaster)||
               item.comentarioOrden?.toLowerCase().includes(entradaMaster)
-              ){
-            return item
+          ){
+            return item;
           }
-        }))
+        }));
 
         if(statusDocInput!=''){
           shadowMatBL=(shadowMatBL.filter((item)=>{
             if(item.status==entradaSlave1){
-              return item
+              return item;
             }
-          }))
+          }));
         }
       }
       else if(e.target.name=='cicloVida'){
         if(entradaMaster!=''){
           shadowMatBL=(initialValueMatBL.filter((item)=>{
             if(item.status.toString()==entradaMaster.toString()){
-              return item
+              return item;
             }
-          }))
+          }));
         }
         else if(entradaMaster==''){
-          shadowMatBL=initialValueMatBL
+          shadowMatBL=initialValueMatBL;
         }
-
 
       // if(buscarDocInput!=''){
       //   shadowMatBL=(shadowMatBL.filter((item)=>{
@@ -201,16 +189,15 @@ export const TablaListaTodosLosItems = ({
       // }
       }
 
-
-      setMatBL(shadowMatBL)
+      setMatBL(shadowMatBL);
     }
     else if(arrayOpciones[1].select==true){
       if(e.target.name=='inputBuscar'){
       // setMatOC(initialValueMatOC.filter((item)=>{
-        
-      shadowMatOC=(initialValueMatOC.filter((item)=>{
-        if( 
-          item.codigo.toLowerCase().includes(entradaMaster)||
+
+        shadowMatOC=(initialValueMatOC.filter((item)=>{
+          if(
+            item.codigo.toLowerCase().includes(entradaMaster)||
           item.descripcion.toLowerCase().includes(entradaMaster)||
           item.qtyPendiente.toString().includes(entradaMaster)||
           item.proveedor.toLowerCase().includes(entradaMaster)||
@@ -218,21 +205,19 @@ export const TablaListaTodosLosItems = ({
           item.comentarios.toLowerCase().includes(entradaMaster)||
           item.comentarioOrden?.toLowerCase().includes(entradaMaster)
           ){
-            return item
+            return item;
           }
-          
-        
-        }))
+
+        }));
       }
-      setMatOC(shadowMatOC)
+      setMatOC(shadowMatOC);
 
     }
     if(e.target.value==''&&buscarDocInput==''&&statusDocInput==''){
-      setMatBL(initialValueMatBL)
-      setMatOC(initialValueMatOC)
+      setMatBL(initialValueMatBL);
+      setMatOC(initialValueMatOC);
     }
-  }
-
+  };
 
   const [arrayOpciones,setArrayOpciones]=useState([
     {
@@ -245,249 +230,251 @@ export const TablaListaTodosLosItems = ({
       opcion: 1,
       select:false,
     },
-  ])
-    
+  ]);
 
-  const handleOpciones=(opcion)=>{
-    let index=Number(event.target.dataset.id)
-    setArrayOpciones(prevOpciones => 
+  const handleOpciones=(e)=>{
+    let index=Number(e.target.dataset.id);
+    setArrayOpciones(prevOpciones =>
       prevOpciones.map((opcion, i) => ({
         ...opcion,
         select: i === index,
       }))
     );
-    setMatBL(initialValueMatBL)
-    setMatOC(initialValueMatOC)
-    setBuscarDocInput('')
-    setStatusDocInput('')
-  }
+    setMatBL(initialValueMatBL);
+    setMatOC(initialValueMatOC);
+    setBuscarDocInput('');
+    setStatusDocInput('');
+  };
 
+  const [habilitar,setHabilitar]=useState({
+    search:true,
+    opcionesUnicas:true
+  });
 
   useEffect(()=>{
-    let status=arrayOpciones[0].select==true
     setHabilitar({
       ...habilitar,
-      // status:status
-    })
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[arrayOpciones]);
 
-  },[arrayOpciones])
+  // const updatedHabilitar = useMemo(() => ({
+  //   ...habilitar,
+  // }), [arrayOpciones]);
 
+  // useEffect(() => {
+  //   setHabilitar(updatedHabilitar);
+  // }, [arrayOpciones]);
 
-
-    return (
+  return (
     <>
-    {/* <BotonQuery 
+      {/* <BotonQuery
       matBL={matBL}
       matOC={matOC}
     /> */}
-    <CabeceraListaAll>
-      <EncabezadoTabla>
-        <TituloEncabezadoTabla>
-          Lista de todos los articulos en proceso de importacion 
-          {width>850?' (antiguo Status Report)':''}
+      <CabeceraListaAll>
+        <EncabezadoTabla>
+          <TituloEncabezadoTabla>
+          Lista de todos los articulos en proceso de importacion
+            {width>850?' (antiguo Status Report)':''}
           .
-        </TituloEncabezadoTabla>
-      </EncabezadoTabla>
+          </TituloEncabezadoTabla>
+        </EncabezadoTabla>
 
-      <ControlesTablasMain
-      habilitar={habilitar}
-        handleSearch={handleSearch}
-        handleOpciones={handleOpciones}
-        arrayOpciones={arrayOpciones}
-        buscarDocInput={buscarDocInput}
-        tipo={'articulo'}
-      />
-    </CabeceraListaAll>
-    {
-      arrayOpciones[0].select==true?
-      <>
-        <TituloEncabezadoTabla className='subTitulo'>
-          Articulos ya enviados por el proveedor hacia Rep. Dominicana 
-          {width>1000?', (todos los items de contenedores en proceso)':''}
+        <ControlesTablasMain
+          habilitar={habilitar}
+          handleSearch={handleSearch}
+          handleOpciones={handleOpciones}
+          arrayOpciones={arrayOpciones}
+          buscarDocInput={buscarDocInput}
+          tipo={'articulo'}
+        />
+      </CabeceraListaAll>
+      {
+        arrayOpciones[0].select==true?
+          <>
+            <TituloEncabezadoTabla className='subTitulo'>
+          Articulos ya enviados por el proveedor hacia Rep. Dominicana
+              {width>1000?', (todos los items de contenedores en proceso)':''}
           .
-          
-        </TituloEncabezadoTabla>
 
-<CajaTabla>
-    <Tabla>
-      <thead>
-        <Filas className='cabeza'>
-            <CeldaHead>N°</CeldaHead>
-            <CeldaHead>Codigo*</CeldaHead>
-            <CeldaHead >Descripcion</CeldaHead>
-            <CeldaHead>Qty</CeldaHead>
-            <CeldaHead>Contenedor*</CeldaHead>
-            <CeldaHead>Status</CeldaHead>
-            <CeldaHead title='Fecha en que estara disponible en SAP'>En SAP</CeldaHead>
-            <CeldaHead className='proveedor'>Proveedor</CeldaHead>
-            <CeldaHead className='ordenCompra'>O/C*</CeldaHead>
-            <CeldaHead className='comentarios'>Comentarios</CeldaHead>
-            <CeldaHead className='comentarios'>Comentarios Orden</CeldaHead>
-          </Filas>
-      </thead>
-      <tbody>
-        {
-          matBL.map((item,index)=>{
-            return(
-              <Filas
-                key={index}
-                className='body'
-              >
-                <CeldasBody className='index'>{index+1}</CeldasBody>
-                <CeldasBody>
-                  <Enlaces 
-                    to={`/importaciones/maestros/articulos/${item.codigo}`}
-                    target="_blank"
-                    >
-                    {item.codigo}
-                  </Enlaces>
-                </CeldasBody>
-                <CeldasBody 
-                  title={item.descripcion}
-                  className='descripcion'>
-                    {item.descripcion}
-                  </CeldasBody>
-                <CeldasBody>{item.qty}</CeldasBody>
-                <CeldasBody>
-                  <Enlaces 
-                    to={`/importaciones/maestros/contenedores/${item.furgon}`}
-                    target="_blank"
-                    >
-                    {item.furgon}
-                  </Enlaces>
-                </CeldasBody>
-                <CeldasBody className='status' title={FuncionStatus(item.status)}>
+            </TituloEncabezadoTabla>
+
+            <CajaTabla>
+              <Tabla>
+                <thead>
+                  <Filas className='cabeza'>
+                    <CeldaHead>N°</CeldaHead>
+                    <CeldaHead>Codigo*</CeldaHead>
+                    <CeldaHead >Descripcion</CeldaHead>
+                    <CeldaHead>Qty</CeldaHead>
+                    <CeldaHead>Contenedor*</CeldaHead>
+                    <CeldaHead>Status</CeldaHead>
+                    <CeldaHead title='Fecha en que estara disponible en SAP'>En SAP</CeldaHead>
+                    <CeldaHead className='proveedor'>Proveedor</CeldaHead>
+                    <CeldaHead className='ordenCompra'>O/C*</CeldaHead>
+                    <CeldaHead className='comentarios'>Comentarios</CeldaHead>
+                    <CeldaHead className='comentarios'>Comentarios Orden</CeldaHead>
+                  </Filas>
+                </thead>
+                <tbody>
                   {
-                   FuncionStatus(item.status)
+                    matBL.map((item,index)=>{
+                      return(
+                        <Filas
+                          key={index}
+                          className='body'
+                        >
+                          <CeldasBody className='index'>{index+1}</CeldasBody>
+                          <CeldasBody>
+                            <Enlaces
+                              to={`/importaciones/maestros/articulos/${item.codigo}`}
+                              target="_blank"
+                            >
+                              {item.codigo}
+                            </Enlaces>
+                          </CeldasBody>
+                          <CeldasBody
+                            title={item.descripcion}
+                            className='descripcion'>
+                            {item.descripcion}
+                          </CeldasBody>
+                          <CeldasBody>{item.qty}</CeldasBody>
+                          <CeldasBody>
+                            <Enlaces
+                              to={`/importaciones/maestros/contenedores/${item.furgon}`}
+                              target="_blank"
+                            >
+                              {item.furgon}
+                            </Enlaces>
+                          </CeldasBody>
+                          <CeldasBody className='status' title={FuncionStatus(item.status)}>
+                            {
+                              FuncionStatus(item.status)
+                            }
+                          </CeldasBody>
+                          <CeldasBody>{item.llegadaSap.slice(0,10)}</CeldasBody>
+                          <CeldasBody
+                            title={item.proveedor}
+                            className='proveedor'>
+                            {item.proveedor}
+                          </CeldasBody>
+                          <CeldasBody
+                            className='ordenCompra'
+                          >
+                            <Enlaces
+                              to={`/importaciones/maestros/ordenescompra/${item.ordenCompra}`}
+                              target="_blank"
+                            >
+                              {item.ordenCompra}
+                            </Enlaces>
+                          </CeldasBody>
+                          <CeldasBody
+                            title={item.comentarios}
+                            className='comentarios'>
+                            {item.comentarios}</CeldasBody>
+                          <CeldasBody
+                            title={item.comentarioOrden}
+                            className='comentarios'>
+                            {item.comentarioOrden}</CeldasBody>
+                        </Filas>
+                      );
+                    })
                   }
-                </CeldasBody>
-                <CeldasBody>{item.llegadaSap.slice(0,10)}</CeldasBody>
-                <CeldasBody
-                  title={item.proveedor}
-                  className='proveedor'>
-                  {item.proveedor}
-                </CeldasBody>
-                <CeldasBody
-                  className='ordenCompra'
-                  >
-                  <Enlaces 
-                    to={`/importaciones/maestros/ordenescompra/${item.ordenCompra}`}
-                    target="_blank"
-                    >
-                    {item.ordenCompra}
-                  </Enlaces>
-                </CeldasBody>
-                <CeldasBody 
-                  title={item.comentarios}
-                  className='comentarios'>
-                  {item.comentarios}</CeldasBody>
-                <CeldasBody 
-                  title={item.comentarioOrden}
-                  className='comentarios'>
-                  {item.comentarioOrden}</CeldasBody>
-              </Filas>
-            )
-          })
-        }
-      </tbody>
-    </Tabla>
-    </CajaTabla>
-    </>
-     :
-     arrayOpciones[1].select==true?
-     <>
-      <TituloEncabezadoTabla className='subTitulo'>
-        Articulos solicitados a proveedor, pero aun sin enviar 
-        {width>1000?', (todos los items de ordenes de compra abiertas)':''}.
-        
-      </TituloEncabezadoTabla>
-      <CajaTabla>
-        <Tabla>
-          <thead>
-            <Filas className='cabeza'>
-              <CeldaHead>N°</CeldaHead>
-              <CeldaHead>Codigo*</CeldaHead>
-              <CeldaHead >Descripcion</CeldaHead>
-              <CeldaHead className='qtyPendiente'>Pend.</CeldaHead>
-              <CeldaHead className='proveedor'>Proveedor</CeldaHead>
-              <CeldaHead>O/C*</CeldaHead>
-              <CeldaHead className='comentarios'>Comentarios</CeldaHead>
-              <CeldaHead className='comentarios'>Comentarios Orden</CeldaHead>
-            </Filas>
-          </thead>
-          <tbody>
-            {
-              matOC.map((item,index)=>{
-                return(
-                  <Filas key={index} className='body'>
-                    <CeldasBody>{index+1}</CeldasBody>
-                    <CeldasBody>
-                      <Enlaces 
-                          to={`/importaciones/maestros/articulos/${item.codigo}`}
-                          target="_blank"
-                        >{item.codigo}
-                      </Enlaces>
-                    </CeldasBody>
-                   <CeldasBody 
-                      title={item.descripcion}
-                      className='descripcion'>
-                      {item.descripcion}
-                    </CeldasBody>
-                    <CeldasBody className='qtyPendiente'>{item.qtyPendiente}</CeldasBody>
-                    <CeldasBody
-                      title={item.proveedor}
-                      className='proveedor'>
-                      {item.proveedor}
-                    </CeldasBody>
-                    <CeldasBody>
-                      <Enlaces 
-                          to={`/importaciones/maestros/ordenescompra/${item.ordenCompra}`}
-                          target="_blank"
-                        >{item.ordenCompra}
-                      </Enlaces>
-                    </CeldasBody>
-                    <CeldasBody title={item.comentario}>{item.comentario}</CeldasBody>
-                    <CeldasBody title={item.comentarioOrden}>{item.comentarioOrden}</CeldasBody>
-                 </Filas>
-                )
-              })
-            }
-          </tbody>
-        </Tabla>
-        </CajaTabla>
-     </>
-     :
-     ''
-     }
-    {
-          isLoading?
+                </tbody>
+              </Tabla>
+            </CajaTabla>
+          </>
+          :
+          arrayOpciones[1].select==true?
+            <>
+              <TituloEncabezadoTabla className='subTitulo'>
+        Articulos solicitados a proveedor, pero aun sin enviar
+                {width>1000?', (todos los items de ordenes de compra abiertas)':''}.
+
+              </TituloEncabezadoTabla>
+              <CajaTabla>
+                <Tabla>
+                  <thead>
+                    <Filas className='cabeza'>
+                      <CeldaHead>N°</CeldaHead>
+                      <CeldaHead>Codigo*</CeldaHead>
+                      <CeldaHead >Descripcion</CeldaHead>
+                      <CeldaHead className='qtyPendiente'>Pend.</CeldaHead>
+                      <CeldaHead className='proveedor'>Proveedor</CeldaHead>
+                      <CeldaHead>O/C*</CeldaHead>
+                      <CeldaHead className='comentarios'>Comentarios</CeldaHead>
+                      <CeldaHead className='comentarios'>Comentarios Orden</CeldaHead>
+                    </Filas>
+                  </thead>
+                  <tbody>
+                    {
+                      matOC.map((item,index)=>{
+                        return(
+                          <Filas key={index} className='body'>
+                            <CeldasBody>{index+1}</CeldasBody>
+                            <CeldasBody>
+                              <Enlaces
+                                to={`/importaciones/maestros/articulos/${item.codigo}`}
+                                target="_blank"
+                              >{item.codigo}
+                              </Enlaces>
+                            </CeldasBody>
+                            <CeldasBody
+                              title={item.descripcion}
+                              className='descripcion'>
+                              {item.descripcion}
+                            </CeldasBody>
+                            <CeldasBody className='qtyPendiente'>{item.qtyPendiente}</CeldasBody>
+                            <CeldasBody
+                              title={item.proveedor}
+                              className='proveedor'>
+                              {item.proveedor}
+                            </CeldasBody>
+                            <CeldasBody>
+                              <Enlaces
+                                to={`/importaciones/maestros/ordenescompra/${item.ordenCompra}`}
+                                target="_blank"
+                              >{item.ordenCompra}
+                              </Enlaces>
+                            </CeldasBody>
+                            <CeldasBody title={item.comentario}>{item.comentario}</CeldasBody>
+                            <CeldasBody title={item.comentarioOrden}>{item.comentarioOrden}</CeldasBody>
+                          </Filas>
+                        );
+                      })
+                    }
+                  </tbody>
+                </Tabla>
+              </CajaTabla>
+            </>
+            :
+            ''
+      }
+      {
+        isLoading?
           <CajaLoader>
             <CSSLoader/>
           </CajaLoader>
 
-            :
-            ''
-        }
-        <Alerta
-          estadoAlerta={dispatchAlerta}
-          tipo={tipoAlerta}
-          mensaje={mensajeAlerta}
-      />
+          :
+          ''
+      }
     </>
-    
-  )
-}
+
+  );
+};
 
 const CabeceraListaAll=styled.div`
     background-color: ${theme.azulOscuro1Sbetav};
     width: 100%;
-`
+`;
 
 const CajaLoader=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const CajaTabla=styled.div`
     overflow-x: scroll;
@@ -509,7 +496,7 @@ const CajaTabla=styled.div`
         border-radius: 7px;
         } 
 
-`
+`;
 
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
@@ -527,7 +514,7 @@ const Tabla = styled.table`
     margin-bottom: 130px;
     
   }
-  `
+  `;
 
 const Filas =styled.tr`
   &.body{
@@ -550,7 +537,7 @@ const Filas =styled.tr`
   &:hover{
     background-color: ${theme.azulOscuro1Sbetav};
   }
-`
+`;
 
 const CeldaHead= styled.th`
   border-bottom: 1px solid #605e5e;
@@ -584,8 +571,8 @@ const CeldaHead= styled.th`
     font-size: 12px;
   }
  
-`
-  const CeldasBody = styled.td`
+`;
+const CeldasBody = styled.td`
     font-size: 0.9rem;
     border: 1px solid black;
     height: 25px;
@@ -666,7 +653,7 @@ const CeldaHead= styled.th`
   }
  
 
-`
+`;
 
 const Enlaces=styled(NavLink)`
   color: inherit;
@@ -674,7 +661,7 @@ const Enlaces=styled(NavLink)`
   &:hover{
     text-decoration: underline;
   }
-`
+`;
 
 const EncabezadoTabla =styled.div`
   margin-top: 20px;
@@ -690,7 +677,7 @@ const EncabezadoTabla =styled.div`
     padding-left: 0;
   }
 
-`
+`;
 const TituloEncabezadoTabla=styled.h2`
   color: #757575;
   font-size: 1.2rem;
@@ -709,4 +696,4 @@ const TituloEncabezadoTabla=styled.h2`
   @media screen and (max-width:400px) {
     font-size: 14px;
   }
-`
+`;

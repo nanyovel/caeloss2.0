@@ -16,5 +16,15 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    "react/prop-types": "off",
+    "no-multi-spaces": "error",
+    "indent": ["error", 2],
+    "no-trailing-spaces": "error",
+    "semi": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }]
+    
+
   },
 }
+
+

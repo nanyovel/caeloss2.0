@@ -1,21 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
-import { Link, NavLink } from 'react-router-dom'
-import imgJeni from '../../public/img/avatares/jenifer1.png'
-import { BtnGeneralButton } from '../components/BtnGeneralButton'
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
-import IconSend from '../components/SVGEnviar'
-import avatarMale from './../../public/img/avatares/maleAvatar.svg'
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
-import db from '../firebase/firebaseConfig'
-import { Alerta } from '../components/Alerta'
-import { BtnNormal } from '../components/BtnNormal'
-import { Advertencia } from '../components/Advertencia'
-import { BotonQuery } from '../components/BotonQuery'
-
-
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../theme';
+import { NavLink } from 'react-router-dom';
+// import imgJeni from '../../public/img/avatares/jenifer1.png';
+import { BtnGeneralButton } from '../components/BtnGeneralButton';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+// import IconSend from '../components/SVGEnviar';
+import avatarMale from './../../public/img/avatares/maleAvatar.svg';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import db from '../firebase/firebaseConfig';
+import { Alerta } from '../components/Alerta';
+import { BtnNormal } from '../components/BtnNormal';
+import { Advertencia } from '../components/Advertencia';
+// import { BotonQuery } from '../components/BotonQuery';
 
 export const Resennias = ({
   dbUsuario,
@@ -25,233 +23,224 @@ export const Resennias = ({
 }) => {
   // // ******************** RECURSOS GENERALES ******************** //
   // Alertas
-  const [dispatchAlerta, setDispatchAlerta]=useState(false)
-  const [mensajeAlerta, setMensajeAlerta]=useState('')
-  const [tipoAlerta, setTipoAlerta]=useState('')
+  const [dispatchAlerta, setDispatchAlerta]=useState(false);
+  const [mensajeAlerta, setMensajeAlerta]=useState('');
+  const [tipoAlerta, setTipoAlerta]=useState('');
 
   // Advertencias
-  const [tipoAdvertencia, setTipoAdvertencia]=useState('')
-  const [mensajeAdvertencia, setMensajeAdvertencia]=useState('')
-  const [dispatchAdvertencia, setDispatchAdvertencia]=useState(false)
-  const [eventFunction,setEventFunction]=useState('')
-  const [functAEjecutar, setFunctAEjecutar]=useState('')
+  const [tipoAdvertencia, setTipoAdvertencia]=useState('');
+  const [mensajeAdvertencia, setMensajeAdvertencia]=useState('');
+  const [dispatchAdvertencia, setDispatchAdvertencia]=useState(false);
+  const [eventFunction,setEventFunction]=useState('');
+  const [functAEjecutar, setFunctAEjecutar]=useState('');
 
-   // // *************** FUNCION INTERMEDIARIA ADVERTENCIA ****************** //
-   const funcionAdvert=(e)=>{
-        setTipoAdvertencia('warning')
-        setMensajeAdvertencia('¿Seguro que desea eliminar esta reseña?')
-        setDispatchAdvertencia(true)
-        setEventFunction(e)
-        setFunctAEjecutar('eliminarDoc')
-  }
+  // // *************** FUNCION INTERMEDIARIA ADVERTENCIA ****************** //
+  const funcionAdvert=(e)=>{
+    setTipoAdvertencia('warning');
+    setMensajeAdvertencia('¿Seguro que desea eliminar esta reseña?');
+    setDispatchAdvertencia(true);
+    setEventFunction(e);
+    setFunctAEjecutar('eliminarDoc');
+  };
 
-const botonAgrearRef=useRef(null)
-const cajaResenniaRef = useRef(null);
+  const botonAgrearRef=useRef(null);
+  const cajaResenniaRef = useRef(null);
 
-const [editableResennias, setEditableResenias]=useState([])
-const [masterResennia, setMasterResennia]=useState([])
+  const [editableResennias, setEditableResenias]=useState([]);
+  const [masterResennia, setMasterResennia]=useState([]);
 
-// Función de comparación para ordenar por fecha de registro
-function compararFechas(a, b) {
-  return a.fecha - b.fecha;
-}
-
-useEffect(()=>{
-  if(dbResennias&&dbUsuario){
-    const dbResenniaES6=dbResennias.map((rese)=>{
-      const annio=rese.fecha.slice(6,10)
-      const mes=rese.fecha.slice(3,5)
-      const dia=rese.fecha.slice(0,2)
-      let hora=rese.fecha.slice(11,13)
-      let minutos=rese.fecha.slice(14,16)
-      let segundos=rese.fecha.slice(17,19)
-      const tipo=rese.fecha.slice(24,27)
-
-      if(hora!=12){
-        if(tipo=='pm'||tipo=='PM'){
-          hora=Number(hora)+12
-        }
-      }
-      if(hora==12){
-        if(tipo=='am'||tipo=='AM'){
-          hora=0
-        }
-      }
-  
-      const fechaES6= new Date(annio,mes-1,dia,hora,minutos,segundos)
-  
-      return{
-        ...rese,
-        fecha:fechaES6
-      }
-    })
-
-    // Ordenar el array de reseñas por fecha 
+  useEffect(()=>{
+    // Ordenar el array de reseñas por fecha
     function compararFechas(a, b) {
       return a.fecha - b.fecha;
     }
-    // Ordenala de fecha mas antigua a mas reciente
-    const resenniasOrdenada=dbResenniaES6.sort(compararFechas)
+    if(dbResennias&&dbUsuario){
+      const dbResenniaES6=dbResennias.map((rese)=>{
+        const annio=rese.fecha.slice(6,10);
+        const mes=rese.fecha.slice(3,5);
+        const dia=rese.fecha.slice(0,2);
+        let hora=rese.fecha.slice(11,13);
+        let minutos=rese.fecha.slice(14,16);
+        let segundos=rese.fecha.slice(17,19);
+        const tipo=rese.fecha.slice(24,27);
 
-    // Convierte todas las fechas en string entendible
-    const resenniasParsed=resenniasOrdenada.map((resen)=>{
-      return{
-        ...resen,
-        fecha:format(resen.fecha,`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es})
-      }
-    })
-
-    // Actualizar el estado y colocale Hoy o Ayer segun corresponda
-
-    const reseFinal=(resenniasParsed.map((resen)=>{
-      // let fecha ="01/05/2024 12:00:00:000 AM";
-
-      // Saber si corresponde hoy o ayer o fecha literar
-
-      // --------FECHA RESEÑAS--------
-      let fechaResenniaString =resen.fecha;
-
-      // Dividir la cadena en partes utilizando "/" y " " como delimitadores
-      let partesResennia = fechaResenniaString.split(/[\/\s:]+/);
-
-      // Obtener los elementos correspondientes del array resultante
-      let diaResen = partesResennia[0];
-      let mesResen = partesResennia[1];
-      let annioResen = partesResennia[2];
-
-      let fechaResenniaES6=new Date(
-        Number(annioResen),
-        Number(mesResen)-1,
-        Number(diaResen),
-      )
-
-      // --------FECHA ACTUAL--------
-      let fechaActualString=format(new Date(),`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es})
-      let partesString = fechaActualString.split(/[\/\s:]+/);
-
-      let diaActual = partesString[0];
-      let mesActual = partesString[1];
-      let annioActual = partesString[2];
-
-      let fechaActualES6=new Date(
-        Number(annioActual),
-        Number(mesActual)-1,
-        Number(diaActual),
-      )
-
-
-      let stringMostrar=resen.fecha.slice(0,10)
-
-      // Si la fecha es hoy
-      if(fechaActualES6.getTime()==fechaResenniaES6.getTime()){
-        stringMostrar='Hoy'+
-        ' '+
-        resen.fecha.slice(11,16)
-        +
-        ' '
-        +
-        resen.fecha.slice(-2).toLowerCase()
-      }
-
-      // Si la fecha fue ayer
-      let fechaResenniasMas1Dia=new Date(
-        fechaResenniaES6.getFullYear(),
-        fechaResenniaES6.getMonth(),
-        fechaResenniaES6.getDate()+1,
-      )
-      if(fechaActualES6.getTime()==fechaResenniasMas1Dia.getTime()){
-        stringMostrar='Ayer'+
-        ' '+
-        resen.fecha.slice(11,16)
-        +
-        ' '
-        +
-        resen.fecha.slice(-2).toLowerCase()
-      }
-      
-      return{
-        ...resen,
-        fechaMostrar:stringMostrar
-      }
-    }))
-
-
-
-    const listaResenniaAux=(reseFinal.map((rese)=>{
-      const userRe=dbUsuario.find((user)=>{
-        if(user.userName==rese.user){
-          return user
+        if(hora!=12){
+          if(tipo=='pm'||tipo=='PM'){
+            hora=Number(hora)+12;
+          }
         }
-      })
-      
-      if(userRe){
+        if(hora==12){
+          if(tipo=='am'||tipo=='AM'){
+            hora=0;
+          }
+        }
+
+        const fechaES6= new Date(annio,mes-1,dia,hora,minutos,segundos);
+
         return{
           ...rese,
-          nombreUsuario:userRe.nombre,
-          apellidoUsuario:userRe.apellido,
-          avatar:userRe.urlFotoPerfil,
-          editando:false,
+          fecha:fechaES6
+        };
+      });
+      // Ordenala de fecha mas antigua a mas reciente
+      const resenniasOrdenada=dbResenniaES6.sort(compararFechas);
+
+      // Convierte todas las fechas en string entendible
+      const resenniasParsed=resenniasOrdenada.map((resen)=>{
+        return{
+          ...resen,
+          fecha:format(resen.fecha,`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es})
+        };
+      });
+
+      // Actualizar el estado y colocale Hoy o Ayer segun corresponda
+
+      const reseFinal=(resenniasParsed.map((resen)=>{
+      // let fecha ="01/05/2024 12:00:00:000 AM";
+
+        // Saber si corresponde hoy o ayer o fecha literar
+
+        // --------FECHA RESEÑAS--------
+        let fechaResenniaString =resen.fecha;
+
+        // Dividir la cadena en partes utilizando "/" y " " como delimitadores
+        let partesResennia = fechaResenniaString.split(/[/\s:]+/);
+
+        // Obtener los elementos correspondientes del array resultante
+        let diaResen = partesResennia[0];
+        let mesResen = partesResennia[1];
+        let annioResen = partesResennia[2];
+
+        let fechaResenniaES6=new Date(
+          Number(annioResen),
+          Number(mesResen)-1,
+          Number(diaResen),
+        );
+
+        // --------FECHA ACTUAL--------
+        let fechaActualString=format(new Date(),`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es});
+        let partesString = fechaActualString.split(/[/\s:]+/);
+
+        let diaActual = partesString[0];
+        let mesActual = partesString[1];
+        let annioActual = partesString[2];
+
+        let fechaActualES6=new Date(
+          Number(annioActual),
+          Number(mesActual)-1,
+          Number(diaActual),
+        );
+
+        let stringMostrar=resen.fecha.slice(0,10);
+
+        // Si la fecha es hoy
+        if(fechaActualES6.getTime()==fechaResenniaES6.getTime()){
+          stringMostrar='Hoy'+
+        ' '+
+        resen.fecha.slice(11,16)
+        +
+        ' '
+        +
+        resen.fecha.slice(-2).toLowerCase();
         }
-      }
-      else{
-        return {
-          ...rese,
-          editando:false
+
+        // Si la fecha fue ayer
+        let fechaResenniasMas1Dia=new Date(
+          fechaResenniaES6.getFullYear(),
+          fechaResenniaES6.getMonth(),
+          fechaResenniaES6.getDate()+1,
+        );
+        if(fechaActualES6.getTime()==fechaResenniasMas1Dia.getTime()){
+          stringMostrar='Ayer'+
+        ' '+
+        resen.fecha.slice(11,16)
+        +
+        ' '
+        +
+        resen.fecha.slice(-2).toLowerCase();
         }
-      }
-    }))
 
-    setEditableResenias(listaResenniaAux)
-    setMasterResennia(listaResenniaAux)
-  }
+        return{
+          ...resen,
+          fechaMostrar:stringMostrar
+        };
+      }));
 
-},[dbResennias,dbUsuario])
+      const listaResenniaAux=(reseFinal.map((rese)=>{
+        const userRe=dbUsuario.find((user)=>{
+          if(user.userName==rese.user){
+            return user;
+          }
+        });
 
-  const [valorComentario, setValorComentario]=useState('')
+        if(userRe){
+          return{
+            ...rese,
+            nombreUsuario:userRe.nombre,
+            apellidoUsuario:userRe.apellido,
+            avatar:userRe.urlFotoPerfil,
+            editando:false,
+          };
+        }
+        else{
+          return {
+            ...rese,
+            editando:false
+          };
+        }
+      }));
+
+      setEditableResenias(listaResenniaAux);
+      setMasterResennia(listaResenniaAux);
+    }
+
+  },[dbResennias,dbUsuario]);
+
+  const [valorComentario, setValorComentario]=useState('');
 
   const handleInput=(e)=>{
-    const id=e.target.dataset.id
-    const {value, name}=e.target
+    const id=e.target.dataset.id;
+    const {value, name}=e.target;
     if(name=='valorComentario'){
-      setValorComentario(e.target.value)
+      setValorComentario(e.target.value);
     }
 
     if(name=='editando'){
       setEditableResenias(prevState =>
         prevState.map(resennia =>
-          resennia.id === id ? 
-          {
-             ...resennia, 
-             texto: value 
-          } : resennia
+          resennia.id === id ?
+            {
+              ...resennia,
+              texto: value
+            } : resennia
         )
       );
     }
-  }
+  };
 
   const cargarResennia=async()=>{
     if(userMaster){
       if(valorComentario==''){
-        setMensajeAlerta('Aun no escribe la reseña.')
-        setTipoAlerta('warning')
-        setDispatchAlerta(true)
+        setMensajeAlerta('Aun no escribe la reseña.');
+        setTipoAlerta('warning');
+        setDispatchAlerta(true);
         setTimeout(() => {
-        setDispatchAlerta(false)
-      }, 3000);
+          setDispatchAlerta(false);
+        }, 3000);
       }
       if(valorComentario){
-       
+
         const objetoEnviar={
           fecha:format(new Date(),`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es}),
           texto:valorComentario,
           user:userMaster.userName,
           estadoDoc:0,
-        }
+        };
 
-        const valorText=valorComentario
+        const valorText=valorComentario;
         try{
-          setValorComentario('')
-          await addDoc(collection(db,'resennias'),objetoEnviar)
+          setValorComentario('');
+          await addDoc(collection(db,'resennias'),objetoEnviar);
           const container = cajaResenniaRef.current;
           if (container) {
             container.scrollTo({
@@ -260,160 +249,156 @@ useEffect(()=>{
             });
           }
 
-
-    
         }
         catch(error){
-          setValorComentario(valorText)
-          console.log(error)
-          setMensajeAlerta('Error con la base de datos')
-          setTipoAlerta('error')
-          setDispatchAlerta(true)
+          setValorComentario(valorText);
+          console.log(error);
+          setMensajeAlerta('Error con la base de datos');
+          setTipoAlerta('error');
+          setDispatchAlerta(true);
           setTimeout(() => {
-          setDispatchAlerta(false)
-        }, 3000);
+            setDispatchAlerta(false);
+          }, 3000);
         }
       }
     }
-  }
+  };
 
   const eliminarResennia=async(e)=>{
-    const id=e.target.dataset.id
+    const id=e.target.dataset.id;
     const resenniaUpdate = doc(db, "resennias", id);
 
     try{
       await updateDoc(resenniaUpdate, {
         estadoDoc:2
-      })
+      });
     }
     catch(error){
-      console.log(error)
-      setMensajeAlerta('Error con la base de datos')
-      setTipoAlerta('error')
-      setDispatchAlerta(true)
+      console.log(error);
+      setMensajeAlerta('Error con la base de datos');
+      setTipoAlerta('error');
+      setDispatchAlerta(true);
       setTimeout(() => {
-      setDispatchAlerta(false)
-    }, 3000);
-      
+        setDispatchAlerta(false);
+      }, 3000);
+
     }
-  }
+  };
 
   const editarResennia=(e)=>{
-    const id=e.target.dataset.id
+    const id=e.target.dataset.id;
 
     setMasterResennia(prevState =>
       prevState.map(resennia =>
-        resennia.id === id ? 
-        {
-           ...resennia, 
-           editando: true 
-        } : resennia
+        resennia.id === id ?
+          {
+            ...resennia,
+            editando: true
+          } : resennia
       )
     );
 
-    
-
-  }
+  };
 
   const cancelarEdicion=(e)=>{
-    const id=e.target.dataset.id
+    const id=e.target.dataset.id;
     setMasterResennia(prevState =>
       prevState.map(resennia =>
-        resennia.id === id ? 
-        {
-           ...resennia, 
-           editando: false 
-        } : resennia
+        resennia.id === id ?
+          {
+            ...resennia,
+            editando: false
+          } : resennia
       )
     );
-  }
+  };
 
   const guardarEdicion=async(e)=>{
-    const id=e.target.dataset.id
+    const id=e.target.dataset.id;
     const resenniaUpdate = doc(db, "resennias", id);
 
     const resenEditable=editableResennias.find((resen)=>{
       if(resen.id==id){
-        return resen
+        return resen;
       }
-    })
+    });
 
     try{
       await updateDoc(resenniaUpdate, {
         texto:resenEditable.texto
-      })
+      });
     }
     catch(error){
-      console.log(error)
-      setMensajeAlerta('Error con la base de datos')
-      setTipoAlerta('error')
-      setDispatchAlerta(true)
+      console.log(error);
+      setMensajeAlerta('Error con la base de datos');
+      setTipoAlerta('error');
+      setDispatchAlerta(true);
       setTimeout(() => {
-      setDispatchAlerta(false)
-    }, 3000);
+        setDispatchAlerta(false);
+      }, 3000);
     }
-  }
+  };
 
   return (
     <>
-    {/* <BotonQuery
+      {/* <BotonQuery
       masterResennia={masterResennia}
     /> */}
-    <TarjetaDoc 
-      className={inicio?'home':''}
-      ref={cajaResenniaRef}
-   
-      >
-          <Titulos className='sugerencia'>
-            Tu opinion ayudará a que Caeloss sea mejor.
-          </Titulos>
-          <CajaResenas>
-            {
-              masterResennia.map((reseb,index)=>{
-                return(
-                  <CajaResena 
-                    key={index}>
-                    <CajaAvatar>
-                    <Enlaces 
-                        to={'/perfiles/'+reseb.user}
-                      >
-                      <Avatar 
-                      className={
-                        reseb.avatar?
-                        ''
-                        :
-                        'sinFoto'
-                      }
-                      src={
-                        reseb.avatar?
-                        reseb.avatar
-                        :
+      <TarjetaDoc
+        className={inicio?'home':''}
+        ref={cajaResenniaRef}
 
-                        avatarMale
+      >
+        <Titulos className='sugerencia'>
+            Tu opinion ayudará a que Caeloss sea mejor.
+        </Titulos>
+        <CajaResenas>
+          {
+            masterResennia.map((reseb,index)=>{
+              return(
+                <CajaResena
+                  key={index}>
+                  <CajaAvatar>
+                    <Enlaces
+                      to={'/perfiles/'+reseb.user}
+                    >
+                      <Avatar
+                        className={
+                          reseb.avatar?
+                            ''
+                            :
+                            'sinFoto'
+                        }
+                        src={
+                          reseb.avatar?
+                            reseb.avatar
+                            :
+
+                            avatarMale
                         }/>
-                        </Enlaces>
-                        
-                    </CajaAvatar>
-                    <CajaTextoResena>
-                      <Enlaces 
-                        to={'/perfiles/'+reseb.user}
-                      >
-                        
+                    </Enlaces>
+
+                  </CajaAvatar>
+                  <CajaTextoResena>
+                    <Enlaces
+                      to={'/perfiles/'+reseb.user}
+                    >
+
                       <NombreResena>
                         {
                           reseb.nombreUsuario?
-                          reseb.nombreUsuario+
+                            reseb.nombreUsuario+
                           ' '+
                           reseb.apellidoUsuario
-                          :
-                          reseb.user
-                          }
+                            :
+                            reseb.user
+                        }
                       </NombreResena>
-                      
-                      </Enlaces>
-                    
-                      {
-                        reseb.editando?
+
+                    </Enlaces>
+
+                    {
+                      reseb.editando?
                         <InputSencillo
                           data-id={reseb.id}
                           className='editando'
@@ -423,126 +408,122 @@ useEffect(()=>{
 
                         />
                         :
-                          <TextoResena>
-                            {reseb.texto}
-                          </TextoResena>
+                        <TextoResena>
+                          {reseb.texto}
+                        </TextoResena>
+                    }
+                    <FechaResennias>
+                      {
+                        reseb.fechaMostrar
                       }
-                      <FechaResennias>
-                        {
-                         reseb.fechaMostrar
-                        }
-                      </FechaResennias>
-                    </CajaTextoResena>
-                    {
-                      reseb.user==userMaster.userName&&
+                    </FechaResennias>
+                  </CajaTextoResena>
+                  {
+                    reseb.user==userMaster.userName&&
                       <CajaBtn>
                         {
                           reseb.editando==false?
-                          <>
-                          <BtnNormal 
-                          data-id={reseb.id}
-                          onClick={(e)=>funcionAdvert(e)}
-                          className='danger'>
+                            <>
+                              <BtnNormal
+                                data-id={reseb.id}
+                                onClick={(e)=>funcionAdvert(e)}
+                                className='danger'>
                             Eliminar
-                            
-                            </BtnNormal>
-                        <BtnNormal 
-                        data-id={reseb.id}
-                        onClick={(e)=>editarResennia(e)}
-                        
-                        >Editar</BtnNormal>
-                        </>
-                        :
-                          <>
-                          <BtnNormal 
-                            data-id={reseb.id}
-                            onClick={(e)=>cancelarEdicion(e)}
-                            className='danger'>
+
+                              </BtnNormal>
+                              <BtnNormal
+                                data-id={reseb.id}
+                                onClick={(e)=>editarResennia(e)}
+
+                              >Editar</BtnNormal>
+                            </>
+                            :
+                            <>
+                              <BtnNormal
+                                data-id={reseb.id}
+                                onClick={(e)=>cancelarEdicion(e)}
+                                className='danger'>
                             Cancelar
-                            
-                            </BtnNormal>
-                        <BtnNormal 
-                        data-id={reseb.id}
-                        onClick={(e)=>guardarEdicion(e)}
-                        
-                        >Guardar</BtnNormal>
-                        </>
-                        
-                      }
-                    </CajaBtn>
-                    }
-                </CajaResena> 
-                )
-              })
-            }
-            
-          </CajaResenas>
-          {
-            userMaster?
-            <>
-             {
-              userMaster.nombre?
-              <>
-            <CajaInputComentario>
-              <CajaInternaComentario>
-                <InputSencillo
-                    type='text'
-                    name='valorComentario'
-                    placeholder='Indique su honesta opinión sobre el proyecto Caeloss.'
-                    value={valorComentario}
-                    onChange={(e)=>handleInput(e)}
-                />
-              </CajaInternaComentario>
-            </CajaInputComentario>
-            <CajaAddFrase>
-            <MasFraseBtn
-              onClick={(e)=>cargarResennia(e)}
-              ref={botonAgrearRef}
-            >Agregar reseña</MasFraseBtn>
-                    
-        </CajaAddFrase>
-        </>
-        :
-        <Contenedor>
-              <Texto>
-                Para agregar una reseña necesitas al menos indicar tu nombre, para completar tu perfil dirígete al menú lateral y en la parte superior haz click en perfil, luego presiona el botón editar.
-              </Texto>
-            
-            </Contenedor>
+
+                              </BtnNormal>
+                              <BtnNormal
+                                data-id={reseb.id}
+                                onClick={(e)=>guardarEdicion(e)}
+
+                              >Guardar</BtnNormal>
+                            </>
+
+                        }
+                      </CajaBtn>
+                  }
+                </CajaResena>
+              );
+            })
           }
-        </>
+
+        </CajaResenas>
+        {
+          userMaster?
+            <>
+              {
+                userMaster.nombre?
+                  <>
+                    <CajaInputComentario>
+                      <CajaInternaComentario>
+                        <InputSencillo
+                          type='text'
+                          name='valorComentario'
+                          placeholder='Indique su honesta opinión sobre el proyecto Caeloss.'
+                          value={valorComentario}
+                          onChange={(e)=>handleInput(e)}
+                        />
+                      </CajaInternaComentario>
+                    </CajaInputComentario>
+                    <CajaAddFrase>
+                      <MasFraseBtn
+                        onClick={(e)=>cargarResennia(e)}
+                        ref={botonAgrearRef}
+                      >Agregar reseña</MasFraseBtn>
+
+                    </CajaAddFrase>
+                  </>
+                  :
+                  <Contenedor>
+                    <Texto>
+                Para agregar una reseña necesitas al menos indicar tu nombre, para completar tu perfil dirígete al menú lateral y en la parte superior haz click en perfil, luego presiona el botón editar.
+                    </Texto>
+
+                  </Contenedor>
+              }
+            </>
             :
             ''
-          }
-          
-          
-        </TarjetaDoc>
+        }
 
-        <Alerta
+      </TarjetaDoc>
+
+      <Alerta
         estadoAlerta={dispatchAlerta}
         tipo={tipoAlerta}
         mensaje={mensajeAlerta}
-        />
-
-        <Advertencia
-          tipo={tipoAdvertencia}
-          mensaje={mensajeAdvertencia}
-          dispatchAdvertencia={dispatchAdvertencia}
-          setDispatchAdvertencia={setDispatchAdvertencia}
-
-          notificacionFinal={true}
-
-  
-
-          // Setting Function
-          functAEjecutar={functAEjecutar}
-          eventFunction={eventFunction}
-          function2={eliminarResennia}
       />
-       </>
-  )
-}
 
+      <Advertencia
+        tipo={tipoAdvertencia}
+        mensaje={mensajeAdvertencia}
+        dispatchAdvertencia={dispatchAdvertencia}
+        setDispatchAdvertencia={setDispatchAdvertencia}
+
+        notificacionFinal={true}
+
+        // Setting Function
+        functAEjecutar={functAEjecutar}
+        eventFunction={eventFunction}
+        function2={eliminarResennia}
+      />
+    </>
+  );
+};
 
 const CajaResenas = styled.div`
   display: flex;
@@ -550,7 +531,7 @@ const CajaResenas = styled.div`
   gap: 10px;
   margin-bottom: 20px;
   
-`
+`;
 
 const CajaResena = styled.div`
   padding: 10px;
@@ -571,7 +552,7 @@ const CajaResena = styled.div`
     border: 1px solid ${theme.azul1};
   }
 
-`
+`;
 const Avatar=styled.img`
   width: 70px;
   height: 70px;
@@ -585,7 +566,7 @@ const Avatar=styled.img`
     cursor: pointer;
   }
   
-`
+`;
 const CajaTextoResena= styled.div`
   display:flex;
   width: 100%;
@@ -598,8 +579,7 @@ const CajaTextoResena= styled.div`
     
   }
 
-`
-
+`;
 
 const NombreResena=styled.h2`
   color: #fff;
@@ -616,20 +596,19 @@ const NombreResena=styled.h2`
     
   }
   
-`
+`;
 const TextoResena=styled.p`
   color: #fff;
   color: ${theme.azul1};
   margin-bottom: 8px;
   padding-left: 5px;
-`
+`;
 const FechaResennias=styled.p`
   color:${theme.fondo};
   font-size: 13px;
   padding-left: 5px;
   margin-bottom: 10px;
-`
-
+`;
 
 const TarjetaDoc=styled.div`
   border: 1px solid black;
@@ -678,8 +657,7 @@ const TarjetaDoc=styled.div`
     width: 100%;
     
   }
-`
-
+`;
 
 const Titulos=styled.h3`
   font-size: 1.4rem;
@@ -689,15 +667,14 @@ const Titulos=styled.h3`
   &.sugerencia{
     font-size: 1rem;
   }
-`
-
+`;
 
 const MasFraseBtn = styled( BtnGeneralButton)`
     font-size: 1rem;
     width: auto;
     height: 35px;
     text-align: center;
-`
+`;
 
 const CajaAddFrase = styled.div`
     width: 97%;
@@ -707,8 +684,7 @@ const CajaAddFrase = styled.div`
     margin-top: 20px;
     /* background-color: ${theme.gris2}; */
     border-radius: 5px;
-`
-
+`;
 
 const CajaInputComentario = styled.div`
    
@@ -718,8 +694,7 @@ const CajaInputComentario = styled.div`
     /* min-height: 55px; */
     
 
-`
-
+`;
 
 const InputSencillo = styled.textarea`
    background-color: transparent;
@@ -745,11 +720,11 @@ const InputSencillo = styled.textarea`
 
   }
   }
-`
+`;
 const CajaInternaComentario = styled.div`
     position: relative;
     width: 100%;
-`
+`;
 const Contenedor=styled.div`
     border: 1px solid ${theme.warning};
     display: flex;
@@ -758,11 +733,11 @@ const Contenedor=styled.div`
     width: 100%;
     padding: 20px;
     background-color: ${theme.fondoEdTeam};
-`
+`;
 const Texto=styled.h3`
     color: ${theme.warning};
     font-weight: lighter;
-`
+`;
 const CajaBtn=styled.div`
   display: flex;
   flex-direction: column;
@@ -775,11 +750,11 @@ const CajaBtn=styled.div`
     flex-direction: column;
     
   }
-`
+`;
 
 const CajaAvatar=styled.div`
   height: 80px;
-`
+`;
 
 const Enlaces=styled(NavLink)`
   color: inherit;
@@ -788,4 +763,4 @@ const Enlaces=styled(NavLink)`
     text-decoration: underline;
   }
 
-`
+`;

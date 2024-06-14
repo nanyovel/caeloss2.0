@@ -1,17 +1,13 @@
-import React, { createContext, useContext } from 'react'
-import { AuthProvider, useAuth } from '../context/AuthContext'
-import {  Navigate, useNavigate } from 'react-router-dom'
-import { getAuth } from 'firebase/auth'
-
+import { useAuth } from '../context/AuthContext';
+import { Navigate, } from 'react-router-dom';
 
 export const RutaProtegida = ({children}) => {
-  const {usuario}=useAuth()
+  const {usuario}=useAuth();
 
-    
   if(usuario?.emailVerified){
-    return children
+    return children;
   }
   else{
-        return <Navigate replace to='/acceder' />
-      }
-}
+    return <Navigate replace to='/acceder' />;
+  }
+};

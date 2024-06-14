@@ -1,167 +1,160 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { BtnGeneralButton } from '../../components/BtnGeneralButton'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { TablaMultiDespachos } from './TablaMultiDespachos'
-import { Alerta } from '../../components/Alerta'
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { NavLink, } from 'react-router-dom';
+import { TablaMultiDespachos } from './TablaMultiDespachos';
+import { Alerta } from '../../components/Alerta';
 
 export const TablaMultiOC = ({
-  setOrdenSelect, 
+  // setOrdenSelect,
   ordenSelect,
-  hasOrden,
+  // hasOrden,
   setHasOrden,
   tabaOrden,
 
 }) => {
-  const navegacion = useNavigate()
+  // const navegacion = useNavigate();
 
-  const [despacho, setDespacho]=useState([])
-  const [hasDespachos, setHasDespachos]=useState(false)
-  const [alertaItemSinEntrega,setAlertaItemSinEntrega]=useState(false)
-  const tablaDespachos=useRef(null)
-  const [nClases, setNClases]=useState([])
+  const [despacho, setDespacho]=useState([]);
+  const [hasDespachos, setHasDespachos]=useState(false);
+  const [alertaItemSinEntrega,setAlertaItemSinEntrega]=useState(false);
+  const tablaDespachos=useRef(null);
+  const [nClases, setNClases]=useState([]);
 
   // Sirve para que al presionar el boton cancelar de la tabla que muestra los despachos pues que se deselecione la fila previamente selecionada
   useEffect(() => {
     if(hasDespachos==false){
-      setNClases([])
+      setNClases([]);
     }
-  }, [hasDespachos])
+  }, [hasDespachos]);
 
   // Cuando cambie de una orden a otra...
   useEffect(()=>{
     // que se deselecione la fila previamente selecionada
-    setNClases([])
+    setNClases([]);
     // se quiten los despachos, es decir los hijos, (nietos del padre))
-    setHasDespachos(false)
-  },[ordenSelect])
+    setHasDespachos(false);
+  },[ordenSelect]);
 
- 
   const mostrarDespacho=(e)=>{
-    let index=Number(e.target.dataset.id)
+    let index=Number(e.target.dataset.id);
     if(ordenSelect.materiales[index].despachos.length>0){
-      setDespacho(ordenSelect.materiales[index].despachos)
-      setHasDespachos(true)
-      let newNClases=[]
-      newNClases[index]='filaSelected'
-      console.log(newNClases)
-      setNClases(newNClases)
+      setDespacho(ordenSelect.materiales[index].despachos);
+      setHasDespachos(true);
+      let newNClases=[];
+      newNClases[index]='filaSelected';
+      console.log(newNClases);
+      setNClases(newNClases);
       setTimeout(() => {
-        tablaDespachos.current.scrollIntoView({behavior: 'smooth'})
+        tablaDespachos.current.scrollIntoView({behavior: 'smooth'});
       }, 100);
     }else{
-      setHasDespachos(false)
-      setAlertaItemSinEntrega(true)
-        setTimeout(() => {
-          setAlertaItemSinEntrega(false)
-        }, 3000);
+      setHasDespachos(false);
+      setAlertaItemSinEntrega(true);
+      setTimeout(() => {
+        setAlertaItemSinEntrega(false);
+      }, 3000);
     }
 
-   
-  }
-
-
+  };
 
   return (
     <>
-    <EncabezadoTabla>
-      <TituloEncabezadoTabla>
-        <BtnNormal 
-          type='button'
-          className={'borrada'}
-          onClick={()=>setHasOrden(false)}
+      <EncabezadoTabla>
+        <TituloEncabezadoTabla>
+          <BtnNormal
+            type='button'
+            className={'borrada'}
+            onClick={()=>setHasOrden(false)}
           >
             <Icono icon={faXmark}/>
             Cancelar
           </BtnNormal>
         Materiales de orden de compra Nº{ordenSelect.numeroDoc}
-      </TituloEncabezadoTabla>
-    </EncabezadoTabla>
-        <Tabla ref={tabaOrden}>
-            <thead>
-                <Filas className='cabeza'>
-                    <CeldaHead >N°</CeldaHead>
-                    <CeldaHead >Codigo*</CeldaHead>
-                    <CeldaHead >Descripcion</CeldaHead>
-                    <CeldaHead >Qty</CeldaHead>
-                    <CeldaHead >Comentarios</CeldaHead>
-                    <CeldaHead >Qty Pendiente</CeldaHead>
-                    <CeldaHead >Qty Entregada</CeldaHead>
-                    <CeldaHead >Ver entregas</CeldaHead>
-                </Filas>
-            </thead>
+        </TituloEncabezadoTabla>
+      </EncabezadoTabla>
+      <Tabla ref={tabaOrden}>
+        <thead>
+          <Filas className='cabeza'>
+            <CeldaHead >N°</CeldaHead>
+            <CeldaHead >Codigo*</CeldaHead>
+            <CeldaHead >Descripcion</CeldaHead>
+            <CeldaHead >Qty</CeldaHead>
+            <CeldaHead >Comentarios</CeldaHead>
+            <CeldaHead >Qty Pendiente</CeldaHead>
+            <CeldaHead >Qty Entregada</CeldaHead>
+            <CeldaHead >Ver entregas</CeldaHead>
+          </Filas>
+        </thead>
 
-            <tbody>
-              {
-                ordenSelect.materiales.map((item, index)=>{
-                  let cantidadDespachada=0
-                  if(item.despachos.length>0){
-                    item.despachos.map((articulo,index)=>{
-                      cantidadDespachada=cantidadDespachada+articulo.qty
-                    })
-                  }
-                  return(
-                  <Filas key={index} className={nClases[index]}>
-                    <CeldasBody>{index+1}</CeldasBody>
-                    <CeldasBody 
-                            data-id={index}
-                            >
-                              <Enlaces 
-                                to={`/importaciones/consultas/articulos/${item.codigo}`}
-                                target="_blank"
-                                >
-                                {item.codigo}
-                                
-
-                                </Enlaces>
-                        </CeldasBody>
-                    <CeldasBody className='descripcion'>{item.descripcion}</CeldasBody>
-                    <CeldasBody>{item.qty}</CeldasBody>
-                    <CeldasBody>{item.comentarios}</CeldasBody>
-                    <CeldasBody>{item.qty-cantidadDespachada}</CeldasBody>
-                    <CeldasBody>{cantidadDespachada}</CeldasBody>
-                    <CeldasBody>
-                        <IconoREDES
-                            data-id={index}
-                            onClick={(e)=>mostrarDespacho(e)}
-                          >
-                            👁️
-                        </IconoREDES>
-                    </CeldasBody>
-
-                  </Filas>
-                  )
-                })
+        <tbody>
+          {
+            ordenSelect.materiales.map((item, index)=>{
+              let cantidadDespachada=0;
+              if(item.despachos.length>0){
+                item.despachos.map((articulo)=>{
+                  cantidadDespachada=cantidadDespachada+articulo.qty;
+                });
               }
-                
-            </tbody>
-        </Tabla>
-        {
-      hasDespachos?
-      <TablaMultiDespachos
-      despachoSelect={despacho}
-        setAlertaItemSinEntrega={setAlertaItemSinEntrega}
-        tablaDespachos={tablaDespachos}
-        hasDespachos={hasDespachos}
-        setHasDespachos={setHasDespachos}
-      />
-      :
-      ''
+              return(
+                <Filas key={index} className={nClases[index]}>
+                  <CeldasBody>{index+1}</CeldasBody>
+                  <CeldasBody
+                    data-id={index}
+                  >
+                    <Enlaces
+                      to={`/importaciones/consultas/articulos/${item.codigo}`}
+                      target="_blank"
+                    >
+                      {item.codigo}
 
-    }
-    <Alerta
+                    </Enlaces>
+                  </CeldasBody>
+                  <CeldasBody className='descripcion'>{item.descripcion}</CeldasBody>
+                  <CeldasBody>{item.qty}</CeldasBody>
+                  <CeldasBody>{item.comentarios}</CeldasBody>
+                  <CeldasBody>{item.qty-cantidadDespachada}</CeldasBody>
+                  <CeldasBody>{cantidadDespachada}</CeldasBody>
+                  <CeldasBody>
+                    <IconoREDES
+                      data-id={index}
+                      onClick={(e)=>mostrarDespacho(e)}
+                    >
+                            👁️
+                    </IconoREDES>
+                  </CeldasBody>
+
+                </Filas>
+              );
+            })
+          }
+
+        </tbody>
+      </Tabla>
+      {
+        hasDespachos?
+          <TablaMultiDespachos
+            despachoSelect={despacho}
+            setAlertaItemSinEntrega={setAlertaItemSinEntrega}
+            tablaDespachos={tablaDespachos}
+            hasDespachos={hasDespachos}
+            setHasDespachos={setHasDespachos}
+          />
+          :
+          ''
+
+      }
+      <Alerta
         estadoAlerta={alertaItemSinEntrega}
         tipo={'warning'}
         mensaje={'Este item aun no posee entregas.'}
       />
     </>
-  )
-}
-
-
+  );
+};
 
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
@@ -171,8 +164,8 @@ const Tabla = styled.table`
   margin: auto;
   margin-bottom: 30px;
   border: 1px solid #000;
-  `
-  
+  `;
+
 const CeldaHead= styled.th`
   padding: 3px 8px;
   text-align: center;
@@ -192,7 +185,7 @@ const CeldaHead= styled.th`
   }
  
 
-`
+`;
 const Filas =styled.tr`
   &.body{
     font-weight: normal;
@@ -212,7 +205,7 @@ const Filas =styled.tr`
     background-color: ${theme.azulOscuro1Sbetav};
   }
   color: ${theme.azul1};
-`
+`;
 
 const CeldasBody = styled.td`
 border: 1px solid black;
@@ -240,7 +233,7 @@ text-align: center;
         }
     }
 
-`
+`;
 const EncabezadoTabla =styled.div`
   margin-top: 20px;
   background-color: ${theme.azulOscuro1Sbetav};
@@ -249,13 +242,13 @@ const EncabezadoTabla =styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-`
+`;
 const TituloEncabezadoTabla=styled.h2`
   color: #757575;
   font-size: 1.2rem;
   font-weight: normal;
 
-`
+`;
 const BtnNormal=styled(BtnGeneralButton)`
 &.borrada{
   background-color: red;
@@ -282,15 +275,15 @@ const BtnNormal=styled(BtnGeneralButton)`
     margin: 0;
     /* height: 30px; */
   }
-`
+`;
 
 const Icono=styled(FontAwesomeIcon)`
   margin-right: 10px;
-`
+`;
 const IconoREDES =styled.p`
   cursor: pointer;
 
-`
+`;
 
 const Enlaces=styled(NavLink)`
 color: inherit;
@@ -299,4 +292,4 @@ text-decoration: none;
   text-decoration: underline;
 }
 
-`
+`;

@@ -1,22 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
-import { Link } from 'react-router-dom'
-import logoCielos from './../../public/img/cielos.png'
-import logoCaeloss from './../../public/img/logoOficial2.png'
+import styled from 'styled-components';
+import theme from '../../theme';
+import { Link } from 'react-router-dom';
+import logoCielos from './../../public/img/cielos.png';
+import logoCaeloss from './../../public/img/logoOficial2.png';
 
 export const Header = (props) => {
   return (
     <Cabecera>
       <ContenedorOne>
-          <CajaLogoC to='/'>
-            <LogoC src={logoCaeloss} alt="Logo Caeloss" />
-          </CajaLogoC>
+        <CajaLogoC to='/'>
+          <LogoC src={logoCaeloss} alt="Logo Caeloss" />
+        </CajaLogoC>
         <TituloMain>
           <CajaTexto>
             <Titulo>
-
-            {props.titulo}
+              {props.titulo}
             </Titulo>
           </CajaTexto>
         </TituloMain>
@@ -25,13 +23,11 @@ export const Header = (props) => {
         </SubTitulo>
       </ContenedorOne>
       <CajaCielos>
-       
-          <LogoCielos src={logoCielos} />
+        <LogoCielos src={logoCielos} />
       </CajaCielos>
-  </Cabecera>
-  )
-}
-
+    </Cabecera>
+  );
+};
 
 const Cabecera=styled.div`
     width: 100%;
@@ -43,25 +39,21 @@ const Cabecera=styled.div`
     justify-content: space-between;
     @media screen and (max-width:290px) {
       flex-direction: column;
-      
     }
-  `
-  
+  `;
+
 const ContenedorOne=styled.div`
   display: flex;
   gap: 15px;
   padding-left: 10px;
-
-`
+`;
 
 const TituloMain = styled.div`
   margin-left: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-
-`
+`;
 const SubTitulo=styled.h2`
   font-size: 1rem;
   height: 100%;
@@ -71,7 +63,7 @@ const SubTitulo=styled.h2`
   @media screen and (max-width: 350px) {
       font-size: 0.7rem;
     }
-`
+`;
 
 const CajaLogoC = styled(Link)`
   /* border: 1px solid red; */
@@ -90,9 +82,7 @@ const CajaLogoC = styled(Link)`
       /* height: 60%; */
       align-items: end;
     }
-  
-
-`
+`;
 const LogoC = styled.img`
   height: 55px;
   margin: 4px;
@@ -112,7 +102,7 @@ const LogoC = styled.img`
     @media screen and (max-width: 290px) {
       height: 40px;
     }
-`
+`;
 
 const CajaTexto = styled.div`
   display: flex;
@@ -120,7 +110,7 @@ const CajaTexto = styled.div`
   align-items: end;
   padding: 0;
   height: 100%;
-`
+`;
 const Titulo=styled.h2`
   font-size: 2rem;
   color: white;
@@ -136,7 +126,7 @@ const Titulo=styled.h2`
 
 
   
-`
+`;
 const CajaCielos=styled.div`
   display: flex;
   align-items: end;
@@ -148,10 +138,10 @@ const CajaCielos=styled.div`
       width: 20px;
       
     }
-`
+`;
 const LogoCielos = styled.img`
     height: 55px;
     @media screen and (max-width: 880px) {
       height: 30px;
     }
-`
+`;

@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { Header } from '../../components/Header'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import CajaNavegacion from '../components/CajaNavegacion'
-import { AddBL } from '../CreateDB/AddBL'
-import { AddOC } from '../CreateDB/AddOC'
-import { OpcionUnica } from '../../components/OpcionUnica'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { getAuth } from 'firebase/auth'
-import { useAuth } from '../../context/AuthContext'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
-import db from '../../firebase/firebaseConfig'
+import { useEffect, useState } from 'react';
+import { Header } from '../../components/Header';
+import styled from 'styled-components';
+import CajaNavegacion from '../components/CajaNavegacion';
+import { AddBL } from '../CreateDB/AddBL';
+import { AddOC } from '../CreateDB/AddOC';
+import { OpcionUnica } from '../../components/OpcionUnica';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import db from '../../firebase/firebaseConfig';
 
 export const Setup = ({
   // dbBillOfLading,
@@ -22,21 +20,20 @@ export const Setup = ({
 }) => {
 
   const [dbBillOfLading, setDBBillOfLading] = useState([]);
-  const [dbOrdenes,setDBOrdenes]=useState([])
-  const navegacion=useNavigate()
-  const auth=getAuth()
-  const usuario=auth.currentUser
+  const [dbOrdenes,setDBOrdenes]=useState([]);
+  const navegacion=useNavigate();
+  const auth=getAuth();
+  const usuario=auth.currentUser;
   let location = useLocation();
   let lugar = location.pathname;
 
   // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
-  const extraerGrupoPorCondicion = (collectionName, setState, exp1,condicion,exp2) => {
-  
+  const useDocByCondicion = (collectionName, setState, exp1,condicion,exp2) => {
     useEffect(() => {
       if(usuario){
-        console.log('BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫')
-        let q=''
-          q = query(collection(db, collectionName), where(exp1, condicion, exp2));
+        console.log('BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫');
+        let q='';
+        q = query(collection(db, collectionName), where(exp1, condicion, exp2));
 
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const colecion = [];
@@ -44,60 +41,56 @@ export const Setup = ({
             // console.log(doc.data())
             colecion.push({...doc.data(), id:doc.id});
           });
-          setState(colecion)
-        })
+          setState(colecion);
+        });
         // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
         return () => unsubscribe();
-    }
-    }, [collectionName, setState, exp1,condicion,exp2,usuario]);
+      }
+    }, [collectionName, setState, exp1, condicion, exp2]);
   };
 
-  extraerGrupoPorCondicion('ordenesCompra', setDBOrdenes, 'estadoDoc',"<",2)
-  extraerGrupoPorCondicion('billOfLading', setDBBillOfLading, 'estadoDoc',"<",2)
-
-
+  useDocByCondicion('ordenesCompra', setDBOrdenes, 'estadoDoc',"<",2);
+  useDocByCondicion('billOfLading', setDBBillOfLading, 'estadoDoc',"<",2);
 
   useEffect(()=>{
     document.title = "Caeloss - Importaciones";
     return () => {
-      document.title = "Caeloss"; 
+      document.title = "Caeloss";
     };
-  },[])
+  },[]);
 
   useEffect(()=>{
     if(dbBillOfLading.length>0){
-      console.log(dbBillOfLading)
-      
-    }
-  },[dbBillOfLading])
+      console.log(dbBillOfLading);
 
-  
+    }
+  },[dbBillOfLading]);
 
   useEffect(()=>{
     if(
       lugar=='/importaciones/setup/'||
       lugar=='/importaciones/setup'
-      ){
-        if(dbUsuario.length>0){
-          const userMaster=dbUsuario.find((user)=>{
-            if(user.idUsuario==usuario.uid){
-              return user
-            }
-        })
-        
+    ){
+      if(dbUsuario.length>0){
+        const userMaster=dbUsuario.find((user)=>{
+          if(user.idUsuario==usuario.uid){
+            return user;
+          }
+        });
+
         if(userMaster){
           userMaster.privilegios.forEach((pri)=>{
             if (pri.code === "fullAccessIMS" && pri.valor === false) {
-              navegacion('/')
+              navegacion('/');
             }
-          })
+          });
         }
- 
+
       }
     }
-  },[usuario,dbUsuario])
-   
-const [arrayOpciones,setArrayOpciones]=useState([
+  },[usuario, dbUsuario, lugar, navegacion]);
+
+  const [arrayOpciones,setArrayOpciones]=useState([
     {
       nombre:'Bill of Lading',
       opcion: 0,
@@ -108,23 +101,17 @@ const [arrayOpciones,setArrayOpciones]=useState([
       opcion: 1,
       select:false,
     },
-  ])
+  ]);
 
-
-
-  
-  const handleOpciones=(opcion)=>{
-    let index=Number(event.target.dataset.id)
-    setArrayOpciones(prevOpciones => 
+  const handleOpciones=(e)=>{
+    let index=Number(e.target.dataset.id);
+    setArrayOpciones(prevOpciones =>
       prevOpciones.map((opcion, i) => ({
         ...opcion,
         select: i === index,
       }))
     );
-  }
-
-
-
+  };
 
   return (
     <>
@@ -132,48 +119,47 @@ const [arrayOpciones,setArrayOpciones]=useState([
       <Container>
         <ContainerNav>
 
-        <CajaNavegacion
-          pageSelected={4}
-          dbUsuario={dbUsuario}
-          userMaster={userMaster}
-          
-        />
-        <OpcionUnica
-               titulo='Pantallas'
-               name='grupoA'
-               arrayOpciones={arrayOpciones}
-               handleOpciones={handleOpciones}
-            />
+          <CajaNavegacion
+            pageSelected={4}
+            dbUsuario={dbUsuario}
+            userMaster={userMaster}
 
-          </ContainerNav>
-          
-          {
-            arrayOpciones[0].select==true?
-            <AddBL
-            dbBillOfLading={dbBillOfLading}
-            setDBBillOfLading={setDBBillOfLading}
-            dbOrdenes={dbOrdenes}
-            setDBOrdenes={setDBOrdenes}
           />
+          <OpcionUnica
+            titulo='Pantallas'
+            name='grupoA'
+            arrayOpciones={arrayOpciones}
+            handleOpciones={handleOpciones}
+          />
+
+        </ContainerNav>
+
+        {
+          arrayOpciones[0].select==true?
+            <AddBL
+              dbBillOfLading={dbBillOfLading}
+              setDBBillOfLading={setDBBillOfLading}
+              dbOrdenes={dbOrdenes}
+              setDBOrdenes={setDBOrdenes}
+            />
             :
             arrayOpciones[1].select==true?
-            <AddOC
-            dbOrdenes={dbOrdenes}
-            setDBOrdenes={setDBOrdenes}
-          />
-          :
-          ''  
+              <AddOC
+                dbOrdenes={dbOrdenes}
+                setDBOrdenes={setDBOrdenes}
+              />
+              :
+              ''
 
-          }
+        }
       </Container>
     </>
-  )
-}
+  );
+};
 
 const Container=styled.div`
   
-`
-
+`;
 
 const ContainerNav = styled.div`
   width: 95%;
@@ -192,4 +178,4 @@ const ContainerNav = styled.div`
     width: 99%;
   
   }
-`
+`;

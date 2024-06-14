@@ -1,111 +1,110 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { BtnGeneralButton } from '../components/BtnGeneralButton'
-import { faMagnifyingGlass, faPencil, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faFloppyDisk, faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import styled from 'styled-components';
+import theme from '../../theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { BtnGeneralButton } from '../components/BtnGeneralButton';
+import { faMagnifyingGlass, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 export const ControlesUsuarios = ({
-    modoEditar,
-    userMaster,
-    inputBuscarRef,
-    handleInput,
-    buscarDoc,
-    buscarDocInput,
-    editar,
-    cancelar,
-    guardarCambios,
-    funcionAdvert 
+  modoEditar,
+  userMaster,
+  inputBuscarRef,
+  handleInput,
+  buscarDoc,
+  buscarDocInput,
+  editar,
+  cancelar,
+  guardarCambios,
+  funcionAdvert
 }) => {
   return (
     <CajaBotones>
-        {
-            modoEditar==false?
-            <>
-                <BtnNormal
-                type='button'
-                className={userMaster?.eliminated==true?'editaEliminada':''}
-                onClick={()=>editar()}
-                >
-                <Icono icon={faPencil}/>
+      {
+        modoEditar==false?
+          <>
+            <BtnNormal
+              type='button'
+              className={userMaster?.eliminated==true?'editaEliminada':''}
+              onClick={()=>editar()}
+            >
+              <Icono icon={faPencil}/>
                     Editar
-                </BtnNormal>
+            </BtnNormal>
 
-                <BtnNormal 
-            type='button'
-            data-nombre='eliminarDoc'
-            className={'borrada'}
-            onClick={(e)=>funcionAdvert(e)}
-          >
-            <Icono icon={faTrashCan}/>
+            <BtnNormal
+              type='button'
+              data-nombre='eliminarDoc'
+              className={'borrada'}
+              onClick={(e)=>funcionAdvert(e)}
+            >
+              <Icono icon={faTrashCan}/>
             Eliminar
-          </BtnNormal>
-               
-            </>
-            :
-            <>
-                <BtnNormal
-                    type='button'
-                    // className={docMaster?.eliminated==true?'editaEliminada':''}
-                    onClick={()=>guardarCambios()}
-                >
-                    <Icono icon={faFloppyDisk}/>
-                    Guardar
-                </BtnNormal>
+            </BtnNormal>
 
-                <BtnNormal 
-                    type='button'
-                    className={userMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
-                    onClick={()=>cancelar()}
-                >
-                    <Icono icon={faXmark}/>
+          </>
+          :
+          <>
+            <BtnNormal
+              type='button'
+              // className={docMaster?.eliminated==true?'editaEliminada':''}
+              onClick={()=>guardarCambios()}
+            >
+              <Icono icon={faFloppyDisk}/>
+                    Guardar
+            </BtnNormal>
+
+            <BtnNormal
+              type='button'
+              className={userMaster?.eliminated==true?'eliminadaRealizado':'borrada'}
+              onClick={()=>cancelar()}
+            >
+              <Icono icon={faXmark}/>
                     Cancelar
-                </BtnNormal>
-            </>
-            
-        }
-        
-        {/* <ContenedorBuscar className={modoEditar?'editando':''}> */}
-        <ContenedorBuscar >
-          <Texto>
+            </BtnNormal>
+          </>
+
+      }
+
+      {/* <ContenedorBuscar className={modoEditar?'editando':''}> */}
+      <ContenedorBuscar >
+        <Texto>
             Buscar: {''}
-          </Texto>
-          <InputBuscar 
-            className={
-              modoEditar?
+        </Texto>
+        <InputBuscar
+          className={
+            modoEditar?
               'deshabilitado'
               :
               ''
-            }
-            ref={inputBuscarRef}
-            type='text'
-            name='buscarDocInput'
-            value={buscarDocInput}
-            onChange={(e)=>handleInput(e)}
-            onKeyUp={(e)=>buscarDoc(e)}
-            disabled={
-              modoEditar
-            }
-          />
-          <BtnNormal
-            type='submit'
-            className={`buscar ${modoEditar?'editando':''}`}
-            onClick={()=>buscarDoc()}
-            >
+          }
+          ref={inputBuscarRef}
+          type='text'
+          name='buscarDocInput'
+          value={buscarDocInput}
+          onChange={(e)=>handleInput(e)}
+          onKeyUp={(e)=>buscarDoc(e)}
+          disabled={
+            modoEditar
+          }
+        />
+        <BtnNormal
+          type='submit'
+          className={`buscar ${modoEditar?'editando':''}`}
+          onClick={()=>buscarDoc()}
+        >
           <Icono icon={faMagnifyingGlass}/>
             Buscar
-          </BtnNormal>
-        </ContenedorBuscar>
+        </BtnNormal>
+      </ContenedorBuscar>
     </CajaBotones>
-  )
-}
+  );
+};
 const CajaBotones =styled.div`
   background-color: ${theme.azulOscuro1Sbetav};
   padding-left: 15px;
   display: flex;
   align-items: center;
-`
+`;
 
 const BtnNormal=styled(BtnGeneralButton)`
 &.borrada{
@@ -140,12 +139,11 @@ const BtnNormal=styled(BtnGeneralButton)`
   &.mas{
     width: 50px;
   }
-`
-
+`;
 
 const Icono=styled(FontAwesomeIcon)`
   margin-right: 10px;
-`
+`;
 
 const Texto=styled.h2`
   color: inherit;
@@ -153,7 +151,7 @@ const Texto=styled.h2`
   display: inline-block;
   margin-right: 4px;
 
-`
+`;
 const InputBuscar=styled.input`
   border: none;
   outline: none;
@@ -168,7 +166,7 @@ const InputBuscar=styled.input`
     background-color: ${theme.fondo};
     color: black;
   }
-`
+`;
 
 const ContenedorBuscar=styled.div`
   background-color: ${theme.azulOscuro1Sbetav3};
@@ -184,4 +182,4 @@ const ContenedorBuscar=styled.div`
     background-color: #5e5d60;
     color: black;
   }
-`
+`;

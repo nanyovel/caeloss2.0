@@ -1,12 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
+import styled from 'styled-components';
+import theme from '../../theme';
 
 export const CSSLoader = () => {
   return (
     <Spinner className="loader"></Spinner>
-  )
-}
+  );
+};
 
 const Spinner=styled.span`
   &.loader {
@@ -63,4 +62,4 @@ const Spinner=styled.span`
   }
 }
     
-`
+`;

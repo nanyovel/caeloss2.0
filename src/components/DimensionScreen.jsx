@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 
-
 export default function DimensionScreen(anchoPantalla, setWidth){
-    let anchoReturn
-    
+  let anchoReturn;
+
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
@@ -15,7 +14,7 @@ export default function DimensionScreen(anchoPantalla, setWidth){
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []); 
+  }, [setWidth]);
 
-    return anchoReturn
+  return anchoReturn;
 }

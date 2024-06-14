@@ -1,94 +1,78 @@
-import React, { useEffect,  useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../../theme'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alerta } from '../../components/Alerta'
-import { getAuth } from 'firebase/auth'
+import { useState } from 'react';
+import styled from 'styled-components';
+import theme from '../../../theme';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Alerta } from '../../components/Alerta';
 
 const CajaNavegacion = ({
   pageSelected=false,
-  userMaster,
 }) => {
 
-
-
   let location = useLocation();
-  const[nombrePage,setNombrePage]=useState('')
-  const[alertaMismaPage,setAlertaMismaPage]=useState(false)
-  const navegacion = useNavigate()
-
-  
-  const auth=getAuth()
-  const usuario=auth.currentUser
-
-  
-
-
-
-
-
+  const[nombrePage,setNombrePage]=useState('');
+  const[alertaMismaPage,setAlertaMismaPage]=useState(false);
+  const navegacion = useNavigate();
 
   // ---------------
 
   const probarURL=(e)=>{
-    e.preventDefault()
-    let mismaPagina=false
-    setNombrePage(e.target.name)
+    e.preventDefault();
+    let mismaPagina=false;
+    setNombrePage(e.target.name);
     switch (e.target.name) {
-      case 'Main':
-        if(location.pathname=='/fletes'){
-          // console.log('ya te encuentras en la pagina Main')
-          mismaPagina=true
-        }
-        else{
-          navegacion('/fletes')
+    case 'Main':
+      if(location.pathname=='/fletes'){
+        // console.log('ya te encuentras en la pagina Main')
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/fletes');
 
-        }
-        break;
-      case 'Setup':
-        if(location.pathname=='/fletes/setup'){
-          mismaPagina=true
-        }
-        else{
-          navegacion('/fletes/setup')
-        }
-        break;
-      default:
-        break;
+      }
+      break;
+    case 'Setup':
+      if(location.pathname=='/fletes/setup'){
+        mismaPagina=true;
+      }
+      else{
+        navegacion('/fletes/setup');
+      }
+      break;
+    default:
+      break;
     }
 
     if(mismaPagina){
-      setAlertaMismaPage(true)
+      setAlertaMismaPage(true);
       setTimeout(() => {
-        setAlertaMismaPage(false)
+        setAlertaMismaPage(false);
       }, 3000);
     }
-}
- 
+  };
+
   return (
     <>
       <ContenedorSeguirItem>
         <TituloSeguimiento>Paginas:</TituloSeguimiento>
         <CajaBotones>
-          <EnlacePrincipal 
+          <EnlacePrincipal
             className={pageSelected==0?'selected':''}
             name='Main'
             to={'/fletes'}
             onClick={(e)=>probarURL(e)}
-            >
+          >
                Main
-              </EnlacePrincipal>
+          </EnlacePrincipal>
 
-              <EnlacePrincipal 
-              to={'/fletes/setup'} 
-              name='Setup'
-              onClick={(e)=>probarURL(e)}
-              className={`agregar ${pageSelected==1?" selected":''}`}>
+          <EnlacePrincipal
+            to={'/fletes/setup'}
+            name='Setup'
+            onClick={(e)=>probarURL(e)}
+            className={`agregar ${pageSelected==1?" selected":''}`}>
               Setup
-              </EnlacePrincipal>
+          </EnlacePrincipal>
 
-          </CajaBotones>
+        </CajaBotones>
       </ContenedorSeguirItem>
 
       <Alerta
@@ -97,15 +81,11 @@ const CajaNavegacion = ({
         mensaje={`Ya se encuentra en la pagina ${nombrePage}.`}
       />
     </>
-  )
-}
+  );
+};
 
-export default CajaNavegacion
+export default CajaNavegacion;
 
-
-const ContenedorParametrizados= styled.div`
-  width: 49%;
-`
 const ContenedorSeguirItem = styled.div`
   /* width: 45%; */
   background-color: ${theme.azulTransparente2};
@@ -116,7 +96,7 @@ const ContenedorSeguirItem = styled.div`
     padding: 10px 2px;
   }
 
-`
+`;
 
 const TituloSeguimiento = styled.p`
   color: white;
@@ -124,7 +104,7 @@ const TituloSeguimiento = styled.p`
   display: inline-block;
   margin-bottom: 5px;
 
-`
+`;
 
 const CajaBotones =styled.div`
   /* border: 1px solid red; */
@@ -132,9 +112,7 @@ const CajaBotones =styled.div`
   gap: 2px;
   /* border: 1px solid red; */
   flex-wrap: wrap;
-`
-
-
+`;
 
 const EnlacePrincipal = styled(Link)`
   /* margin: 8px; */
@@ -190,7 +168,4 @@ const EnlacePrincipal = styled(Link)`
   
 
   
-`
-
-const Icono=styled(FontAwesomeIcon)`
-`
+`;

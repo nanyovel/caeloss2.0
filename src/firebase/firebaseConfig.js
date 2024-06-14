@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import {getAuth} from 'firebase/auth'
-import {getFirestore} from 'firebase/firestore'
-import {getStorage} from 'firebase/storage'
+import {getAuth} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
+import {getStorage} from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -16,9 +16,9 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-export const autenticar = getAuth(app)
+export const autenticar = getAuth(app);
 const analytics = getAnalytics(app);
 logEvent(analytics, 'notification_received');
-const db = getFirestore(app)
-export const storage=getStorage(app)
+const db = getFirestore(app);
+export const storage=getStorage(app);
 export default db;

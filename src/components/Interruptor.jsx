@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import theme from '../../theme'
+import styled from 'styled-components';
 
 export const Interruptor = ({
-  texto, 
+  texto,
   handleChange,
-  isFollowing, 
+  isFollowing,
   tipo,
   noFurgon,
   noBL,
@@ -23,23 +21,23 @@ export const Interruptor = ({
         <TituloSeguimiento className={tipo}>{texto?texto:null}</TituloSeguimiento>
       </CajaTituloSeguimiento>
       <ContenidoInterruptor>
-        <EtiquetaDeslizar 
+        <EtiquetaDeslizar
           className={`slideThree  ${tipo=='recepAlmacen'?' esp':''}`}
-          >
-          <InputNoVisible 
-             type="checkbox"
-             checked={isFollowing?isFollowing:(valor?valor:false)}
-             data-nofurgon={tipo=='recepAlmacen'?noFurgon:''}
-             data-nobl={tipo=='recepAlmacen'?noBL:''}
-             onChange={(e)=>handleChange(e)}
-             disabled={disabled?disabled:false}
-            />
-            <LabelSencillo htmlFor="btnEconomia"></LabelSencillo>
+        >
+          <InputNoVisible
+            type="checkbox"
+            checked={isFollowing?isFollowing:(valor?valor:false)}
+            data-nofurgon={tipo=='recepAlmacen'?noFurgon:''}
+            data-nobl={tipo=='recepAlmacen'?noBL:''}
+            onChange={(e)=>handleChange(e)}
+            disabled={disabled?disabled:false}
+          />
+          <LabelSencillo htmlFor="btnEconomia"></LabelSencillo>
         </EtiquetaDeslizar>
       </ContenidoInterruptor>
     </CajitaSeguimiento>
-  )
-}
+  );
+};
 
 const CajitaSeguimiento=styled.div`
   display: inline-block;
@@ -56,14 +54,14 @@ const CajitaSeguimiento=styled.div`
     padding: 2px;
     /* flex-direction: ; */
   }
-`
+`;
 
 const CajaTituloSeguimiento=styled.div`
   width: 100%;
   height: 40%;
   padding: 0px 5px;
 
-`
+`;
 
 const TituloSeguimiento=styled.h3`
   color: white;
@@ -73,19 +71,7 @@ const TituloSeguimiento=styled.h3`
   &.recepAlmacen{
     border: none;
   }
-`
-
-const CajaSeguimiento=styled.div`
-  /* border: 1px solid red; */
-  width: 95%;
-  margin: auto;
-  margin-bottom: 20px;
-  background-color: ${theme.azulTransparente2};
-  min-height: 200px;
-  border: 1px solid #000;
-  border-radius: 5px;
-`
-
+`;
 const ContenidoInterruptor=styled.div`
   display: flex;
   width: 100%;
@@ -93,7 +79,7 @@ const ContenidoInterruptor=styled.div`
   align-items: center;
   justify-content: center;
   padding-top: 5px;
-`
+`;
 
 const EtiquetaDeslizar=styled.label`
   display: block;
@@ -141,7 +127,7 @@ const EtiquetaDeslizar=styled.label`
     }
   }
 
-`
+`;
 
 const LabelSencillo=styled.label`
     display: block;
@@ -174,8 +160,8 @@ const LabelSencillo=styled.label`
   background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
   background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
-`
+`;
 const InputNoVisible=styled.input`
   visibility: hidden;
   
-`
+`;

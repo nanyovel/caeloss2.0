@@ -1,276 +1,270 @@
-import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-import { BtnGeneralButton } from '../../components/BtnGeneralButton'
-import theme from '../../../theme'
+import styled from 'styled-components';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import theme from '../../../theme';
 
 export const InputsOutputs = ({
-    sumarRestarHab,
-    handleInputs,
-    entradaMaster,
-    tablaMat,
-    tablaResult,
-    arrayOpcionesUnidadMedida,
-    copiarPortaPapeles,
-    primerInputRef,
-    inputAreaRef,
-    comprimir,
-    width,
-    sinAreaCuadrada,
+  sumarRestarHab,
+  handleInputs,
+  entradaMaster,
+  tablaMat,
+  tablaResult,
+  arrayOpcionesUnidadMedida,
+  copiarPortaPapeles,
+  primerInputRef,
+  inputAreaRef,
+  comprimir,
+  width,
+  sinAreaCuadrada,
 }) => {
 
   return (
 
     <>
-    <SeccionInputs>
+      <SeccionInputs>
         <CajaInputsForm>
-            <CajaTablaEntrada>
+          <CajaTablaEntrada>
             <CajaControles>
-                       <BtnSimple 
-                        onClick={(e)=>sumarRestarHab(e)}
-                        name='sumar'
-                       >
+              <BtnSimple
+                onClick={(e)=>sumarRestarHab(e)}
+                name='sumar'
+              >
                         +</BtnSimple>
-                       <BtnSimple
-                         onClick={(e)=>sumarRestarHab(e)}
-                         name='restar'
-                       >-</BtnSimple>
-                       {
-                        width>600&&
+              <BtnSimple
+                onClick={(e)=>sumarRestarHab(e)}
+                name='restar'
+              >-</BtnSimple>
+              {
+                width>600&&
                           <BtnSimple
-                          onClick={()=>copiarPortaPapeles()}
+                            onClick={()=>copiarPortaPapeles()}
                           >
                           Copiar</BtnSimple>
-                        }
-                </CajaControles>
-              
-                <Tabla className='tablaEntrada'>
-                    <thead>
-                        <Filas>
-                            <CeldaHead>N°</CeldaHead>
-                            {
-                              entradaMaster[0]?.map((input,index)=>{
-                                return(
-                                  <CeldaHead key={index} name={input.nombre}>
-                                    {`${input.nombre.charAt(0).toUpperCase() + input.nombre.slice(1)} ${input.nombre=='area'?'²':''}`}
-                                  </CeldaHead>
-                                )
-                              })
-                            }
-                        </Filas>
-                    </thead>
-                    <tbody>
-                        {
-                          entradaMaster.map((hab,index)=>{
-                            return(
-                              <Filas key={index}>
-                                 <CeldasBody> {'D'+(index+1)}</CeldasBody>
-                                {
-                                  hab.map((input,i)=>{
-                                    let ancho=Number(hab[0].valor)
-                                    let largo=Number(hab[1].valor)
-                                    let area=0
-                                    let perimetro=0
+              }
+            </CajaControles>
 
-                                    if(ancho>0&&largo>0){
-                                      area=ancho*largo
-                                      perimetro=(ancho+largo)*2
-                                    }
-                                    return(
-                                       <CeldasBody key={i}>
-                                        <InputCelda
-                                          type={
-                                            arrayOpcionesUnidadMedida[0].select||
+            <Tabla className='tablaEntrada'>
+              <thead>
+                <Filas>
+                  <CeldaHead>N°</CeldaHead>
+                  {
+                    entradaMaster[0]?.map((input,index)=>{
+                      return(
+                        <CeldaHead key={index} name={input.nombre}>
+                          {`${input.nombre.charAt(0).toUpperCase() + input.nombre.slice(1)} ${input.nombre=='area'?'²':''}`}
+                        </CeldaHead>
+                      );
+                    })
+                  }
+                </Filas>
+              </thead>
+              <tbody>
+                {
+                  entradaMaster.map((hab,index)=>{
+                    return(
+                      <Filas key={index}>
+                        <CeldasBody> {'D'+(index+1)}</CeldasBody>
+                        {
+                          hab.map((input,i)=>{
+                            let ancho=Number(hab[0].valor);
+                            let largo=Number(hab[1].valor);
+                            let area=0;
+                            let perimetro=0;
+
+                            if(ancho>0&&largo>0){
+                              area=ancho*largo;
+                              perimetro=(ancho+largo)*2;
+                            }
+                            return(
+                              <CeldasBody key={i}>
+                                <InputCelda
+                                  type={
+                                    arrayOpcionesUnidadMedida[0].select||
                                             arrayOpcionesUnidadMedida[1].select
-                                            ?
-                                            (
-                                            width<550&&
+                                      ?
+                                      (
+                                        width<550&&
                                             input.nombre!=='area'&&
                                             input.nombre!=='perimetro'
-                                            ?
-                                            'number':'text')
-                                            :
-                                            arrayOpcionesUnidadMedida[2].select||
+                                          ?
+                                          'number':'text')
+                                      :
+                                      arrayOpcionesUnidadMedida[2].select||
                                             arrayOpcionesUnidadMedida[3].select
-                                            ?
-                                            (
-                                              width<550&&
+                                        ?
+                                        (
+                                          width<550&&
                                               input.nombre!=='ancho'&&
                                               input.nombre!=='largo'
-                                              ?
-                                              'number'
-                                              :
-                                              'text')
-                                              :
-                                              ''
-                                            }
-                                          ref={
-                                            index==0?
-                                            (
-                                              input.nombre=='ancho'?
-                                              primerInputRef
-                                              :
-                                              input.nombre=='area'?
-                                              inputAreaRef
-                                              :
-                                              null
-
-                                            ):
-                                            null}
-                                          name={input.nombre}
-                                          value={input.inactivo==false?
-                                            input.valor
+                                            ?
+                                            'number'
                                             :
-                                            (input.nombre=='area'&&area>0?(area.toFixed(2)+
+                                            'text')
+                                        :
+                                        ''
+                                  }
+                                  ref={
+                                    index==0?
+                                      (
+                                        input.nombre=='ancho'?
+                                          primerInputRef
+                                          :
+                                          input.nombre=='area'?
+                                            inputAreaRef
+                                            :
+                                            null
+
+                                      ):
+                                      null}
+                                  name={input.nombre}
+                                  value={input.inactivo==false?
+                                    input.valor
+                                    :
+                                    (input.nombre=='area'&&area>0?(area.toFixed(2)+
                                             (
                                               arrayOpcionesUnidadMedida[0].select==true?' M²'
-                                              :
-                                              arrayOpcionesUnidadMedida[1].select==true?' P²'
-                                              :
-                                              (
-                                                sinAreaCuadrada?
-                                                (arrayOpcionesUnidadMedida[2].select==true?' In²':'')
                                                 :
-                                                (arrayOpcionesUnidadMedida[4].select==true?' In²':'')
-                                                
-                                              )
-                                              
-                                              ))
-                                            :
-                                            (
-                                            input.nombre=='perimetro'&&perimetro>0?(perimetro.toFixed(2)+
+                                                arrayOpcionesUnidadMedida[1].select==true?' P²'
+                                                  :
+                                                  (
+                                                    sinAreaCuadrada?
+                                                      (arrayOpcionesUnidadMedida[2].select==true?' In²':'')
+                                                      :
+                                                      (arrayOpcionesUnidadMedida[4].select==true?' In²':'')
+
+                                                  )
+
+                                            ))
+                                      :
+                                      (
+                                        input.nombre=='perimetro'&&perimetro>0?(perimetro.toFixed(2)+
                                             (
                                               arrayOpcionesUnidadMedida[0].select==true?' ML'
-                                              :
-                                              arrayOpcionesUnidadMedida[1].select==true?' PL'
-                                              :
-                                              (
-                                                sinAreaCuadrada?
-                                                (arrayOpcionesUnidadMedida[2].select==true?' InL':'')
                                                 :
-                                                (arrayOpcionesUnidadMedida[4].select==true?' InL':'')
+                                                arrayOpcionesUnidadMedida[1].select==true?' PL'
+                                                  :
+                                                  (
+                                                    sinAreaCuadrada?
+                                                      (arrayOpcionesUnidadMedida[2].select==true?' InL':'')
+                                                      :
+                                                      (arrayOpcionesUnidadMedida[4].select==true?' InL':'')
 
-                                              )
+                                                  )
                                             )):''))}
-                                          data-id={index}
-                                          data-numerador={input.numerador}
-                                          onChange={(e)=>handleInputs(e)}
-                                          autoComplete='off'
-                                          disabled={input.inactivo}
-                                          className={`
+                                  data-id={index}
+                                  data-numerador={input.numerador}
+                                  onChange={(e)=>handleInputs(e)}
+                                  autoComplete='off'
+                                  disabled={input.inactivo}
+                                  className={`
                                             ${input.inactivo?'inactivo':''} 
-                                            ${input.nombre=='perimetro'&&hab[i-1].valor>0&&hab[i].valor==''? 
-                                            'vacio'
-                                            :
-                                            ''
-                                            }
+                                            ${input.nombre=='perimetro'&&hab[i-1].valor>0&&hab[i].valor==''?
+                                'vacio'
+                                :
+                                ''
+                              }
                                             
                                           `}
-                                        />
-                                       </CeldasBody>
-                                    )
-                                  })
-                                }
-
-                              </Filas>
-                            )
+                                />
+                              </CeldasBody>
+                            );
                           })
                         }
 
-                        
-                    </tbody>
-                </Tabla>
-           
-            
-            </CajaTablaEntrada>
+                      </Filas>
+                    );
+                  })
+                }
+
+              </tbody>
+            </Tabla>
+
+          </CajaTablaEntrada>
         </CajaInputsForm>
-    </SeccionInputs>
-    <SeccionSalida>
-      <CajaTablaSalida className={width<550?'mobil':''}>
-       <CajaTablaResult>
-        <Tabla className='tablaMat'>
-          <tbody>
-            <Filas>
-              <CeldaHead>N°</CeldaHead>
-              <CeldaHead>Codigo</CeldaHead>
-              <CeldaHead>Descripcion</CeldaHead>
-              <CeldaHead>Total</CeldaHead>
-            </Filas>
-          </tbody>
-          <tbody>
-            {
-              tablaMat.map((mat,index)=>{
-                return(
-                  <Filas key={index} className={mat.desactivado!=true?'':'desactivado'}>
-                    <CeldasBody className={comprimir==true?'comprimir':''}>{index+1}</CeldasBody>
-                    <CeldasBody  className={comprimir==true?'comprimir':''}>{mat.desactivado!=true?mat.codigo:'-'}</CeldasBody>
-                    <CeldasBody title={mat.descripcion} className={`descripcion ${comprimir==true?'comprimir':''}`}>{mat.descripcion}</CeldasBody>
-                    <CeldasBody  className={comprimir==true?'comprimir':''}>{mat.desactivado!=true?(mat.qtyTotal>0?mat.qtyTotal:''):'-'}</CeldasBody>
-                  </Filas>
-                )
-              })
-            }
-          </tbody>
-        </Tabla>
-        </CajaTablaResult>
-        <CajaTablaResult className={`tablaResult ${width<550?' mobil':''}`}>
-          
-        <Tabla className={`tablaResult ${width<550?' mobil':''}`}>
-          <thead>
-            <Filas >
-              {
-                tablaResult[0]?.map((mat,index)=>{
-                  return(
-                    <CeldaHead key={index}>{'D'+(index+1)}</CeldaHead>
-                  )
-                })
-              }
-            </Filas>
-          </thead>
-          <tbody>
-            {
-              tablaResult.map((fila,index)=>{
-                return(
-                  <Filas key={index} >
-                    {
-                      fila.map((celda,i)=>{
-                        return(
-                          <CeldasBody key={i} 
-                            className=
-                              {`${celda.desactivado!=true?'':'desactivado'}
+      </SeccionInputs>
+      <SeccionSalida>
+        <CajaTablaSalida className={width<550?'mobil':''}>
+          <CajaTablaResult>
+            <Tabla className='tablaMat'>
+              <tbody>
+                <Filas>
+                  <CeldaHead>N°</CeldaHead>
+                  <CeldaHead>Codigo</CeldaHead>
+                  <CeldaHead>Descripcion</CeldaHead>
+                  <CeldaHead>Total</CeldaHead>
+                </Filas>
+              </tbody>
+              <tbody>
+                {
+                  tablaMat.map((mat,index)=>{
+                    return(
+                      <Filas key={index} className={mat.desactivado!=true?'':'desactivado'}>
+                        <CeldasBody className={comprimir==true?'comprimir':''}>{index+1}</CeldasBody>
+                        <CeldasBody className={comprimir==true?'comprimir':''}>{mat.desactivado!=true?mat.codigo:'-'}</CeldasBody>
+                        <CeldasBody title={mat.descripcion} className={`descripcion ${comprimir==true?'comprimir':''}`}>{mat.descripcion}</CeldasBody>
+                        <CeldasBody className={comprimir==true?'comprimir':''}>{mat.desactivado!=true?(mat.qtyTotal>0?mat.qtyTotal:''):'-'}</CeldasBody>
+                      </Filas>
+                    );
+                  })
+                }
+              </tbody>
+            </Tabla>
+          </CajaTablaResult>
+          <CajaTablaResult className={`tablaResult ${width<550?' mobil':''}`}>
+
+            <Tabla className={`tablaResult ${width<550?' mobil':''}`}>
+              <thead>
+                <Filas >
+                  {
+                    tablaResult[0]?.map((mat,index)=>{
+                      return(
+                        <CeldaHead key={index}>{'D'+(index+1)}</CeldaHead>
+                      );
+                    })
+                  }
+                </Filas>
+              </thead>
+              <tbody>
+                {
+                  tablaResult.map((fila,index)=>{
+                    return(
+                      <Filas key={index} >
+                        {
+                          fila.map((celda,i)=>{
+                            return(
+                              <CeldasBody key={i}
+                                className=
+                                  {`${celda.desactivado!=true?'':'desactivado'}
                               ${celda.global!=true?'':'desactivado'}
                               ${comprimir==true?'comprimir':''}
                               `}
                               >
-                            {
-                              celda.global==true?'-':
-                            (celda.desactivado!=true?(celda.qty>0?celda.qty:''):'-')
-                            }
-                          </CeldasBody>
-                          )
-                      })
-                    }
+                                {
+                                  celda.global==true?'-':
+                                    (celda.desactivado!=true?(celda.qty>0?celda.qty:''):'-')
+                                }
+                              </CeldasBody>
+                            );
+                          })
+                        }
 
-                  </Filas>
-                )
-              })
-            }
-          </tbody>
-        </Tabla>
-        
-        </CajaTablaResult>
-      </CajaTablaSalida>
-    </SeccionSalida>
+                      </Filas>
+                    );
+                  })
+                }
+              </tbody>
+            </Tabla>
+
+          </CajaTablaResult>
+        </CajaTablaSalida>
+      </SeccionSalida>
     </>
-  )
-}
-const CajaTablaScroll=styled.div`
-  overflow-x: scroll;
-`
+  );
+};
 const SeccionInputs=styled.section`
   margin-bottom:10px;
   display: flex;
   justify-content: center;
-`
+`;
 const CajaInputsForm=styled.div`
   width: 50%;
   display: flex;
@@ -283,10 +277,10 @@ const CajaInputsForm=styled.div`
     width: 90%;
   }
 
-`
+`;
 
 const CajaTablaEntrada=styled.div`
-`
+`;
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -303,8 +297,8 @@ const Tabla = styled.table`
 
   &.tablaEntrada{
   }
-  `
-  const CajaTablaResult=styled.div`
+  `;
+const CajaTablaResult=styled.div`
        /* overflow-x: hidden; */
 
      &.tablaResult{
@@ -330,7 +324,7 @@ const Tabla = styled.table`
         overflow-x: scroll;
         /* width: 100px; */
   }
-  `
+  `;
 
 const Filas =styled.tr`
   &.body{
@@ -353,7 +347,7 @@ const Filas =styled.tr`
 
 
   color: ${theme.textoBlancoEdtem};
-`
+`;
 const CeldaHead= styled.th`
    border-bottom: 1px solid #605e5e;
   padding: 3px 7px;
@@ -378,8 +372,8 @@ const CeldaHead= styled.th`
     font-size: 0.7rem;
   }
 
-`
-  const CeldasBody = styled.td`
+`;
+const CeldasBody = styled.td`
     font-size: 0.9rem;
     border: 1px solid black;
     height: 25px;
@@ -414,10 +408,7 @@ const CeldaHead= styled.th`
     }
     
   }
-`
-const IconoREDES =styled.p`
-  cursor: pointer;
-`
+`;
 
 const InputCelda=styled.input`
   border: none;
@@ -444,22 +435,22 @@ const InputCelda=styled.input`
   }
 
   
-`
+`;
 
 const CajaControles=styled.div`
     display: flex;
     justify-content: center;
-`
+`;
 const BtnSimple=styled(BtnGeneralButton)`
     width: 20%;
     font-size: 0.8rem;
     &:focus{
       background-color: ${theme.azul1};
     }
-`
+`;
 
 const SeccionSalida=styled.section`
-`
+`;
 const CajaTablaSalida=styled.div`
   display: flex;
   flex-direction: row;
@@ -467,4 +458,4 @@ const CajaTablaSalida=styled.div`
   &.mobil{
     justify-content: start;
   }
-`
+`;

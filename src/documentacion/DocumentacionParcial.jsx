@@ -1,167 +1,136 @@
-import React, { useEffect } from 'react'
-import { styled } from 'styled-components'
-import theme from '../../theme'
-import { Link } from 'react-router-dom'
-import imgJeni from '../../public/img/avatares/jenifer1.png'
-import imgAbinader from '../../public/img/abinader.jpg'
-
+import { styled } from 'styled-components';
+import theme from '../../theme';
+import imgAbinader from '../../public/img/abinader.jpg';
 
 export const DocumentacionParcial = ({completa}) => {
 
-  
-
   return (
     <>
-    <CajaDocumentacion>
-      {
-        completa&&
+      <CajaDocumentacion>
+        {
+          completa&&
         <TarjetaDoc>
-           <CajaAbinader>
-                <Titulos>Luis Abinader | Sobre transformacion digital</Titulos>
+          <CajaAbinader>
+            <Titulos>Luis Abinader | Sobre transformacion digital</Titulos>
 
-                <CajaTextoAbinader>
-                  <Img src={imgAbinader}/>
-                  <Textos>
-                                  
+            <CajaTextoAbinader>
+              <Img src={imgAbinader}/>
+              <Textos>
+
                     En República Dominicana, reconocemos la importancia de la transformación digital para impulsar nuestro desarrollo social y económico. Nos encontramos inmersos en una carrera acelerada hacia lo digital, tanto para aumentar nuestra competitividad en un mercado globalizado como para enfrentar los desafíos económicos derivados de la pandemia del COVID-19.
-                    <br/>
-                    <br/>
+                <br/>
+                <br/>
 
                     Por eso, hemos establecido el Gabinete de Transformación Digital para trabajar en conjunto con la sociedad civil, el sector privado y la academia en una estrategia nacional a largo plazo. Esta agenda tiene como objetivo mejorar nuestra calidad de vida, acelerar la reactivación económica y elevar nuestra productividad y competitividad mediante el uso de tecnologías digitales.
-                    <br/>
-                    <br/>
+                <br/>
+                <br/>
 
                     Reconocemos que esta transformación digital requiere la colaboración de todos los sectores y estamos comprometidos a garantizar el acceso a la conectividad como un nuevo derecho fundamental.
 
                     En resumen, nuestra meta es transformar digitalmente República Dominicana para mejorar la calidad de vida de todos los ciudadanos, impulsar la reactivación económica y lograr un desarrollo sostenible, contando con la participación activa de todos los sectores de la sociedad.
-                </Textos>
-              </CajaTextoAbinader>
-            </CajaAbinader>
+              </Textos>
+            </CajaTextoAbinader>
+          </CajaAbinader>
         </TarjetaDoc>
-      }
-     
+        }
+
         <TarjetaDoc>
-             
-            
-            <Titulos>¿Que es Caeloss?</Titulos>
-            <Textos>
+
+          <Titulos>¿Que es Caeloss?</Titulos>
+          <Textos>
               Caeloss es una plataforma moderna y escalable de automatización de procesos empresariales basada en apps y sistemas de gestión, diseñada para aumentar la productividad de los procesos internos de Cielos Acústicos y accelerar su transformacion digital.
-              <br/>
-              <br/>
-              
+            <br/>
+            <br/>
+
               La versión 1.0 fue publicada en julio 2021 y la versión actual en marzo 2024, la cual cuenta con nuevas e innovadoras funcionalidades.</Textos>
 
-            <Titulos>Terminología</Titulos>
-            <Textos>Caeloss proviene del idioma latín "cælus" que significa cielo, los cielos o celestial, en términos simples es el equivalente a decir Cielos pero en el idioma latín, Cielos tomando como referencia Cielos Acústicos. Aunque la terminología es parecida a Caelus o Caelum que para los romanos fue un Dios del cielo, Caeloss no guarda ninguna referencia hacia dioses, deidades o mitologías.</Textos>
+          <Titulos>Terminología</Titulos>
+          <Textos>Caeloss proviene del idioma latín `&quot;`cælus`&quot;` que significa cielo, los cielos o celestial, en términos simples es el equivalente a decir Cielos pero en el idioma latín, Cielos tomando como referencia Cielos Acústicos. Aunque la terminología es parecida a Caelus o Caelum que para los romanos fue un Dios del cielo, Caeloss no guarda ninguna referencia hacia dioses, deidades o mitologías.</Textos>
 
-            {
-              completa&&
+          {
+            completa&&
               <>
-                        <Titulos>¿Cuál es su propósito?</Titulos>
-                        <Textos>Caeloss busca ser un referente de  <a  href="https://es.wikipedia.org/wiki/Cuarta_Revoluci%C3%B3n_Industrial" target="_blank">la industria 4.0 (cuarta revolución industrial)</a>  tratando de automatizar todos los procesos internos automatizables de Cielos Acústicos, compilando en un solo lugar diferentes tareas y operaciones, aumentando la productividad de los departamentos y por consiguientes de la empresa. Caeloss planea convertirse en el eje central de la transformación digital de los procesos internos de Cielos Acústicos.</Textos>
+                <Titulos>¿Cuál es su propósito?</Titulos>
+                <Textos>Caeloss busca ser un referente de  <a href="https://es.wikipedia.org/wiki/Cuarta_Revoluci%C3%B3n_Industrial" target="_blank" rel="noreferrer">la industria 4.0 (cuarta revolución industrial)</a>  tratando de automatizar todos los procesos internos automatizables de Cielos Acústicos, compilando en un solo lugar diferentes tareas y operaciones, aumentando la productividad de los departamentos y por consiguientes de la empresa. Caeloss planea convertirse en el eje central de la transformación digital de los procesos internos de Cielos Acústicos.</Textos>
 
-                        <Titulos>¿Que lo hace especial?</Titulos>
-                        <Textos>A diferencia otros ERP, Caeloss es diseñado a la medida exacta del proceso a automatizar, además dado que es receptivo a feedback de sus usuarios se mantiene en constante actualización, otras de sus ventajas es que Caeloss es la única herramienta tecnológica que permite a cualquier usuario que trabaje en la empresa registrarse a su voluntad sin la necesidad de intervenir el equipo de IT, dado a que el usuario puede acceder desde cualquier dispositivo la convierte en la herramienta con mejor accesibilidad y mayor alcance de la empresa. Aunque la versión 2.0 cuenta con 3 sistemas de gestión y 2 apps, existe una importante lista de procesos a automatizar, los cuales se irán consolidando en Caeloss a través del tiempo.</Textos>
-              
+                <Titulos>¿Que lo hace especial?</Titulos>
+                <Textos>A diferencia otros ERP, Caeloss es diseñado a la medida exacta del proceso a automatizar, además dado que es receptivo a feedback de sus usuarios se mantiene en constante actualización, otras de sus ventajas es que Caeloss es la única herramienta tecnológica que permite a cualquier usuario que trabaje en la empresa registrarse a su voluntad sin la necesidad de intervenir el equipo de IT, dado a que el usuario puede acceder desde cualquier dispositivo la convierte en la herramienta con mejor accesibilidad y mayor alcance de la empresa. Aunque la versión 2.0 cuenta con 3 sistemas de gestión y 2 apps, existe una importante lista de procesos a automatizar, los cuales se irán consolidando en Caeloss a través del tiempo.</Textos>
 
+                <Tabla>
+                  <thead>
+                    <Filas className='cabeza'>
+                      <CeldaHead>N°</CeldaHead>
+                      <CeldaHead>Caeloss</CeldaHead>
+                      <CeldaHead className='ultima'>Otros ERP de Cielos</CeldaHead>
+                    </Filas>
+                  </thead>
+                  <tbody>
+                    <Filas className='body'>
+                      <CeldasBody>Accesibilidad moderna</CeldasBody>
+                      <CeldasBody>Accede desde cualquier dispositivo</CeldasBody>
+                      <CeldasBody>No</CeldasBody>
+                    </Filas>
+                    <Filas className='body'>
+                      <CeldasBody>Sin limites de usuarios</CeldasBody>
+                      <CeldasBody>Caeloss tiene mas de 100 usuarios al mes y las funciones abiertas al publico la utilizan nuestros clientes.</CeldasBody>
+                      <CeldasBody>No</CeldasBody>
+                    </Filas>
+                    <Filas className='body'>
+                      <CeldasBody>Velocidad</CeldasBody>
+                      <CeldasBody>Se ha demostrado que Caeloss es la herramienta tecnológica de este tipo, más veloz de Cielos Acústicos, pues sus funciones son instantánea.</CeldasBody>
+                      <CeldasBody>Funciones no instantaneas, especialmente en las sucursales por su acceso remoto.</CeldasBody>
+                    </Filas>
+                    <Filas className='body'>
+                      <CeldasBody>Amigable y moderna</CeldasBody>
+                      <CeldasBody>Caeloss cuenta con una interfaz fácil de usar e intuitiva por lo cual se considera una app friendly.</CeldasBody>
+                      <CeldasBody>Interfaz con curva de aprendizaje con mayor dificultad.</CeldasBody>
+                    </Filas>
+                    <Filas className='body'>
+                      <CeldasBody>Adaptabilidad al proceso</CeldasBody>
+                      <CeldasBody>En lugar de adaptar el proceso a Caeloss, Caeloss se adapta y optimiza el proceso.</CeldasBody>
+                      <CeldasBody>No</CeldasBody>
+                    </Filas>
+                    <Filas className='body'>
+                      <CeldasBody>Receptivo a feedback</CeldasBody>
+                      <CeldasBody>Caeloss está abierto a recibir feedback de cualquier usuario, esto resulta una gran de ventaja competitiva.</CeldasBody>
+                      <CeldasBody>No</CeldasBody>
+                    </Filas>
+                  </tbody>
+                </Tabla>
+              </>
+          }
 
-          <Tabla>
-          <thead>
-            <Filas className='cabeza'>
-              <CeldaHead>N°</CeldaHead>
-              <CeldaHead>Caeloss</CeldaHead>
-              <CeldaHead className='ultima'>Otros ERP de Cielos</CeldaHead>
-            </Filas>
-          </thead>
-          <tbody>
-            <Filas className='body'>
-              <CeldasBody>Accesibilidad moderna</CeldasBody>
-              <CeldasBody>Accede desde cualquier dispositivo</CeldasBody>
-              <CeldasBody>No</CeldasBody>
-            </Filas>
-            <Filas className='body'>
-              <CeldasBody>Sin limites de usuarios</CeldasBody>
-              <CeldasBody>Caeloss tiene mas de 100 usuarios al mes y las funciones abiertas al publico la utilizan nuestros clientes.</CeldasBody>
-              <CeldasBody>No</CeldasBody>
-            </Filas>
-            <Filas className='body'>
-              <CeldasBody>Velocidad</CeldasBody>
-              <CeldasBody>Se ha demostrado que Caeloss es la herramienta tecnológica de este tipo, más veloz de Cielos Acústicos, pues sus funciones son instantánea.</CeldasBody>
-              <CeldasBody>Funciones no instantaneas, especialmente en las sucursales por su acceso remoto.</CeldasBody>
-            </Filas>
-            <Filas className='body'>
-              <CeldasBody>Amigable y moderna</CeldasBody>
-              <CeldasBody>Caeloss cuenta con una interfaz fácil de usar e intuitiva por lo cual se considera una app friendly.</CeldasBody>
-              <CeldasBody>Interfaz con curva de aprendizaje con mayor dificultad.</CeldasBody>
-            </Filas>
-            <Filas className='body'>
-              <CeldasBody>Adaptabilidad al proceso</CeldasBody>
-              <CeldasBody>En lugar de adaptar el proceso a Caeloss, Caeloss se adapta y optimiza el proceso.</CeldasBody>
-              <CeldasBody>No</CeldasBody>
-            </Filas>
-            <Filas className='body'>
-              <CeldasBody>Receptivo a feedback</CeldasBody>
-              <CeldasBody>Caeloss está abierto a recibir feedback de cualquier usuario, esto resulta una gran de ventaja competitiva.</CeldasBody>
-              <CeldasBody>No</CeldasBody>
-            </Filas>
-          </tbody>
-          </Tabla>
-          </>
-            }
-
-          
-
-            
         </TarjetaDoc>
         {
           completa&&
-        
+
               <>
-            
-              <TarjetaDoc>
-                <Titulos>Próximas versiones</Titulos>
-                <Textos>Existe una interesante lista de apps y sistemas de gestión que se estarán creando en Caeloss, así como también se crearán versiones cada vez mejor optimizada de la plataforma.</Textos>
-                
-              </TarjetaDoc>
-              <TarjetaDoc>
-                <Titulos>Transformacion digital</Titulos>
-                <Textos>
+
+                <TarjetaDoc>
+                  <Titulos>Próximas versiones</Titulos>
+                  <Textos>Existe una interesante lista de apps y sistemas de gestión que se estarán creando en Caeloss, así como también se crearán versiones cada vez mejor optimizada de la plataforma.</Textos>
+
+                </TarjetaDoc>
+                <TarjetaDoc>
+                  <Titulos>Transformacion digital</Titulos>
+                  <Textos>
                 La transformación digital con la llamada <span>Cuarta Revolución Industrial</span>, hace que las instituciones se modernicen o queden obsoletas, nuestro país tiene diferentes proyectos para modernizar el estado,
                 por decreto estamos en proceso de transformarnos digitalmente, esto incluye tanto instituciones gubernamentales como empresas privadas, por lo cual Cielos Acústicos no será la excepción.
-                
-                {/* , entre ellos destaca la <a target='_blank' href="https://agendadigital.gob.do/">Agenda Digital 2030</a>, el cual es un plan para transformar digitalmente el país y se componen de 7 ejes entre ellos: */}
-                  </Textos>
-                {/* <ListaAgenda>
-                  <HijosLista>Gobernanza y marco normativo</HijosLista>
-                  <HijosLista>Conectividad y acceso</HijosLista>
-                  <HijosLista>Gobierno digital </HijosLista>
-                  <HijosLista>Educación y capacidades digitales</HijosLista>
-                  <HijosLista>Economía digital .</HijosLista>
-                  <HijosLista>Ciberseguridad</HijosLista>
-                  <HijosLista>Innovación Tecnológica</HijosLista>
-                </ListaAgenda> */}
-                  {/* <br /> */}
-                {/* <Textos> */}
-                {/* Lo mencionado arriba permite entender que */}
-                 {/* el país está en proceso de transformarse digitalmente, esto incluye tanto instituciones gubernamentales como empresas privadas, por lo cual Cielos Acústicos no será la excepción. */}
-                  {/* <br /> */}
-                  {/* Esta agenda define un plan de acción que declara exactamente dónde queremos estar como nación en materia digital,  <a target="_blank" href="https://agendadigital.gob.do/wp-content/uploads/2022/02/Agenda-Digital-2030-v2.pdf">aquí podrás visualizar el detalle completo.</a> */}
-                {/* </Textos> */}
-              </TarjetaDoc>
 
-              <TarjetaDoc>
-             
-            </TarjetaDoc>
+                  </Textos>
+                </TarjetaDoc>
+
+                <TarjetaDoc>
+
+                </TarjetaDoc>
 
               </>
-}
-              
+        }
+
       </CajaDocumentacion>
-      </>
-  )
-}
-
-
+    </>
+  );
+};
 
 const CajaDocumentacion=styled.div`
   width: 100%;
@@ -172,19 +141,7 @@ const CajaDocumentacion=styled.div`
   /* border: 1px solid red; */
   margin-bottom: 80px;
 
-`
-
-const TituloDoc = styled.h2`
-margin-left: 25px;
-  color: ${theme.azul2};
-  font-size: 2rem;
-  border-bottom: 5px solid ;
-    display: inline-block;
-    margin-bottom: 10px;
-    @media screen and (max-width: 400px) {
-      font-size: 1.2rem;
-    }
-`
+`;
 
 const TarjetaDoc=styled.div`
   border: 1px solid black;
@@ -211,28 +168,14 @@ const TarjetaDoc=styled.div`
     margin: 0;
     padding: 10px;
     }
-`
+`;
 
 const Titulos=styled.h3`
   font-size: 1.4rem;
   color: ${theme.azulClaro1Svetav};
   border-bottom: 1px solid;
   margin-bottom: 10px;
-`
-
-
-const TituloSecond=styled(Titulos)`
-  color: ${theme.azul1};
-  text-align: end;
-   /* display: inline-block; */
-   border: none;
-`
-
-const EnlaceDoc=styled(Link)`
-  color: ${theme.azulClaro1Svetav};
-  margin-bottom: 20px;
-`
-
+`;
 
 const Textos=styled.p`
   
@@ -243,19 +186,9 @@ const Textos=styled.p`
   span{
     font-style: italic;
     text-decoration: underline;
-  }
- 
-`
+  } 
+`;
 
-const ListaAgenda=styled.ul`
-  margin-left: 60px;
-  color: #fff;
-`
-
-const HijosLista=styled.li`
-    color: ${theme.azul1};
-
-`
 const Tabla = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -265,7 +198,7 @@ const Tabla = styled.table`
   @media screen and (max-width: 600px) {
     display: none;
 }
-  `
+  `;
 
 const Filas =styled.tr`
   &.body{
@@ -293,7 +226,7 @@ const Filas =styled.tr`
   &.negativo{
     color: ${theme.danger}
   }
-`
+`;
 
 const CeldaHead= styled.th`
    border-bottom: 1px solid #605e5e;
@@ -318,8 +251,8 @@ const CeldaHead= styled.th`
   }
 
 
-`
-  const CeldasBody = styled.td`
+`;
+const CeldasBody = styled.td`
     font-size: 0.9rem;
     border: 1px solid black;
     height: 25px;
@@ -373,10 +306,10 @@ const CeldaHead= styled.th`
     overflow: hidden;   
     text-overflow: ellipsis;
   }
-`
+`;
 
 const CajaAbinader=styled.div`
-`
+`;
 
 const CajaTextoAbinader =styled.div`
   display: flex;
@@ -386,7 +319,7 @@ const CajaTextoAbinader =styled.div`
     flex-direction: column;
   }
 
-`
+`;
 
 const Img=styled.img`
   max-width: 200px;
@@ -403,4 +336,4 @@ const Img=styled.img`
     margin-bottom: 10px;
     max-width: 550px;
   }
-`
+`;

@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-// import theme from '../../../theme'
-import { Header } from '../../components/Header'
-import CajaNavegacion from '../components/CajaNavegacion'
-// import { useLocation, useParams } from 'react-router-dom'
-// import { addDoc, collection, doc, onSnapshot } from 'firebase/firestore'
-// import db from '../../firebase/firebaseConfig'
-import { DetalleOrden } from '../Moldes/DetalleOrden'
+import { Header } from '../../components/Header';
+import CajaNavegacion from '../components/CajaNavegacion';
+import { DetalleOrden } from '../Moldes/DetalleOrden';
 
 export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
   // const parametro= useParams()
   // let docUser = parametro.id
 
   // let location = useLocation();
-  
+
   // const [dbOrdenes,setDBOrdenes]=useState([])
 
-    // let objetoMaster={}
-    // let isOrdenCompra=false
-    
+  // let objetoMaster={}
+  // let isOrdenCompra=false
+
   //   function extraerYGeneral(baseDatos, objeto,id){
   //         let arrayInterno=[]
   //     baseDatos.map((orden,index)=>{
@@ -32,7 +26,7 @@ export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
   //             })
   //           }
   //               isOrdenCompra=true
-                
+
   //               let filas={
   //                 codigo:item.codigo,
   //                 descripcion:item.descripcion,
@@ -54,7 +48,7 @@ export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
   //   // if(location.pathname=='/importaciones/consultas/ordenescompra'){
   //   if(location.pathname=='/importaciones/consultas/ordenescompra/'||
   //   location.pathname=='/importaciones/consultas/ordenescompra'){
-     
+
   //     nuevoDato={
   //       none:true,
   //       materiales:[]
@@ -64,8 +58,7 @@ export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
   //     nuevoDato=extraerYGeneral(dbOrdenes,objetoMaster, id)
 
   //   }
-    
- 
+
   //   useEffect(() => {
   //     onSnapshot(
   //       collection(db, 'ordenesCompra'),
@@ -75,14 +68,14 @@ export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
   //           return{...documento.data(), id:documento.id}
   //         })
   //         setDBOrdenes(aregloOrdenes)
-         
+
   //       },
   //       (error)=>{
   //         console.log(error)
   //       }
-  
+
   //     )
-  
+
   // }, [])
 
   return (
@@ -91,21 +84,17 @@ export const ListaOrdenCompra = ({dbOrdenes,dbUsuario,userMaster,usuario}) => {
       <CajaNavegacion
         dbUsuario={dbUsuario}
         userMaster={userMaster}
-        />
-        <DetalleOrden
-          dbOrdenes={dbOrdenes}
-          userMaster={userMaster}
-          usuario={usuario}
-          
-          // nuevoDato={nuevoDato}
-        />
-        {/* <CajaMensaje>
+      />
+      <DetalleOrden
+        dbOrdenes={dbOrdenes}
+        userMaster={userMaster}
+        usuario={usuario}
+
+        // nuevoDato={nuevoDato}
+      />
+      {/* <CajaMensaje>
           <h2>El numero orden de compra no existe o esta cerrada</h2>
         </CajaMensaje> */}
     </>
-  )
-}
-
-const Container=styled.div`
-  
-`
+  );
+};

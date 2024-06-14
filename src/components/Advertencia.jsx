@@ -1,58 +1,57 @@
-import React from 'react'
 import { styled } from 'styled-components';
 import theme from '../../theme';
 import { BtnNormal } from './BtnNormal';
 
 export const Advertencia = ({
-    tipo, 
-    mensaje,
-    dispatchAdvertencia,
-    setDispatchAdvertencia,
-    // Setting Function
-    functAEjecutar,
-    eventFunction,
-    function1,
-    function2,
+  tipo,
+  mensaje,
+  dispatchAdvertencia,
+  setDispatchAdvertencia,
+  // Setting Function
+  functAEjecutar,
+  eventFunction,
+  function1,
+  function2,
 }) => {
 
-const ejecucion=(e)=>{
+  const ejecucion=()=>{
     if(functAEjecutar=='eliminarFila'){
-        function1(eventFunction)
-        setDispatchAdvertencia(false)
+      function1(eventFunction);
+      setDispatchAdvertencia(false);
     }
     else if(functAEjecutar=='eliminarDoc'){
-        function2(eventFunction)
-        setDispatchAdvertencia(false)
+      function2(eventFunction);
+      setDispatchAdvertencia(false);
     }
-}
-    
-    return (
-        <>  {
-            dispatchAdvertencia &&
-            <ContenedorAdvertencia >
-                <CajaContenido className={tipo}>
-                    <Texto>{mensaje}  </Texto>
-                    <div>
-                        <BtnNormal
-                            className='normal'
-                            onClick={(e)=>ejecucion(e)}
-                        >
-                            Aceptar
-                        </BtnNormal>
+  };
 
-                        <BtnNormal
-                            className='danger'
-                            onClick={()=>setDispatchAdvertencia(false)}
-                        >
+  return (
+    <>  {
+      dispatchAdvertencia &&
+            <ContenedorAdvertencia >
+              <CajaContenido className={tipo}>
+                <Texto>{mensaje}  </Texto>
+                <div>
+                  <BtnNormal
+                    className='normal'
+                    onClick={(e)=>ejecucion(e)}
+                  >
+                            Aceptar
+                  </BtnNormal>
+
+                  <BtnNormal
+                    className='danger'
+                    onClick={()=>setDispatchAdvertencia(false)}
+                  >
                             Cancelar
-                        </BtnNormal>
-                    </div>
-                </CajaContenido>
+                  </BtnNormal>
+                </div>
+              </CajaContenido>
             </ContenedorAdvertencia>
-            }
-        </>
-  )
-}
+    }
+    </>
+  );
+};
 
 const ContenedorAdvertencia=styled.div`
     width: 100%;
@@ -65,7 +64,7 @@ const ContenedorAdvertencia=styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;
 const CajaContenido=styled.div`
     display: flex;
     flex-direction: column;
@@ -86,7 +85,7 @@ const CajaContenido=styled.div`
     &.info{
     background: ${theme.info};
     }
-`
+`;
 
 const Texto=styled.p`
     /* background: ${theme.warning}; */
@@ -111,4 +110,4 @@ const Texto=styled.p`
     background: ${theme.info};
     } */
 
-`
+`;
