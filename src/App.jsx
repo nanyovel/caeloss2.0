@@ -135,14 +135,13 @@ const App = () => {
       }
     }, [collectionName, setState, idUsuario]);
   };
-
+  useDocById('usuarios', setUserMaster,idUsuario);
   useDocByCondition('ordenesCompra', setDBOrdenes);
   useDocByCondition('usuarios', setDBUsuario);
   useDocByCondition('resennias', setDBResennias,'estadoDoc',"==",0);
   useDocByCondition('billOfLading', setDBBillOfLading, 'estadoDoc',"==",0);
   useDocByCondition('tutoriales', setDBTutoriales);
   let idUsuario=usuario?.uid?usuario.uid:'00';
-  useDocById('usuarios', setUserMaster,idUsuario);
 
   // // ******************** CONFIRMAR EMAIL ******************** //
   const confirmarEmail=()=>{
@@ -193,9 +192,8 @@ const App = () => {
           ...userMaster,
           registrosActividad:registrosActividad} );
     }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[location]);
-
   return (
     <ContenedorPrincipal >
       <MenuLateral userMaster={userMaster}/>
