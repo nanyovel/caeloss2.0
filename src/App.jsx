@@ -1,5 +1,5 @@
 import { styled } from 'styled-components'
-import {  NavLink, Route, Routes, useLocation, useNavigate, } from 'react-router-dom'
+import {  NavLink, Route, Routes, useLocation,  } from 'react-router-dom'
 import theme from '../theme'
 import logoCielos from './../public/img/cielos.png'
 import { CardHome } from './components/CardHome'
@@ -16,10 +16,10 @@ import ImagenCardFletes from './../public/img/cardHomeComp/truck.png'
 import ImagenCardImportacion from './../public/img/cardHomeComp/import33.png'
 import ImagenCardTransportes from './../public/img/cardHomeComp/transportes.png'
 import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png'
-import ImgCerrado from './../public/img/candadoCerrado.png'
-import { Error404 } from '../public/404'
+// import ImgCerrado from './../public/img/candadoCerrado.png'
+// import { Error404 } from '../public/404'
 import { Transportes } from './transportes/Transportes'
-import {  Mantenimiento } from './mantenimiento/Mantenimiento'
+// import {  Mantenimiento } from './mantenimiento/Mantenimiento'
 import { Main } from './importaciones/page/Main'
 import { Maestros } from './importaciones/page/maestros'
 import { ListaArticulo } from './importaciones/template/ListaArticulo'
@@ -39,20 +39,20 @@ import { Perfil } from './routes/Perfil'
 import {  getAuth, sendEmailVerification } from 'firebase/auth'
 import { RutaProtegida } from './routes/RutaProtegida'
 import { Autenticado } from './context/Autenticado'
-import { AvisoCaja } from './components/Avisos/AvisoCaja'
+// import { AvisoCaja } from './components/Avisos/AvisoCaja'
 import { AvisoTop } from './components/Avisos/AvisoTop'
 import { ResetPass } from './routes/ResetPass'
 import { Dashboard } from './dashboard/Dashboard'
 import { ListaFurgon } from './importaciones/Template/ListaFurgon'
 import { ListaUsuarios } from './dashboard/ListaUsuarios'
-import { collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
+import { collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import db from './firebase/firebaseConfig'
 import { Alerta } from './components/Alerta'
-import { BotonQuery } from './components/BotonQuery'
-import { BtnGeneralButton } from './components/BtnGeneralButton'
+// import { BotonQuery } from './components/BotonQuery'
+// import { BtnGeneralButton } from './components/BtnGeneralButton'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { FrasesCelebres } from './components/FrasesCelebres'
+// import { FrasesCelebres } from './components/FrasesCelebres'
 import { Resennias } from './resennias/Resennias'
 import { DocumentacionParcial } from './documentacion/DocumentacionParcial'
 import { Documentacion } from './documentacion/Documentacion' 
@@ -97,7 +97,7 @@ const App = () => {
   const [dbTutoriales, setDBTutoriales]=useState([])
 
 // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
-const extraerGrupoPorCondicion = (collectionName, setState, exp1,condicion,exp2) => {
+const useDocByCondition = (collectionName, setState, exp1,condicion,exp2) => {
   useEffect(() => {
     if(usuario){
       console.log('BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫')
@@ -121,11 +121,11 @@ const extraerGrupoPorCondicion = (collectionName, setState, exp1,condicion,exp2)
       // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
       return () => unsubscribe();
   }
-  }, [collectionName, setState, exp1,condicion,exp2,usuario]);
+  }, [collectionName, setState, exp1,condicion,exp2]);
 };
 
 // ************************** DAME SOLO UN DOC POR ID**************************
-  const extrarUnDocPorId = (collectionName, setState, idUsuario) => {
+  const useDocById = (collectionName, setState, idUsuario) => {
     useEffect(() => {
       if(usuario){
           const unsub = onSnapshot(doc(db, collectionName, idUsuario), (doc) => {
@@ -134,16 +134,16 @@ const extraerGrupoPorCondicion = (collectionName, setState, exp1,condicion,exp2)
         // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
         return () => unsub();
       }
-    }, [collectionName, setState, idUsuario, usuario]);
+    }, [collectionName, setState, idUsuario]);
   }
 
-  extraerGrupoPorCondicion('ordenesCompra', setDBOrdenes)
-  extraerGrupoPorCondicion('usuarios', setDBUsuario)
-  extraerGrupoPorCondicion('resennias', setDBResennias,'estadoDoc',"==",0)
-  extraerGrupoPorCondicion('billOfLading', setDBBillOfLading, 'estadoDoc',"==",0)
-  extraerGrupoPorCondicion('tutoriales', setDBTutoriales)
+  useDocByCondition('ordenesCompra', setDBOrdenes)
+  useDocByCondition('usuarios', setDBUsuario)
+  useDocByCondition('resennias', setDBResennias,'estadoDoc',"==",0)
+  useDocByCondition('billOfLading', setDBBillOfLading, 'estadoDoc',"==",0)
+  useDocByCondition('tutoriales', setDBTutoriales)
   let idUsuario=usuario?.uid?usuario.uid:'00'
-  extrarUnDocPorId('usuarios', setUserMaster,idUsuario)
+  useDocById('usuarios', setUserMaster,idUsuario)
     
   // // ******************** CONFIRMAR EMAIL ******************** //
   const confirmarEmail=()=>{
@@ -170,6 +170,7 @@ const extraerGrupoPorCondicion = (collectionName, setState, exp1,condicion,exp2)
 
 
 // // ******************** REGISTRAR VISITAS DE USUARIOS ******************** //
+// BLoque de codigo provisional
 useEffect(()=>{
   console.log('La URL ha cambiado a:', location.pathname);
   let registrosActividad={}
@@ -638,7 +639,7 @@ return (
                     privilegioReq='fullAccessDashboard'
                   >
                     <Dashboard
-                      extraerGrupoPorCondicion={extraerGrupoPorCondicion}
+                      useDocByCondition={useDocByCondition}
                     />
                   </RutaPrivilegiada>
                 </RutaProtegida>
@@ -665,7 +666,7 @@ return (
                   >
                     <ListaUsuarios
                       userMaster={userMaster}
-                      extraerGrupoPorCondicion={extraerGrupoPorCondicion}
+                      useDocByCondition={useDocByCondition}
                       />
                   </RutaPrivilegiada>
                 </RutaProtegida>
@@ -798,44 +799,17 @@ const TituloModulo = styled(Titulo)`
     @media screen and (max-width: 400px) {
       font-size: 1.1rem;
     }
-`
-
-const FaseBeta = styled.h3`
-  color: ${theme.warning};
-  font-size: 1.5rem;
-  line-height: 2rem;
-  padding-top: 1.5rem;
-  margin-left: 10px;
-  margin-right: 5px;
-`
-
+`;
 const Vol=styled.span`
 margin: 0;
   @media screen and (max-width: 750px) {
     font-size: 1.8rem;
     margin-left: 5px;
   }
-`
-
+`;
 const Enlaces=styled(NavLink)`
   color: inherit;
   text-decoration: none;
   &:hover{
     text-decoration: underline;
-  }
-
-`
-
-const CajaBtn=styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media screen and (max-width:780px){
-    flex-direction: row;
-    
-  }
-  @media screen and (max-width:350px){
-    flex-direction: column;
-    
-  }
-`
+  }`

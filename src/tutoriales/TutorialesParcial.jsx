@@ -29,9 +29,6 @@ export const TutorialesParcial = ({
     const parametro= useParams()
     let docUser = parametro.id
 
-    // const 
-
-    console.log(docUser)
 
     // Alertas
     const [dispatchAlerta, setDispatchAlerta]=useState(false)
@@ -60,9 +57,7 @@ export const TutorialesParcial = ({
   useEffect(()=>{
 
     let tutorAdd=[]
-    console.log(dbTutoriales)
     if(dbTutoriales.length>0&&dbUsuario.length>0){
-      console.log('as')
       tutorAdd=dbTutoriales?.map((tuto)=>{
         // La fecha de los comentarios llevala a ES6, esto para poder ordenarlo po fecha
         const comentES6=tuto.comentarios.map((coment)=>{
