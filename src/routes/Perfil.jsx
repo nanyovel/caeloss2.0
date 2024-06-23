@@ -35,18 +35,26 @@ export const Perfil = ({dbUsuario,userMaster,setUserMaster}) => {
     navegacion('/acceder');
   }
 
+  const [changeUser,setChangeUser]=useState(false);
+  useEffect(()=>{
+    if(userMaster){
+      setChangeUser(true);
+    }
+  },[userMaster]);
+
   // // ******************** ALIMENTAR USERMASTER ******************** //
   useEffect(()=>{
-    // Si por alguna razon cuando el usuario se registro no se creo la base de datos de usuario
-    if(usuario&&!dbUsuario){
-      setUserMaster({
-        ...userMaster,
-        userName: usuario.email.split('@')[0],
-        correo:usuario.email,
-      });
-    }
+    // // Si por alguna razon cuando el usuario se registro no se creo la base de datos de usuario
+    // console.log(userMaster)
+    // if(usuario&&!dbUsuario&&userMaster){
+    //   setUserMaster({
+    //     ...userMaster,
+    //     userName: usuario.email.split('@')[0],
+    //     correo:usuario.email,
+    //   });
+    // }
     // Esto es lo normal
-    if(usuario&&dbUsuario){
+    if(usuario&&dbUsuario&&userMaster){
       const usuarioDB=userMaster;
 
       const usuarioCompilado={
@@ -56,7 +64,7 @@ export const Perfil = ({dbUsuario,userMaster,setUserMaster}) => {
       };
       setUserMaster(usuarioCompilado);
     }
-  },[dbUsuario,usuario]);
+  },[dbUsuario, usuario, changeUser]);
 
   // ******************** MANEHANDO LOS INPUTS ******************** //
   const handleInput=(e)=>{
