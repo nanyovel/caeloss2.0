@@ -5,7 +5,7 @@ import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 import db from '../../firebase/firebaseConfig';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { TablaMultiFurgon } from '../Tablas/TablaMultiFurgon';
-import { faEdit, faLock, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faLock, faLockOpen, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CSSLoader } from '../../components/CSSLoader';
 import { ControlesTabla } from '../components/ControlesTabla';
@@ -1658,7 +1658,7 @@ export const DetalleBL = ({
                 estadoDoc==0?
                   <>
                     BL abierto {` `}
-                    <Icono icon={faUnlock}/>
+                    <Icono icon={faLockOpen}/>
                   </>
                   :
                   estadoDoc==1?

@@ -3,18 +3,33 @@ import { Header } from "../components/Header";
 import theme from "../../theme";
 import { OpcionUnica } from "../components/OpcionUnica";
 import { useEffect, useRef, useState } from "react";
-import { collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getFirestore, onSnapshot, query, setDoc, updateDoc, where, writeBatch } from 'firebase/firestore';
 import db from "../firebase/firebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import { getAuth } from "firebase/auth";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { BotonQuery } from "../components/BotonQuery";
+import { Alerta } from "../components/Alerta";
+import { ModalLoading } from "../components/ModalLoading";
+import { BtnGeneralButton } from "../components/BtnGeneralButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faLockOpen, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export const NoCorreos = () => {
   
+  // ***************RECURSOS GENERALES*****************
+  const [dispatchAlerta, setDispatchAlerta]=useState(false);
+  const [mensajeAlerta, setMensajeAlerta]=useState('');
+  const [tipoAlerta, setTipoAlerta]=useState('');
+
   const auth=getAuth();
   const {usuario}=useAuth();
   const usuarioFireBase=auth.currentUser;
 
   const [dbTickets, setDBTickets]=useState([]);
+  const [dbContador, setDBContador]=useState([]);
+  const [contadorTickets, setContadorTickets]=useState({});
 
     // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
     const useDocByCondition = (collectionName, setState, exp1,condicion,exp2) => {
@@ -44,10 +59,34 @@ export const NoCorreos = () => {
       }, [collectionName, setState, exp1,condicion,exp2]);
     };
 
-    useDocByCondition('tickets', setDBTickets, 'estadoDoc',"==",0);
+    // useDocByCondition('tickets', setDBTickets, 'estadoDoc',"==",0);
+    useDocByCondition('tickets', setDBTickets);
 
+     // ************************** DAME SOLO UN DOC POR ID**************************
+  const useDocById = (collectionName, setState, idUsuario) => {
+    useEffect(() => {
+      if(usuario){
+        const unsub = onSnapshot(doc(db, collectionName, idUsuario), (doc) => {
+          setState({...doc.data(),id:doc.id});
+        });
+        // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
+        return () => unsub();
+      }
+    }, [collectionName, setState, idUsuario]);
+  };
+  useDocById('counters', setDBContador,'ticketCounter');
+
+  useEffect(()=>{
+    if(dbContador.length>0){
+      setContadorTickets(dbContador.find(contador=>contador.id=='ticketCounter'))
+    }
+
+  },[dbContador])
+
+  useDocById('counters', setContadorTickets,'ticketCounter');
 
     
+    // ******************** OPCIONES UNICAS *******************
   const [arrayOpciones,setArrayOpciones]=useState([
     {
       nombre:'Nuevo ticket',
@@ -64,10 +103,6 @@ export const NoCorreos = () => {
       opcion: 2,
       select:false,
     },
-
-
-
-
   ]);
   const handleOpciones=(e)=>{
     let index=Number(e.target.dataset.id);
@@ -79,78 +114,131 @@ export const NoCorreos = () => {
     );
   };
 
-  const guiones='----------'
+  // ********************** ESTADO MAESTRO ********************
+  const [ticketMaster, setTicketMaster]=useState({
+    numeroDoc:'',
+    usuarioCreador:'',
+    fecha:'',
+    proyecto:'',
+    monto:'',
+    detalles:'',
+    destinatario:'',
+    estadoDoc:'',
+  })
 
-  // const [textoResultado, setTextoResultado]=useState('No Ticket---------10003525 \nUsuario-----------Cindy Rosario \nFecha-------------25/06/2024 \nProyecto----------PR001525 \nMonto-------------1000 \nDetalles----------Subir a tercer nivel en area de cocina \n')
-//   const [textoResultado, setTextoResultado]=useState(`
-//    <table style={{ border: '1px solid black', borderCollapse: 'collapse' }}>
-//       <thead>
-//         <tr>
-//           {Object.keys(data[0]).map((key) => (
-//             <th style={{ border: '1px solid black', padding: '5px' }} key={key}>
-//               {key}
-//             </th>
-//           ))}
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {data.map((row, index) => (
-//           <tr key={index}>
-//             {Object.values(row).map((value, index) => (
-//               <td style={{ border: '1px solid black', padding: '5px' }} key={index}>
-//                 {value}
-//               </td>
-//             ))}
-//           </tr>
-//         ))}
-//       </tbody>
-//     </table>   
-// `)
-// Ejemplo de datos
-const data = [
-  { Name: 'John', Age: 28, Country: 'USA' },
-  { Name: 'Anna', Age: 22, Country: 'Sweden' },
-  { Name: 'Peter', Age: 35, Country: 'Norway' }
-];
 
-const [textoResultado, setTextoResultado] = useState()
+  useEffect(()=>{
+    console.log(dbTickets)
+    console.log(usuario)
+    console.log(contadorTickets)
+    if(usuario&&contadorTickets.lastTicketNumber){
+      const userName = usuario.email.split('@')[0];
 
-  const [valorInput, setValorInput]=useState()
-  const generalTicket=()=>{
-    setValorInput( data.map((dato,index)=>{
-      return(
-        <table key={index} style={{ border: '1px solid black', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-              <th style={{ border: '1px solid black', padding: '5px' }}>
-                Nombre
-              </th>
-              <th style={{ border: '1px solid black', padding: '5px' }}>
-                Edad
-              </th>
-              <th style={{ border: '1px solid black', padding: '5px' }}>
-                Pais
-              </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, index) => (
-            <tr key={index}>
-              {Object.values(row).map((value, index) => (
-                <td style={{ border: '1px solid black', padding: '5px' }} key={index}>
-                  {value}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table> 
-        
-      )
-    }))
    
-    
+      console.log(contadorTickets.lastTicketNumber+1)
+      console.log(contadorTickets)
+      setTicketMaster({
+        ...ticketMaster,
+        numeroDoc:contadorTickets.lastTicketNumber+1,
+        usuarioCreador:userName,
+        fecha:format(new Date(),`dd/MM/yyyy hh:mm:ss:SSS aa`, {locale:es}),
+        estadoDoc:0,
+      })
+    }
+  },[dbTickets, usuario])
+
+  // ******************** MANEJADOR DE INPUTS ********************
+  const handleInput=(e)=>{
+    const {value,name}=e.target
+
+    if(name=='textoConsolidado'){
+      setTextoConsolidado(value)
+    }
+    else if(name=='buscarDocInput'){
+      setBuscarDocInput(value)
+    }
+    else{
+      setTicketMaster({
+        ...ticketMaster,
+        [name]:value
+      })
+    }
   }
+
+  const [textoConsolidado, setTextoConsolidado]=useState()
+  const [isLoading,setIsLoading]=useState(false);
+
+  const generarTicket=async()=>{
+    setIsLoading(true);
+    const textoConso=(
+      'N° Ticket:'+'--------'+ticketMaster.numeroDoc +'\n'+
+      'Usuario:'+'----------'+ticketMaster.usuarioCreador +'\n'+
+      'Fecha:'+'------------'+ticketMaster.fecha +'\n'+
+      'Proyecto:'+'---------'+ticketMaster.proyecto +'\n'+
+      'Monto:'+'------------'+ticketMaster.monto +'\n'+
+      'Detalles:'+'---------'+ticketMaster.detalles +'\n'
+    )
+
+    const batch = writeBatch(db);
+    try{
+      // Agregar la operación de actualización del contador
+        const contadorTicketId= 'ticketCounter';
+        const contadorUpdate = doc(db, "counters", contadorTicketId);
+        console.log(contadorUpdate)
+        const nuevoNumero=contadorTickets.lastTicketNumber+1
+         batch.update(contadorUpdate, {
+          "lastTicketNumber": nuevoNumero
+        });
+
+      // Agregar nuevo documento a tickets en el mismo lote
+        const collectionTicketsRef = collection(db,'tickets');
+        const nuevoDocumentoRef = doc(collectionTicketsRef);
+        batch.set(nuevoDocumentoRef, {
+          ...ticketMaster,
+          numeroDoc:nuevoNumero
+        });
+
+        console.log(nuevoNumero)
+        if(nuevoNumero>10000000){
+          console.log(nuevoNumero)
+          await batch.commit();
+          setMensajeAlerta('Ticket cargado.');
+          setTipoAlerta('success');
+          setDispatchAlerta(true);
+          setTimeout(() => {
+            setDispatchAlerta(false);
+          }, 3000);
+          setTextoConsolidado(textoConso)
+        }
+        else{
+          setMensajeAlerta('Error con numero de ticket..');
+          setTipoAlerta('error');
+          setDispatchAlerta(true);
+          setTimeout(() => {
+            setDispatchAlerta(false);
+          }, 3000);
+          setIsLoading(false);
+
+        }
+    
+    
+     
+      setIsLoading(false);
+    }
+    catch(error){
+      console.log(error);
+      setMensajeAlerta('Error con la base de datos.');
+      setTipoAlerta('error');
+      setDispatchAlerta(true);
+      setTimeout(() => {
+        setDispatchAlerta(false);
+      }, 3000);
+      setIsLoading(false);
+    }
+  }
+
+  
+
   const tableRef = useRef(null);
 
   const copyTable = async () => {
@@ -174,10 +262,38 @@ const [textoResultado, setTextoResultado] = useState()
       }
     }
   };
-  
+
+  const [queryTicketMaster, setQueryTicketMaster]=useState({});
+  const [buscarDocInput, setBuscarDocInput]=useState('')
+
+  const buscarTicket=(e)=>{
+    e.preventDefault()
+    const ticketBuscado=dbTickets.find(tikect=>tikect.numeroDoc==buscarDocInput)
+
+    console.log(dbTickets)
+    console.log(ticketBuscado)
+    console.log(buscarDocInput)
+    if(ticketBuscado){
+      console.log(ticketBuscado)
+      setQueryTicketMaster(ticketBuscado)
+    }
+    else{
+      setMensajeAlerta('El numero no existe.');
+      setTipoAlerta('warning');
+      setDispatchAlerta(true);
+      setTimeout(() => {
+        setDispatchAlerta(false);
+      }, 3000);
+
+    }
+  }
+
 
   return (
     <>
+    <BotonQuery
+      queryTicketMaster={queryTicketMaster}
+    />
       <Header titulo='Enumerador de correos'/>
       <ContainerNav>
         <OpcionUnica
@@ -193,31 +309,46 @@ const [textoResultado, setTextoResultado] = useState()
       <Contenedor>
         <CajitaDetalle>
             <TituloDetalle>N° Ticket:</TituloDetalle>
-            <DetalleTexto>10003525</DetalleTexto>
+            <DetalleTexto>{ticketMaster.numeroDoc}</DetalleTexto>
         </CajitaDetalle>
         <CajitaDetalle>
             <TituloDetalle>Usuario:</TituloDetalle>
-            <DetalleTexto>Cindy Rosario</DetalleTexto>
+            <DetalleTexto>{ticketMaster.usuarioCreador}</DetalleTexto>
         </CajitaDetalle>
         <CajitaDetalle>
             <TituloDetalle>Fecha:</TituloDetalle>
-            <DetalleTexto>Lunes 25 junio 2024</DetalleTexto>
+            <DetalleTexto>{ticketMaster.fecha.slice(0,10)}</DetalleTexto>
+
         </CajitaDetalle>
         <CajitaInterna>
             <TituloCajita>N° Proyecto:</TituloCajita>
-            <Input type="text" />
+            <Input 
+              type="text" 
+              name="proyecto"
+              value={ticketMaster.proyecto}
+              onChange={(e)=>handleInput(e)}
+            />
         </CajitaInterna>
         <CajitaInterna>
             <TituloCajita>Monto RD$:</TituloCajita>
-            <Input type="text" />
+            <Input 
+              type="text" 
+              name="monto"
+              value={ticketMaster.monto}
+              onChange={(e)=>handleInput(e)}
+              />
         </CajitaInterna>
         <CajitaInterna>
             <TituloCajita>Detalles:</TituloCajita>
-            <InputArea  />
+            <InputArea  
+               name="detalles"
+               value={ticketMaster.detalles}
+               onChange={(e)=>handleInput(e)}
+            />
         </CajitaInterna>
         <CajitaInterna className="btnGeneral">
             <BtnGenerarTicket
-              onClick={(e)=>generalTicket(e)}
+              onClick={(e)=>generarTicket(e)}
             >
                 Generar Ticket
             </BtnGenerarTicket>
@@ -225,21 +356,24 @@ const [textoResultado, setTextoResultado] = useState()
         <CajitaInterna className="cajaResultado">
             <InputArea
                 className="inputResultado"
-                value={valorInput}
+                onChange={(e)=>handleInput(e)}
+                name="textoConsolidado"
+                value={textoConsolidado}
             />
         </CajitaInterna>
         
     
       <Tabla ref={tableRef}
+        
        border="1"
           style={{
+            // display='none',
             fontFamily: 'Arial, Helvetica, sans-serif',
             borderCollapse: 'collapse',
             // width: '95%',
             minWidth: '400px',
             maxWidth: '450px',
             marginBottom: '25px',
-            // border: '1px solid red'
           }}
       >
         <thead  >
@@ -248,23 +382,16 @@ const [textoResultado, setTextoResultado] = useState()
             backgroundColor: '#254778',
             textAlign: 'left',
             borderBottom: '1px solid black',
-          }}
-          
-          >
+          }}>
             <CeldaHead
               style={{
                 minWidth: '80px',
-                // maxWidth: '450px',
                 border: '1px solid black'
-              }}
-              
-            >Propiedad</CeldaHead> 
+              }}>Propiedad</CeldaHead> 
             <CeldaHead
-             style={{
+              style={{
               border: '1px solid black'
-            }}
-            
-            >Valor</CeldaHead> 
+            }}>Valor</CeldaHead> 
           </Filas>
         </thead>
         <tbody  border="1">
@@ -272,8 +399,7 @@ const [textoResultado, setTextoResultado] = useState()
              style={{
               backgroundColor: '#325b94d6',
             }}
-           
-          border="1">
+          >
             <CeldasBody
              style={{
               border: '1px solid black'
@@ -283,93 +409,89 @@ const [textoResultado, setTextoResultado] = useState()
               style={{
                 border: '1px solid black'
             }}    
-            >10001526</CeldasBody>
+            >{ticketMaster.numeroDoc}</CeldasBody>
           </Filas>
-          <Filas    style={{
+          <Filas    
+            style={{
               backgroundColor: '#325b94d6',
             }}  border="1">
-            <CeldasBody>Usuario</CeldasBody>
-            <CeldasBody>Cindy Rosario</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >Usuario</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >{ticketMaster.usuarioCreador}</CeldasBody>
           </Filas>
+          <Filas    
+            style={{
+              backgroundColor: '#325b94d6',
+            }}>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >Fecha</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >{ticketMaster.fecha.slice(0,10)}</CeldasBody>
+          </Filas>
+
+          <Filas    
+            style={{
+              backgroundColor: '#325b94d6',
+            }}>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >Proyecto</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >{ticketMaster.proyecto}</CeldasBody>
+          </Filas>
+
+          <Filas    
+            style={{
+              backgroundColor: '#325b94d6',
+            }}>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >Monto</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >{ticketMaster.monto}</CeldasBody>
+          </Filas>
+         
           <Filas    style={{
               backgroundColor: '#325b94d6',
             }}>
-            <CeldasBody>Fecha</CeldasBody>
-            <CeldasBody>25/06/24</CeldasBody>
-          </Filas>
-          <Filas    style={{
-              backgroundColor: '#325b94d6',
-            }}>
-            <CeldasBody>Monto</CeldasBody>
-            <CeldasBody>1000</CeldasBody>
-          </Filas>
-          <Filas    style={{
-              backgroundColor: '#325b94d6',
-            }}>
-            <CeldasBody>Proyecto</CeldasBody>
-            <CeldasBody>PR001544</CeldasBody>
-          </Filas>
-          <Filas    style={{
-              backgroundColor: '#325b94d6',
-            }}>
-            <CeldasBody>Monto</CeldasBody>
-            <CeldasBody>1000</CeldasBody>
-          </Filas>
-          <Filas    style={{
-              backgroundColor: '#325b94d6',
-            }}>
-            <CeldasBody>Detalles</CeldasBody>
-            <CeldasBody>Subir al segundo nivel colocar en area de cocina Subir al segundo nivel colocar enSubir al segundo nivel colocar enSubir al segundo nivel colocar enSubir al segundo nivel colocar en.</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >Detalles</CeldasBody>
+            <CeldasBody
+              style={{
+                border: '1px solid black'
+            }}   
+            >{ticketMaster.detalles}</CeldasBody>
           </Filas>
         </tbody>
 
       </Tabla> 
-{/* 
-<table
-        ref={tableRef}
-        border="1"
-        style={{
-          backgroundColor: 'red',
-          borderCollapse: 'collapse',
-          margin: '25px 0',
-          fontSize: '0.9em',
-          fontFamily: 'Arial, Helvetica, sans-serif',
-          minWidth: '400px',
-          boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)',
-        }}
-      >
-        <thead>
-          <tr
-            style={{
-              // backgroundColor: '#009879',
-              color: '#ffffff',
-              textAlign: 'left',
-            }}
-          >
-            <th style={{ padding: '12px 15px' }}>Header 1</th>
-            <th style={{ padding: '12px 15px' }}>Header 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style={{ borderBottom: '1px solid #dddddd' }}>
-            <td style={{ padding: '12px 15px' }}>Data 1</td>
-            <td style={{ padding: '12px 15px' }}>Data 2</td>
-          </tr>
-          <tr
-            style={{
-              borderBottom: '1px solid #dddddd',
-              backgroundColor: '#f3f3f3',
-            }}
-          >
-            <td style={{ padding: '12px 15px' }}>Data 3</td>
-            <td style={{ padding: '12px 15px' }}>Data 4</td>
-          </tr>
-          <tr style={{ borderBottom: '2px solid #009879' }}>
-            <td style={{ padding: '12px 15px' }}>Data 5</td>
-            <td style={{ padding: '12px 15px' }}>Data 6</td>
-          </tr>
-        </tbody>
-      </table> */}
+
         <CajitaInterna className="btnGeneral">
             <BtnGenerarTicket
               onClick={()=>copyTable()}
@@ -381,16 +503,120 @@ const [textoResultado, setTextoResultado] = useState()
     }
     {
         arrayOpciones[1].select&&
-        <Contenedor>
-            <TituloCajita>Buscar ticket:</TituloCajita>
-            <Input className="inputConsulta" type="text"/>
-            <CajitaInterna className="btnGeneral">
-            <BtnGenerarTicket>
-                Buscar Ticket
-            </BtnGenerarTicket>
-        </CajitaInterna>
-        </Contenedor>
+        <>
+        <CajaControles>
+            <ContenedorBuscar>
+              <form action="" onSubmit={(e)=>buscarTicket(e)}>
+                <Texto>
+                    Buscar: {''}
+                </Texto>
+                <InputBuscar
+                  type='text'
+                  name='buscarDocInput'
+                  value={buscarDocInput}
+                  onChange={(e)=>handleInput(e)}
+                />
+                <BtnNormal
+                  type='submit'
+                  className={`buscar`}
+                  onClick={(e)=>buscarTicket(e)}
+                >
+                  <Icono icon={faMagnifyingGlass}/>
+                    Buscar
+                </BtnNormal>
+            </form>
+          </ContenedorBuscar>
+
+        </CajaControles>
+
+        <CajaEncabezadoQuery>
+          <CajaDetalles>
+            <CajitaDetalle>
+              <TituloDetalle>N° Ticket:</TituloDetalle>
+              <DetalleTexto>{queryTicketMaster.numeroDoc||''}</DetalleTexto>
+            </CajitaDetalle>
+            <CajitaDetalle>
+              <TituloDetalle>Usuario</TituloDetalle>
+              <DetalleTexto>{queryTicketMaster.usuarioCreador||''}</DetalleTexto>
+            </CajitaDetalle>
+            <CajitaDetalle>
+              <TituloDetalle>Fecha</TituloDetalle>
+              <DetalleTexto>{queryTicketMaster?.fecha?.slice(0,10)||''}</DetalleTexto>
+            </CajitaDetalle>
+            <CajitaDetalle>
+              <TituloDetalle>N° Proyecto</TituloDetalle>
+              <DetalleTexto>{queryTicketMaster.proyecto||''}</DetalleTexto>
+            </CajitaDetalle>
+            <CajitaDetalle>
+              <TituloDetalle>Monto</TituloDetalle>
+              <DetalleTexto>RD$ {queryTicketMaster.monto||''}</DetalleTexto>
+            </CajitaDetalle>
+
+            <CajitaDetalle className="detalles">
+              <TituloDetalle className="detalles">Detalles:</TituloDetalle>
+              <DetalleTexto className="detalles">
+                {queryTicketMaster.detalles||''}
+              </DetalleTexto>
+            </CajitaDetalle>
+
+          </CajaDetalles>
+          <CajaDetalles  className="cajaStatus">
+            <TextoStatus
+              className={
+                  queryTicketMaster.estadoDoc==0?
+                    'success'
+                    :
+                    queryTicketMaster.estadoDoc==1?
+                    'block'
+                    :
+                    queryTicketMaster.estadoDoc==2?
+                        'del'
+                        :
+                        ''
+              }
+            >
+              {
+                 queryTicketMaster.estadoDoc==0?
+                 <>
+                 Ticket Abierto{' '}
+                 <Icono icon={faLockOpen}/>
+                 </>
+                 :
+                 queryTicketMaster.estadoDoc==1?
+                 <>
+                 Pagado{' '}
+                 <Icono icon={faLock}/>
+                 </>
+                 :
+                 queryTicketMaster.estadoDoc==2?
+                 <>
+                 Cancelado{' '}
+                 <Icono icon={faXmark}/>
+                 </>
+                     :
+                     ''
+
+              }
+               </TextoStatus>
+
+          </CajaDetalles>
+
+           
+        </CajaEncabezadoQuery>
+       
+        </>
     }
+     {
+        isLoading?
+          <ModalLoading completa={true}/>
+          :
+          ''
+      }
+      <Alerta
+        estadoAlerta={dispatchAlerta}
+        tipo={tipoAlerta}
+        mensaje={mensajeAlerta}
+      />
     </>
   );
 };
@@ -404,6 +630,8 @@ const Contenedor=styled.div`
     padding: 15px;
     margin-bottom: 50px;
 `
+
+
 
 const ContainerNav = styled.div`
   width: 95%;
@@ -434,7 +662,6 @@ const CajitaInterna=styled.div`
 `
 const TituloCajita=styled.p`
     color: ${theme.fondo};
-
 `
 
 const Input=styled.input`
@@ -493,16 +720,20 @@ const CajitaDetalle=styled.div`
   justify-content: space-between;
   color: ${theme.fondo};
 
+  &.detalles{
+    flex-direction: column;
+    border: none;
+  }
+
 `;
 
 const TituloDetalle=styled.p`
   width: 49%;
   color: inherit;
-  &.negativo{
-    color: ${theme.danger};
-  }
-  &.docCerrado{
-    color: inherit;
+  &.detalles{
+    width: 100%;
+    border-bottom: 1px solid ${theme.azul1};
+
   }
 `;
 const DetalleTexto= styled.p`
@@ -519,6 +750,14 @@ const DetalleTexto= styled.p`
   &.docCerrado{
     color: inherit;
   }
+  &.detalles{
+    height: auto;
+    width: 100%;
+    white-space: normal;
+    text-align: start;
+    padding-left: 10px;
+  }
+ 
 `;
 
 const BtnGenerarTicket=styled.button`
@@ -544,31 +783,14 @@ const BtnGenerarTicket=styled.button`
 `
 
 const Tabla = styled.table`
+  display: none;
 
   `;
 
   
 const Filas =styled.tr`
-&.body{
-  
-  font-weight: normal;
-  border-bottom: 1px solid #49444457;
-  border: none;
-  background-color: ${theme.azul5Osc};
-
-}
-&.descripcion{
-  text-align: start;
-}
-
-&.filaSelected{
-  background-color: ${theme.azulOscuro1Sbetav};
-  border: 1px solid red;
-}
 &.cabeza{
   background-color: ${theme.azulOscuro1Sbetav};
-  color: red;
-  /* backgroundColor: '##000b1a', */
 }
 /* color: ${theme.azul1}; */
 &:hover{
@@ -621,4 +843,180 @@ const CeldasBody = styled.td`
   padding-left: 5px;
 }
 
+`;
+
+const CajaControles=styled.div`
+  width: 100%;
+  padding: 10px;
+  background-color: ${theme.azulOscuro1Sbetav};
+`
+const CajaBuscar=styled.div`
+background-color: ${theme.azulOscuro1Sbetav3};
+  border: 1px solid red;
+`
+
+
+const TituloBuscar=styled.p`
+    color: ${theme.fondo};
+`
+
+// const InputBuscar=styled.input`
+//   border: none;
+//   outline: none;
+//   height: 30px;
+//   padding: 5px;
+//   background-color: ${theme.azulOscuro1Sbetav3};
+//   border: ${theme.azul1};
+//   color: ${theme.azul2};
+//   width: 150px;
+//   display: flex;
+//   &:focus{
+//     border: 1px solid ${theme.azul2};
+
+//   }
+//   border-radius: 5px;
+//   border: 1px solid #7575751e;
+//   &.inputConsulta{
+//     text-align: center;
+//   }
+  
+// `;
+
+const ContenedorBuscar=styled.div`
+  background-color: ${theme.azulOscuro1Sbetav3};
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  color: ${theme.azul2};
+  &.editando{
+    background-color: #5e5d60;
+    color: black;
+  }
+`;
+
+
+const Texto=styled.h2`
+  color: inherit;
+  font-size: 1rem;
+  display: inline-block;
+  margin-right: 4px;
+
+`;
+
+
+const InputBuscar=styled.input`
+  border: none;
+  outline: none;
+  height: 25px;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: ${theme.azulOscuro1Sbetav3};
+  border: 1px solid ${theme.azul1};
+  color: ${theme.azul2};
+  margin-right: 5px;
+  &.deshabilitado{
+    background-color: ${theme.fondo};
+    color: black;
+  }
+`;
+
+
+const BtnNormal=styled(BtnGeneralButton)`
+&.borrada{
+  background-color: red;
+  color: white;
+  &:hover{
+    color: red;
+    background-color: white;
+    }
+}
+&.eliminadaRealizado{
+  background-color: #eaa5a5;
+  &:hover{
+    cursor: default;
+    color: white;
+
+  }
+}
+  &.editaEliminada{
+    background-color: #407aadb5;
+    cursor: default;
+    color: white;
+  }
+  &.buscar{
+    margin: 0;
+  }
+  &.editando{
+    background-color: #5e5d60;
+    color: black;
+    cursor: default;
+  }
+  &.mas{
+    width: 50px;
+  }
+`;
+
+const Icono=styled(FontAwesomeIcon)`
+  margin-right: 10px;
+`;
+
+const CajaEncabezadoQuery = styled.div`
+  width: 100%;
+  min-height:40px;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  color: ${theme.azul1};
+  &.negativo{
+    color: ${theme.danger};
+  }
+  @media screen and (max-width:650px){
+    flex-direction: column;
+    align-items: center;
+    
+  }
+`;
+
+
+const CajaDetalles = styled.div`
+  width: 45%;
+  box-shadow: 3px 3px 3px -1px rgba(0,0,0,0.43);
+  border:2px solid  #535353;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 12px;
+  &.cajaStatus{
+    background-color: ${theme.azulOscuro1Sbetav2};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &.detallesCaja{
+    color: ${theme.fondo};
+    width: 90%;
+  }
+  @media screen and (max-width:650px){
+    width: 90%;
+    margin-bottom: 5px;
+    
+  }
+`;
+const DetalleTextoQuery=styled.p`
+  
+
+`
+const TextoStatus=styled.h3`
+    font-size: 2rem;
+    &.sinDocumento{
+      color: red;
+    }
+    &.success{
+      color: ${theme.success};
+    }
+    &.block{
+      color: #524a4a;
+    }
+    &.del{
+      color: #8c3d3d;
+    }
 `;

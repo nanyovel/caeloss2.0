@@ -789,7 +789,10 @@ export const AddBL = ({
         // Agregar nuevo documento a billOfLading en el mismo lote
         const collectionBLRef = collection(db,'billOfLading');
         const nuevoDocumentoRef = doc(collectionBLRef);
-        setDoc(nuevoDocumentoRef, newBL);
+        // Cambie la proxima linea por...
+          // setDoc(nuevoDocumentoRef, newBL);
+        // Por esta linea 30/06/24, la linea anterior agreaga el BL por separado sin importar como va batch
+        batch.set(nuevoDocumentoRef, newBL);
         await batch.commit();
 
         reiniciarCosas('enviarBL');
