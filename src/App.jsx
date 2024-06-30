@@ -15,7 +15,8 @@ import ImagenCardMateriales from './../public/img/cardHomeComp/build.png';
 import ImagenCardFletes from './../public/img/cardHomeComp/truck.png';
 import ImagenCardImportacion from './../public/img/cardHomeComp/import33.png';
 import ImagenCardTransportes from './../public/img/cardHomeComp/transportes.png';
-import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
+// import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
+import noCorreo from './../public/img/cardHomeComp/noCorreo.png';
 // import ImgCerrado from './../public/img/candadoCerrado.png'
 // import { Error404 } from '../public/404'
 import { Transportes } from './transportes/Transportes';
@@ -60,6 +61,7 @@ import { TutorialesParcial } from './tutoriales/TutorialesParcial';
 import { Setup } from './importaciones/page/Setup';
 import { RutaPrivilegiada } from './routes/RutaPrivilegiada';
 import { Mantenimiento } from './mantenimiento/Mantenimiento';
+import { NoCorreos } from './nocorreos/NoCorreos';
 // import {MainMante} from './mantenimiento/page/Main';
 // import { Programa } from './mantenimiento/page/Programa';
 // import { Gastos } from './mantenimiento/page/Gastos';
@@ -263,6 +265,14 @@ const App = () => {
                   tipo='transporte'
                 />
                 <CardHome
+                  ImagenCard={noCorreo}
+                  titulo='N° Email'
+                  title='Enumerador de correos'
+                  ruta='nocorreos'
+                  // nuevo={true}
+                  bloqueado={!usuario?.emailVerified?true:false}
+                />
+                {/* <CardHome
                   ImagenCard={ImagenCardMantenimiento}
                   titulo='Mantenimiento'
                   title='Sistema de gestion de mantenimiento (Maintenance Management Systems (MMS))'
@@ -271,7 +281,7 @@ const App = () => {
                   incompleto={true}
                   tipo={'mantenimiento'}
                   bloqueado={!usuario?.emailVerified?true:false}
-                />
+                /> */}
 
               </PadreTarjetas>
             </SeccionHome>
@@ -558,6 +568,14 @@ const App = () => {
         <Route path='/mantenimiento' element={
           <RutaProtegida>
             <Mantenimiento
+              dbUsuario={dbUsuario}
+              userMaster={userMaster}
+            />
+          </RutaProtegida>
+        }/>
+        <Route path='/nocorreos' element={
+          <RutaProtegida>
+            <NoCorreos
               dbUsuario={dbUsuario}
               userMaster={userMaster}
             />
