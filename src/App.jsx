@@ -15,6 +15,7 @@ import ImagenCardMateriales from './../public/img/cardHomeComp/build.png';
 import ImagenCardFletes from './../public/img/cardHomeComp/truck.png';
 import ImagenCardImportacion from './../public/img/cardHomeComp/import33.png';
 import ImagenCardTransportes from './../public/img/cardHomeComp/transportes.png';
+import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
 // import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
 import noCorreo from './../public/img/cardHomeComp/noCorreo.png';
 // import ImgCerrado from './../public/img/candadoCerrado.png'
@@ -62,7 +63,7 @@ import { Setup } from './importaciones/page/Setup';
 import { RutaPrivilegiada } from './routes/RutaPrivilegiada';
 import { Mantenimiento } from './mantenimiento/Mantenimiento';
 import { NoCorreos } from './nocorreos/NoCorreos';
-// import {MainMante} from './mantenimiento/page/Main';
+import {MainMante} from './mantenimiento/page/Main';
 // import { Programa } from './mantenimiento/page/Programa';
 // import { Gastos } from './mantenimiento/page/Gastos';
 // import { Combustibles } from './mantenimiento/page/Combustibles';
@@ -264,15 +265,15 @@ const App = () => {
                   bloqueado={!usuario?.emailVerified?true:false}
                   tipo='transporte'
                 />
-                <CardHome
+                {/* <CardHome
                   ImagenCard={noCorreo}
                   titulo='N° Email'
                   title='Enumerador de correos'
                   ruta='nocorreos'
                   // nuevo={true}
                   bloqueado={!usuario?.emailVerified?true:false}
-                />
-                {/* <CardHome
+                /> */}
+                <CardHome
                   ImagenCard={ImagenCardMantenimiento}
                   titulo='Mantenimiento'
                   title='Sistema de gestion de mantenimiento (Maintenance Management Systems (MMS))'
@@ -281,7 +282,7 @@ const App = () => {
                   incompleto={true}
                   tipo={'mantenimiento'}
                   bloqueado={!usuario?.emailVerified?true:false}
-                /> */}
+                /> 
 
               </PadreTarjetas>
             </SeccionHome>
