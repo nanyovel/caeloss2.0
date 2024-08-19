@@ -17,7 +17,7 @@ import ImagenCardImportacion from './../public/img/cardHomeComp/import33.png';
 import ImagenCardTransportes from './../public/img/cardHomeComp/transportes.png';
 import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
 // import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
-import noCorreo from './../public/img/cardHomeComp/noCorreo.png';
+// import noCorreo from './../public/img/cardHomeComp/noCorreo.png';
 // import ImgCerrado from './../public/img/candadoCerrado.png'
 // import { Error404 } from '../public/404'
 import { Transportes } from './transportes/Transportes';
