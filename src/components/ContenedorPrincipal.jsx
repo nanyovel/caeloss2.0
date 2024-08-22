@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { useEffect, useRef } from 'react';
 import { useLocation } from "react-router-dom";
-import theme from "../../theme";
+import theme from "../config/theme.jsx";
 
 export const ContenedorPrincipal = ({children}) => {
   const location=useLocation();

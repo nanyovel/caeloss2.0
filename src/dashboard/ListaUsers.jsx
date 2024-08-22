@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import avatarMale from './../../public/img/avatares/maleAvatar.svg';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 // import { BtnGeneralButton } from '../components/BtnGeneralButton';
 import { getAuth, } from 'firebase/auth';
 import { useNavigate, useParams } from 'react-router-dom';

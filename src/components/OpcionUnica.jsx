@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import imgArrow2 from './../importaciones/img/arrowRight2.png';
 
 export const OpcionUnica = ({

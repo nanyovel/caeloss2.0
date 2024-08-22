@@ -3,7 +3,7 @@ import CajaNavegacion from '../components/CajaNavegacion';
 import { useEffect, useState } from 'react';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import imgFurgon from './../img/chinaEurope.png';
 import imgOrdenCompra from './../img/ordenCompra2.jpg';
 import imgEasyFinish from './../img/easyFinish2.png';

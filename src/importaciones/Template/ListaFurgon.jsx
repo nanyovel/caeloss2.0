@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { Header } from '../../components/Header';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import CajaNavegacion from '../components/CajaNavegacion';
 import { DetalleFurgon } from '../Moldes/DetalleFurgon';
 import { Alerta } from '../../components/Alerta';

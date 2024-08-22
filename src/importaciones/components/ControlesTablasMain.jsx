@@ -1,4 +1,4 @@
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import styled from 'styled-components';
 
 export const ControlesTablasMain = ({

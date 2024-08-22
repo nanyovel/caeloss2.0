@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { v4 as uuidv4 } from 'uuid';
 
 export const SalidaDatos = ({

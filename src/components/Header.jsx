@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { Link } from 'react-router-dom';
 import logoCielos from './../../public/img/cielos.png';
 import logoCaeloss from './../../public/img/logoOficial2.png';

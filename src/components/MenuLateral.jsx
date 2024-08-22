@@ -2,11 +2,11 @@ import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { useLocation, NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import {faHelmetSafety, faTruckFast,faEarthAmericas, faScrewdriverWrench, faHouse,faChartSimple } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '../context/AuthContext';
-import { ElementoPrivilegiado } from '../routes/ElementoPrivilegiado';
+import { ElementoPrivilegiado } from '../context/ElementoPrivilegiado.jsx';
 
 export const MenuLateral = ({userMaster}) => {
   let oneRef= useRef();

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled  from 'styled-components';
 import { BtnGeneralButton } from './BtnGeneralButton';
 
 export const BtnNormal = styled(BtnGeneralButton)`

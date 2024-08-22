@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk, faTrashCan } from '@fortawesome/free-regular-svg-icons';

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import theme from '../../theme';
+import theme from '../../config/theme.jsx';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { BtnGeneralButton } from '../components/BtnGeneralButton';
+import { BtnGeneralButton } from '../BtnGeneralButton.jsx';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 // import { BotonQuery } from '../components/BotonQuery';
 import { NavLink, useParams } from 'react-router-dom';
-import avatarMale from './../../public/img/avatares/maleAvatar.svg';
-import { BtnNormal } from '../components/BtnNormal';
-import { Alerta } from '../components/Alerta';
-import { Advertencia } from '../components/Advertencia';
+import avatarMale from './../../../public/img/avatares/maleAvatar.svg';
+import { BtnNormal } from '../BtnNormal.jsx';
+import { Alerta } from '../Alerta.jsx';
+import { Advertencia } from '../Advertencia.jsx';
 import { doc, updateDoc } from 'firebase/firestore';
-import db from '../firebase/firebaseConfig';
+import db from '../../firebase/firebaseConfig.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export const TutorialesParcial = ({

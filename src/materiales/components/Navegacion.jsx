@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import {Link,} from "react-router-dom";
 import menuX from './../../../public/img/xImg.png';
 import menuHamburg from './../../../public/img/rayas.svg';

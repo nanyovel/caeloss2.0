@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import theme from '../../theme';
-import imgAbinader from '../../public/img/abinader.jpg';
+import theme from '../../config/theme.jsx';
+import imgAbinader from '../../../public/img/abinader.jpg';
 
 export const DocumentacionParcial = ({completa}) => {
 

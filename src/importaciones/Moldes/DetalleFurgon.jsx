@@ -10,7 +10,7 @@ import chechSencillo from './../img/check.png';
 import workProgress from './../img/work-in-progress.png';
 // import imgOrdenEnviadaProveedor from './../img/videos/proveedor/proveedor1.png';
 import './../components/interruptor.css';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ControlesTabla } from '../components/ControlesTabla';
 // import { BotonQuery } from '../../components/BotonQuery';

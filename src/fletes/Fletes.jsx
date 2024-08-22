@@ -1,6 +1,6 @@
 import {useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { Header } from '../components/Header';
 import {dbProvincias } from './DBFletex';
 import { OpcionUnica } from '../components/OpcionUnica';
@@ -9,7 +9,7 @@ import { OpcionUnica } from '../components/OpcionUnica';
 import { AvisoModal } from '../components/Avisos/AvisoModal';
 import { Alerta } from '../components/Alerta';
 import CajaNavegacion from './components/CajaNavegacion';
-import { ElementoPrivilegiado } from '../routes/ElementoPrivilegiado';
+import { ElementoPrivilegiado } from '../context/ElementoPrivilegiado.jsx';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import db from '../firebase/firebaseConfig';
 

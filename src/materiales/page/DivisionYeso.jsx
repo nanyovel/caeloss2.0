@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { styled } from 'styled-components'
 import './../components/estilos.css'
 import { Alerta } from '../../components/Alerta'
-import theme from '../../../theme'
+import theme from '../../config/theme.jsx'
 import { OpcionUnica } from '../../components/OpcionUnica'
-import { BotonQuery } from '../../components/BotonQuery'
+// import { BotonQuery } from '../../components/BotonQuery'
 import { InputsOutputs } from '../components/InputsOutputs'
 
 export const DivisionYeso = () => {

@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { NavLink } from 'react-router-dom';
 // import imgJeni from '../../public/img/avatares/jenifer1.png';
-import { BtnGeneralButton } from '../components/BtnGeneralButton';
+import { BtnGeneralButton } from './BtnGeneralButton.jsx';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 // import IconSend from '../components/SVGEnviar';
 import avatarMale from './../../public/img/avatares/maleAvatar.svg';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import db from '../firebase/firebaseConfig';
-import { Alerta } from '../components/Alerta';
-import { BtnNormal } from '../components/BtnNormal';
-import { Advertencia } from '../components/Advertencia';
+import db from '../firebase/firebaseConfig.js';
+import { Alerta } from './Alerta.jsx';
+import { BtnNormal } from './BtnNormal.jsx';
+import { Advertencia } from './Advertencia.jsx';
 // import { BotonQuery } from '../components/BotonQuery';
 
 export const Resennias = ({

@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import theme from "../../theme";
+import theme from '../config/theme.jsx';
 
 export const BtnGeneralButton = styled.button`
     margin: 10px;

@@ -1,5 +1,5 @@
 import { styled, keyframes } from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 
 export const Alerta = ({tipo, mensaje,estadoAlerta}) => {
   return (

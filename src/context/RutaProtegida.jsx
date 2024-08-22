@@ -1,4 +1,4 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from './AuthContext';
 import { Navigate, } from 'react-router-dom';
 
 export const RutaProtegida = ({children}) => {

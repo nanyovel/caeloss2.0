@@ -4,8 +4,8 @@ import styled from 'styled-components';
 // import ImagenCardTransportes from './../../public/img/buildApp.svg';
 // import ImagenBuildWeb from './../../public/buildWeb.png'
 import ImagenBuildWeb from './../../public/img/buildWeb.svg';
-import theme from '../../theme';
-import funcionConsumible from '../../consumible';
+import theme from '../config/theme.jsx';
+import funcionConsumible from '../libs/consumible';
 // import { BotonQuery } from '../components/BotonQuery';
 
 export const Transportes = () => {

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
+
 
 export const InputsOutputsMachihembrado = ({
   sumarRestarHab,

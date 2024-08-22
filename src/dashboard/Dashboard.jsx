@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { NavLink} from 'react-router-dom';
 import { BotonQuery } from '../components/BotonQuery';
 import { format } from 'date-fns';

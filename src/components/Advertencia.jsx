@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { BtnNormal } from './BtnNormal';
 
 export const Advertencia = ({

@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Header } from '../components/Header';
+import { Header } from '../components/Header.jsx';
 import avatarMale from './../../public/img/avatares/maleAvatar.svg';
 import styled from 'styled-components';
-import theme from '../../theme';
-import { BtnGeneralButton } from '../components/BtnGeneralButton';
+import theme from '../config/theme.jsx';
+import { BtnGeneralButton } from '../components/BtnGeneralButton.jsx';
 import { getAuth, sendEmailVerification, signOut } from 'firebase/auth';
-import db, { autenticar } from '../firebase/firebaseConfig';
+import db, { autenticar } from '../firebase/firebaseConfig.js';
 import { useNavigate } from 'react-router-dom';
-import { Alerta } from '../components/Alerta';
+import { Alerta } from '../components/Alerta.jsx';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { ModalLoading } from '../components/ModalLoading';
+import { ModalLoading } from '../components/ModalLoading.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserLock, faUserPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons';
 // import { BotonQuery } from '../components/BotonQuery';
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { AvisoCaja } from '../components/Avisos/AvisoCaja';
+import { AvisoCaja } from '../components/Avisos/AvisoCaja.jsx';
 
 export const Perfil = ({dbUsuario,userMaster,setUserMaster}) => {
   // // ******************** RECURSOS GENERALES ******************** //

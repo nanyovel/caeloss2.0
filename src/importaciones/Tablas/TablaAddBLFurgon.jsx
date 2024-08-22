@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import styled from 'styled-components';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

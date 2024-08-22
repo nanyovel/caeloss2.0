@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BtnGeneralButton } from '../components/BtnGeneralButton';
 import { faMagnifyingGlass, faPencil, faXmark } from '@fortawesome/free-solid-svg-icons';

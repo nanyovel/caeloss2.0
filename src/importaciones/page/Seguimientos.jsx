@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Header } from '../../components/Header';
 import CajaNavegacion from '../components/CajaNavegacion';
 import { OpcionUnica } from '../../components/OpcionUnica';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
 // import { BotonQuery } from '../../components/BotonQuery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

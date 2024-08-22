@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 // import { BotonQuery } from '../components/BotonQuery';
 import { BtnGeneralButton } from '../components/BtnGeneralButton';
 
@@ -61,7 +61,7 @@ export const Register = ({home,auth}) => {
     {
       code:'fullAccessDashboard',
       valor:false,
-      descripcion:'Acceso total al al dashboard, abarca lectura y escritura en su totalidad.'
+      descripcion:'Acceso total al dashboard, abarca lectura y escritura en su totalidad.'
     },
     {
       code:'accessRoot',

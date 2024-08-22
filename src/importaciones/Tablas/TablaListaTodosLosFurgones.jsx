@@ -1,6 +1,6 @@
 import { useEffect,useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { NavLink,} from 'react-router-dom';
 import { CSSLoader } from '../../components/CSSLoader';
 import { ControlesTablasMain } from '../components/ControlesTablasMain';

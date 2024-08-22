@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 // import { BotonQuery } from '../components/BotonQuery';
 import { BtnGeneralButton } from '../components/BtnGeneralButton';
 

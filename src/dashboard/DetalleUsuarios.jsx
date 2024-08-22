@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import avatarMale from './../../public/img/avatares/maleAvatar.svg';
 import { ControlesUsuarios } from './ControlesUsuarios';
 import {doc, updateDoc,deleteDoc } from 'firebase/firestore';

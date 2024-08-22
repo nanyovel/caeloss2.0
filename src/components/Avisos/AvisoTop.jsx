@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme';
 import { getAuth } from 'firebase/auth';
 import { BtnGeneralButton } from '../BtnGeneralButton';
 

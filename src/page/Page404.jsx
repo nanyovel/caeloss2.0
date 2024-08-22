@@ -1,6 +1,6 @@
 import { Header } from '../components/Header';
 import styled from 'styled-components';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import page404 from './page404.svg/';
 
 export const Page404 = () => {

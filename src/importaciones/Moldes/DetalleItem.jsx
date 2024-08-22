@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { NavLink, useNavigate} from 'react-router-dom';
 import { Interruptor } from '../../components/Interruptor';
 import './../components/interruptor.css';

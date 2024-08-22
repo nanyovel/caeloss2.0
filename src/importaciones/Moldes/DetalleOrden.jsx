@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import parse from 'paste-from-excel';
 import { faEdit, faLock, faUnlock, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { TablaMultiDespachos } from '../Tablas/TablaMultiDespachos';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import db from '../../firebase/firebaseConfig';
 import { Alerta } from '../../components/Alerta';
 import { CSSLoader } from '../../components/CSSLoader';

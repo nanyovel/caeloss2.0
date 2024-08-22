@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react';
 import { styled } from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { BtnGeneralButton } from '../../components/BtnGeneralButton';
 
 export const EntradaDatos = ({

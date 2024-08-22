@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import styled from 'styled-components';
 import ImagenComingSoon from './../../public/img/buildApp.svg';
-import funcionConsumible from '../../consumible';
+import funcionConsumible from '../libs/consumible';
 
 export const Mantenimiento = (
 

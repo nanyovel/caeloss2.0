@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
+
 import { doc, updateDoc, writeBatch } from 'firebase/firestore';
 import db from '../../firebase/firebaseConfig';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';

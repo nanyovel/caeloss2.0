@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAuth } from 'firebase/auth';
 import { collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
-import theme from '../../theme';
+import theme from '../config/theme.jsx';
 import CajaNavegacion from './components/CajaNavegacion';
 import db from '../firebase/firebaseConfig';
 import { Header } from '../components/Header';

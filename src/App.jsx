@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { NavLink, Route, Routes, useLocation} from 'react-router-dom';
-import theme from '../theme';
+import theme from './config/theme.jsx'
 import logoCielos from './../public/img/cielos.png';
 import { CardHome } from './components/CardHome';
 import { Materiales } from './materiales/Materiales';
@@ -21,7 +21,7 @@ import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
 // import ImgCerrado from './../public/img/candadoCerrado.png'
 // import { Error404 } from '../public/404'
 import { Transportes } from './transportes/Transportes';
-// import {  Mantenimiento } from './mantenimiento/Mantenimiento'
+import {  Mantenimiento } from './mantenimiento/Mantenimiento.jsx'
 import { Main } from './importaciones/page/Main';
 import { Maestros } from './importaciones/page/maestros';
 import { ListaArticulo } from './importaciones/template/ListaArticulo';
@@ -29,19 +29,19 @@ import { Seguimientos } from './importaciones/page/Seguimientos';
 import { ListaOrdenCompra } from './importaciones/template/ListaOrdenCompra';
 import { ListaBillOfLading } from './importaciones/Template/ListaBillOfLading';
 import { Ciclo } from './importaciones/page/Ciclo';
-import { Register } from './routes/Register';
-import { Login } from './routes/Login';
-import { LogOut } from './routes/LogOut';
-import { Page404 } from './routes/Page404';
+import { Register } from './auth/Register.jsx';
+import { Login } from './auth/Login';
+import { LogOut } from './auth/LogOut';
+import { Page404 } from './page/Page404';
 import { useEffect, useState } from 'react';
 import { useAuth } from './context/AuthContext';
-import { Perfil } from './routes/Perfil';
+import { Perfil } from './page/Perfil';
 import { getAuth, sendEmailVerification } from 'firebase/auth';
-import { RutaProtegida } from './routes/RutaProtegida';
+import { RutaProtegida } from './context/RutaProtegida';
 import { Autenticado } from './context/Autenticado';
 // import { AvisoCaja } from './components/Avisos/AvisoCaja'
 import { AvisoTop } from './components/Avisos/AvisoTop';
-import { ResetPass } from './routes/ResetPass';
+import { ResetPass } from './auth/ResetPass';
 import { Dashboard } from './dashboard/Dashboard';
 import { ListaFurgon } from './importaciones/Template/ListaFurgon';
 import { ListaUsuarios } from './dashboard/ListaUsuarios';
@@ -53,16 +53,16 @@ import { Alerta } from './components/Alerta';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 // import { FrasesCelebres } from './components/FrasesCelebres'
-import { Resennias } from './resennias/Resennias';
-import { DocumentacionParcial } from './documentacion/DocumentacionParcial';
-import { Documentacion } from './documentacion/Documentacion';
-import { ListaUsers } from './routes/ListaUsers';
-import { Tutoriales } from './tutoriales/Tutoriales';
-import { TutorialesParcial } from './tutoriales/TutorialesParcial';
+import { Resennias } from './components/Resennias';
+import { DocumentacionParcial } from './page/documentacion/DocumentacionParcial.jsx';
+import { Documentacion } from './page/documentacion/Documentacion';
+import { ListaUsers } from './dashboard/ListaUsers';
+import { Tutoriales } from './components/tutoriales/Tutoriales';
+import { TutorialesParcial } from './components/tutoriales/TutorialesParcial';
 import { Setup } from './importaciones/page/Setup';
-import { RutaPrivilegiada } from './routes/RutaPrivilegiada';
-import { Mantenimiento } from './mantenimiento/Mantenimiento';
-import { NoCorreos } from './nocorreos/NoCorreos';
+import { RutaPrivilegiada } from './context/RutaPrivilegiada';
+// import { Mantenimiento } from './mantenimiento/Mantenimiento';
+// import { NoCorreos } from './nocorreos/NoCorreos';
 import {MainMante} from './mantenimiento/page/Main';
 // import { Programa } from './mantenimiento/page/Programa';
 // import { Gastos } from './mantenimiento/page/Gastos';
@@ -574,14 +574,14 @@ const App = () => {
             />
           </RutaProtegida>
         }/>
-        <Route path='/nocorreos' element={
+        {/* <Route path='/nocorreos' element={
           <RutaProtegida>
             <NoCorreos
               dbUsuario={dbUsuario}
               userMaster={userMaster}
             />
           </RutaProtegida>
-        }/>
+        }/> */}
         {/* <Route path='/mantenimiento/programa' element={
           <RutaProtegida>
             <Programa

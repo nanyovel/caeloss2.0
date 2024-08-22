@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import theme from '../../../theme';
+import theme from '../../config/theme.jsx';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Alerta } from '../../components/Alerta';
 import { getAuth } from 'firebase/auth';

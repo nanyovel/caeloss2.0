@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
-import funcionConsumible from '../../consumible';
-import theme from '../../theme';
+import funcionConsumible from '../libs/consumible';
+import theme from '../config/theme.jsx';
 import ImgCerrado from '../../public/img/candadoCerrado.png';
 
 export const CardHome = ({
