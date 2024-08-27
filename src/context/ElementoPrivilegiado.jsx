@@ -13,7 +13,7 @@ export const ElementoPrivilegiado = ({
     // Si existe el objeto, que verifique si tiene el estado true, es decir si el usuario esta autorizado
     if(objetoPrivilegio){
       if(objetoPrivilegio.valor==true){
-        console.log('✅✅✅YUCAA✅✅✅✅');
+        // console.log('✅✅✅YUCAA✅✅✅✅');
         return children;
       }
     }
