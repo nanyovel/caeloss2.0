@@ -7,6 +7,7 @@ import {faHelmetSafety, faTruckFast,faEarthAmericas, faScrewdriverWrench, faHous
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { useAuth } from '../context/AuthContext';
 import { ElementoPrivilegiado } from '../context/ElementoPrivilegiado.jsx';
+import iconLavamanos from './../../public/img/lavamanos.png';
 
 export const MenuLateral = ({userMaster}) => {
   let oneRef= useRef();
@@ -162,13 +163,23 @@ export const MenuLateral = ({userMaster}) => {
                     </Option>
 
                 </Enlaces> */}
-          <Enlaces to={'/mantenimiento'} >
+          <Enlaces to={'/omar'} >
+            <Option className='conImagen'>
+              <Imagen src={iconLavamanos} className='iconItems'/>
+              
+              {/* <h2>Hola</h2> */}
+              {/* <Icono icon={faEarthAmericas} className={` ${lugar==="/mantenimiento"? "iconoSelect" : ""}`}/> */}
+              <TituloMenu className={`${menuAbierto?'menuAbierto':''} conImagen`}>Omar</TituloMenu>
+            </Option>
+
+          </Enlaces>
+          {/* <Enlaces to={'/mantenimiento'} >
             <Option>
               <Icono icon={faScrewdriverWrench} className={` ${lugar==="/mantenimiento"? "iconoSelect" : ""}`}/>
               <TituloMenu className={menuAbierto?'menuAbierto':''}>Mantenimiento</TituloMenu>
             </Option>
 
-          </Enlaces>
+          </Enlaces> */}
           {/* <Enlaces to={'/documentacion'}>
                     <Option>
                         <Icono icon={faCircleInfo} className={`icono ${lugar==="/documentacion"? "iconoSelect" : ""}`}/>
@@ -422,7 +433,13 @@ const TituloMenu =styled.h4`
     &.menuAbierto{
         display: block;
     }
+
+    &.conImagen{
+      display: inline-block;
+      /* border: 1px solid green; */
+    }
 `;
+
 const Option = styled.div`
     padding: 20px 0px;
     display: flex;
@@ -430,16 +447,22 @@ const Option = styled.div`
     position: relative;
     /* display: none; */
     
-    
     &.fotoPerfil{
         padding:  0px;
         display: flex;
         justify-content: center;
         align-items: center;
-        /* border: 1px solid red; */
        
         width: 100%;
         height: 100%;
+    }
+
+    &.conImagen{
+      /* border: 1px solid red; */
+      /* height: 50px;
+      display: flex;
+      position: static;
+      justify-content: space-between; */
     }
 `;
 const Img=styled.img`
@@ -451,5 +474,15 @@ const Img=styled.img`
     border-radius: 50%;
     /* transform: translate(-30%,0); */
     
+
+`;
+
+
+const Imagen = styled.img`
+  /* width: 100%; */
+  display: block;
+  max-height: 100%;
+  left: -10px;
+  position: absolute;
 
 `;

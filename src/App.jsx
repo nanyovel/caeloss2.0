@@ -16,6 +16,7 @@ import ImagenCardFletes from './../public/img/cardHomeComp/truck.png';
 import ImagenCardImportacion from './../public/img/cardHomeComp/import33.png';
 import ImagenCardTransportes from './../public/img/cardHomeComp/transportes.png';
 import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
+import ImgCocina from './../public/img/cardHomeComp/cocina.png';
 // import ImagenCardMantenimiento from './../public/img/cardHomeComp/mante1.png';
 // import noCorreo from './../public/img/cardHomeComp/noCorreo.png';
 // import ImgCerrado from './../public/img/candadoCerrado.png'
@@ -70,7 +71,6 @@ import {MainMante} from './mantenimiento/page/Main';
 // import { Tickets } from './mantenimiento/page/Tickets';
 
 const App = () => {
-  console.log('App');
   // ******************** RECURSOS GENERALES ******************** //
   useEffect(()=>{
     document.title = "Caeloss - Home";
@@ -254,7 +254,7 @@ const App = () => {
                   title='Sistema moderno de gestion de importaciones'
                   ruta='importaciones'
                   bloqueado={!usuario?.emailVerified?true:false}
-                  nuevo={true}/>
+                  nuevo={false}/>
                 <CardHome
                   ImagenCard={ImagenCardTransportes}
                   titulo='Transportes'
@@ -273,7 +273,7 @@ const App = () => {
                   // nuevo={true}
                   bloqueado={!usuario?.emailVerified?true:false}
                 /> */}
-                <CardHome
+                {/* <CardHome
                   ImagenCard={ImagenCardMantenimiento}
                   titulo='Mantenimiento'
                   title='Sistema de gestion de mantenimiento (Maintenance Management Systems (MMS))'
@@ -281,6 +281,16 @@ const App = () => {
                   // nuevo={true}
                   incompleto={true}
                   tipo={'mantenimiento'}
+                  bloqueado={!usuario?.emailVerified?true:false}
+                />  */}
+                <CardHome
+                  ImagenCard={ImgCocina}
+                  titulo='Omar'
+                  title='Materiales linea Omar'
+                  ruta='omar'
+                  // nuevo={true}
+                  incompleto={false}
+                  tipo={'omar'}
                   bloqueado={!usuario?.emailVerified?true:false}
                 /> 
 

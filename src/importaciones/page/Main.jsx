@@ -9,6 +9,13 @@ import { TablaListaTodosLosBLs } from '../Tablas/TablaListaTodosLosBLs';
 import styled from 'styled-components';
 import { OpcionUnica } from '../../components/OpcionUnica';
 import { useEffect } from 'react';
+import ExcelJS from 'exceljs'
+
+import { saveAs } from 'file-saver';
+import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+
+
+
 
 export const Main = ({
   dbOrdenes,
@@ -45,6 +52,61 @@ export const Main = ({
       select:false,
     },
   ]);
+
+  const generateExcel = async (ordenCompra) => {
+    console.log(dbOrdenes)
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Omar');
+
+    // console.log(ordenCompra)
+
+    
+    worksheet.columns = [
+   { header: 'ID', key: 'id', width: 10 },
+   { header: 'N° Orden', key: 'numeroDoc', width: 10 },
+   { header: 'Proveedor', key: 'proveedor', width: 40 },
+   { header: 'Fecha', key: 'date', width: 15 },
+   { header: 'Status', key: 'estadoDoc', width: 10 },
+   { header: 'Obs', key: 'obs', width: 40 },
+ ];
+    ordenCompra.forEach((orden,index)=>{
+    worksheet.addRow({ 
+      id: orden.id, 
+      numeroDoc: orden.numeroDoc, 
+      proveedor: orden.proveedor, 
+      date:orden.fechaCreacion, 
+      estadoDoc:orden.estadoDoc, 
+      obs:orden.comentarios
+    });
+
+
+    })
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    saveAs(blob, 'Ordenes de compra.xlsx');
+
+    // worksheet.columns = [
+    //   { header: 'Tarima', key: 'tarima', width: 10 },
+    //   { header: 'Numero', key: 'numero', width: 10 },
+    //   { header: 'Descripcion', key: 'descripcion', width: 60 },
+    //   { header: 'Qty', key: 'qty', width: 10 },
+    //   { header: 'Obs', key: 'obs', width: 10 },
+    //   { header: 'Link', key: 'link', width: 10 },
+    // ];
+
+    // worksheet.addRow({ tarima: 1, numero: 'NN2', descripcion: "Silla de mesa", qty:3, obs:"Esto observa", link:"enlace"});
+    // worksheet.addRow({ tarima: 2, numero: 'NN3', descripcion: "Lavanavo azul", qty:10, obs:"Esto observa", link:"enlace"});
+    // worksheet.addRow({ tarima: 2, numero: 'NN4', descripcion: "Lavamano de cristal rojo", qty:8, obs:"Esto observa", link:"enlace"});
+    // worksheet.addRow({ tarima: 2, numero: 'NN5', descripcion: "Lavamano con pedestal", qty:7, obs:"Esto observa", link:"enlace"});
+    // worksheet.addRow({ tarima: 3, numero: 'NN6', descripcion: "Inodoro simphonic", qty:10, obs:"Esto observa", link:"enlace"});
+    // worksheet.addRow({ tarima: 3, numero: 'NN7', descripcion: "Mezcladora", qty:19, obs:"Esto observa", link:"enlace"});
+
+    // const buffer = await workbook.xlsx.writeBuffer();
+    // const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // saveAs(blob, 'MiArchivo.xlsx');
+  };
 
   const [tablaActiva,setTablaActiva]=useState();
   useEffect(()=>{
@@ -105,6 +167,10 @@ export const Main = ({
         />
 
       </ContainerNav>
+
+      <BtnGeneralButton
+        onClick={()=>generateExcel(dbOrdenes)}
+      >Descargar</BtnGeneralButton>
 
       { tablaActiva}
 
