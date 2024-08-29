@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import theme from '../../config/theme';
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import theme from "../../config/theme";
 
 export const AvisoModal = ({
   children,
@@ -9,19 +9,20 @@ export const AvisoModal = ({
   tituloSecond,
   setHasModal,
   hasModal,
+  hasBtnClose,
 }) => {
   return (
-
-    <ContenedorAvisoModal className={hasModal==true?'':'activo'}>
+    <ContenedorAvisoModal className={hasModal == true ? "" : "activo"}>
       <CajaAviso>
         <CajaEncabezado>
-
           <TituloAviso>{tituloMain}</TituloAviso>
+          {/* {hasBtnClose && ( */}
           <CajaX>
-            <Icono icon={faXmark} onClick={()=>setHasModal(false)}/>
+            <Icono icon={faXmark} onClick={() => setHasModal(false)} />
           </CajaX>
+          {/* )} */}
         </CajaEncabezado>
-        <TituloAviso className='subtitulo'>{tituloSecond}</TituloAviso>
+        <TituloAviso className="subtitulo">{tituloSecond}</TituloAviso>
         {children}
         {/* <CajaImg>
             <Img src={ImagenBuildWeb}/>
@@ -31,7 +32,7 @@ export const AvisoModal = ({
   );
 };
 
-const ContenedorAvisoModal=styled.div`
+const ContenedorAvisoModal = styled.div`
   background-color: #32353868;
   z-index: 100;
   position: fixed;
@@ -45,22 +46,22 @@ const ContenedorAvisoModal=styled.div`
   backdrop-filter: blur(1px);
 
   @media screen and (max-width: 1070px) {
-        width: 80%;
-      }
-      @media screen and (max-width: 650px) {
-        width: 80%;
-      }
-      @media screen and (max-width: 550px) {
-        width: 100%;
-        margin: 0;
-      }
-      &.activo{
-        display: none;
-        background-color: red;
-      }
+    width: 80%;
+  }
+  @media screen and (max-width: 650px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 550px) {
+    width: 100%;
+    margin: 0;
+  }
+  &.activo {
+    display: none;
+    background-color: red;
+  }
 `;
 
-const CajaAviso=styled.div`
+const CajaAviso = styled.div`
   width: 80%;
   height: 80%;
   background-color: #000b1a;
@@ -69,11 +70,11 @@ const CajaAviso=styled.div`
   padding: 20px;
 `;
 
-const TituloAviso=styled.h2`
+const TituloAviso = styled.h2`
   color: ${theme.azul2};
   border-bottom: 1px solid ${theme.azul2};
-  
-  &.subtitulo{
+
+  &.subtitulo {
     font-size: 1.5rem;
     border-bottom: none;
     color: ${theme.warning};
@@ -82,24 +83,22 @@ const TituloAviso=styled.h2`
   }
 `;
 
-const CajaEncabezado =styled.div`
+const CajaEncabezado = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
 `;
-const CajaX =styled.div`
-  
-`;
+const CajaX = styled.div``;
 
-const Icono=styled(FontAwesomeIcon)`
+const Icono = styled(FontAwesomeIcon)`
   color: red;
   font-size: 1rem;
   cursor: pointer;
   border: 1px solid ${theme.azul2};
   width: 20px;
   height: 20px;
-  transition: 0.2s ease ;
-  &:hover{
+  transition: 0.2s ease;
+  &:hover {
     border: 1px solid ${theme.azul2};
     border-radius: 4px 0 4px 0;
   }
