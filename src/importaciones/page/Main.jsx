@@ -1,90 +1,80 @@
-import { useState } from 'react';
-import { Header } from '../../components/Header';
-import CajaNavegacion from '../components/CajaNavegacion';
-import { TablaListaTodosLosItems } from '../Tablas/TablaListaTodosLosItems';
-import { TablaListaTodosLosFurgones } from '../Tablas/TablaListaTodosLosFurgones';
-import { TablaListaTodasLasOC } from '../Tablas/TablaListaTodasLasOC';
-import { TablaListaTodosLosBLs } from '../Tablas/TablaListaTodosLosBLs';
+import { useState } from "react";
+import { Header } from "../../components/Header";
+import CajaNavegacion from "../components/CajaNavegacion";
+import { TablaListaTodosLosItems } from "../Tablas/TablaListaTodosLosItems";
+import { TablaListaTodosLosFurgones } from "../Tablas/TablaListaTodosLosFurgones";
+import { TablaListaTodasLasOC } from "../Tablas/TablaListaTodasLasOC";
+import { TablaListaTodosLosBLs } from "../Tablas/TablaListaTodosLosBLs";
 // import { BotonQuery } from '../../components/BotonQuery';
-import styled from 'styled-components';
-import { OpcionUnica } from '../../components/OpcionUnica';
-import { useEffect } from 'react';
-import ExcelJS from 'exceljs'
+import styled from "styled-components";
+import { OpcionUnica } from "../../components/OpcionUnica";
+import { useEffect } from "react";
+import ExcelJS from "exceljs";
 
-import { saveAs } from 'file-saver';
-import { BtnGeneralButton } from '../../components/BtnGeneralButton';
+import { saveAs } from "file-saver";
+import { AvisoModal } from "../../components/Avisos/AvisoModal";
 
-
-
-
-export const Main = ({
-  dbOrdenes,
-  dbBillOfLading,
-  dbUsuario,
-  userMaster
-}) => {
-
-  useEffect(()=>{
+export const Main = ({ dbOrdenes, dbBillOfLading, dbUsuario, userMaster }) => {
+  useEffect(() => {
     document.title = "Caeloss - Importaciones";
     return () => {
       document.title = "Caeloss";
     };
-  },[]);
-  const [arrayOpciones,setArrayOpciones]=useState([
+  }, []);
+  const [arrayOpciones, setArrayOpciones] = useState([
     {
-      nombre:'Articulos',
+      nombre: "Articulos",
       opcion: 0,
-      select:true,
+      select: true,
     },
     {
-      nombre:'Contenedores',
+      nombre: "Contenedores",
       opcion: 1,
-      select:false,
+      select: false,
     },
     {
-      nombre:'O/C',
+      nombre: "O/C",
       opcion: 2,
-      select:false,
+      select: false,
     },
     {
-      nombre:'BLs',
+      nombre: "BLs",
       opcion: 3,
-      select:false,
+      select: false,
     },
   ]);
 
   const generateExcel = async (ordenCompra) => {
-    console.log(dbOrdenes)
+    console.log(dbOrdenes);
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Omar');
+    const worksheet = workbook.addWorksheet("Omar");
 
     // console.log(ordenCompra)
 
-    
     worksheet.columns = [
-   { header: 'ID', key: 'id', width: 10 },
-   { header: 'N° Orden', key: 'numeroDoc', width: 10 },
-   { header: 'Proveedor', key: 'proveedor', width: 40 },
-   { header: 'Fecha', key: 'date', width: 15 },
-   { header: 'Status', key: 'estadoDoc', width: 10 },
-   { header: 'Obs', key: 'obs', width: 40 },
- ];
-    ordenCompra.forEach((orden,index)=>{
-    worksheet.addRow({ 
-      id: orden.id, 
-      numeroDoc: orden.numeroDoc, 
-      proveedor: orden.proveedor, 
-      date:orden.fechaCreacion, 
-      estadoDoc:orden.estadoDoc, 
-      obs:orden.comentarios
+      { header: "ID", key: "id", width: 10 },
+      { header: "N° Orden", key: "numeroDoc", width: 10 },
+      { header: "Proveedor", key: "proveedor", width: 40 },
+      { header: "Fecha", key: "date", width: 15 },
+      { header: "Status", key: "estadoDoc", width: 10 },
+      { header: "Obs", key: "obs", width: 40 },
+    ];
+    ordenCompra.forEach((orden, index) => {
+      worksheet.addRow({
+        id: orden.id,
+        numeroDoc: orden.numeroDoc,
+        proveedor: orden.proveedor,
+        date: orden.fechaCreacion,
+        estadoDoc: orden.estadoDoc,
+        obs: orden.comentarios,
+      });
+    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
-
-    })
-    const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-    saveAs(blob, 'Ordenes de compra.xlsx');
+    saveAs(blob, "Ordenes de compra.xlsx");
 
     // worksheet.columns = [
     //   { header: 'Tarima', key: 'tarima', width: 10 },
@@ -108,40 +98,42 @@ export const Main = ({
     // saveAs(blob, 'MiArchivo.xlsx');
   };
 
-  const [tablaActiva,setTablaActiva]=useState();
-  useEffect(()=>{
-    if(arrayOpciones[0].select==true){
+  const [tablaActiva, setTablaActiva] = useState();
+  useEffect(() => {
+    if (arrayOpciones[0].select == true) {
       setTablaActiva(
         <TablaListaTodosLosItems
           dbOrdenes={dbOrdenes}
           dbBillOfLading={dbBillOfLading}
+        />
+      );
+    } else if (arrayOpciones[1].select == true) {
+      setTablaActiva(
+        <TablaListaTodosLosFurgones
+          dbOrdenes={dbOrdenes}
+          dbBillOfLading={dbBillOfLading}
+        />
+      );
+    } else if (arrayOpciones[2].select == true) {
+      setTablaActiva(
+        <TablaListaTodasLasOC
+          dbOrdenes={dbOrdenes}
+          dbBillOfLading={dbBillOfLading}
+        />
+      );
+    } else if (arrayOpciones[3].select == true) {
+      setTablaActiva(
+        <TablaListaTodosLosBLs
+          dbOrdenes={dbOrdenes}
+          dbBillOfLading={dbBillOfLading}
+        />
+      );
+    }
+  }, [dbBillOfLading, dbOrdenes, arrayOpciones]);
 
-        />);
-    }
-    else if(arrayOpciones[1].select==true){
-      setTablaActiva(<TablaListaTodosLosFurgones
-        dbOrdenes={dbOrdenes}
-        dbBillOfLading={dbBillOfLading}
-      />);
-    }
-    else if(arrayOpciones[2].select==true){
-      setTablaActiva(<TablaListaTodasLasOC
-        dbOrdenes={dbOrdenes}
-        dbBillOfLading={dbBillOfLading}
-      />);
-    }
-    else if(arrayOpciones[3].select==true){
-      setTablaActiva(<TablaListaTodosLosBLs
-        dbOrdenes={dbOrdenes}
-        dbBillOfLading={dbBillOfLading}
-      />);
-    }
-
-  },[dbBillOfLading,dbOrdenes,arrayOpciones]);
-
-  const handleOpciones=(e)=>{
-    let index=Number(e.target.dataset.id);
-    setArrayOpciones(prevOpciones =>
+  const handleOpciones = (e) => {
+    let index = Number(e.target.dataset.id);
+    setArrayOpciones((prevOpciones) =>
       prevOpciones.map((opcion, i) => ({
         ...opcion,
         select: i === index,
@@ -149,9 +141,22 @@ export const Main = ({
     );
   };
 
+  const [hasModal, setHasModal] = useState(true);
   return (
     <>
-      <Header titulo={'Sistema gestion de importaciones'} subTitulo='Main'/>
+      <Header titulo={"Sistema gestion de importaciones"} subTitulo="Main" />
+      {/* <h2>Hola</h2> */}
+      <AvisoModal
+        children="Prueba"
+        tituloMain="Realizando cambios..."
+        tituloSecond="Estamos realizando cambios, por el momento el SGI no esta disponible, la informacion a visualizar podria estar desactualizada."
+        setHasModal={setHasModal}
+        hasModal={hasModal}
+        hasBtnClose={false}
+
+        // funcionCTA2="asd"
+      />
+
       <ContainerNav>
         <CajaNavegacion
           pageSelected={0}
@@ -159,20 +164,18 @@ export const Main = ({
           userMaster={userMaster}
         />
         <OpcionUnica
-          titulo='Pantallas'
-          name='grupoA'
+          titulo="Pantallas"
+          name="grupoA"
           arrayOpciones={arrayOpciones}
           handleOpciones={handleOpciones}
-
         />
-
       </ContainerNav>
 
-      <BtnGeneralButton
-        onClick={()=>generateExcel(dbOrdenes)}
-      >Descargar</BtnGeneralButton>
+      {/* <BtnGeneralButton onClick={() => generateExcel(dbOrdenes)}>
+        Descargar
+      </BtnGeneralButton> */}
 
-      { tablaActiva}
+      {tablaActiva}
 
       {/* <Footer/>       */}
     </>
@@ -187,13 +190,12 @@ const ContainerNav = styled.div`
   margin-top: 10px;
   gap: 15px;
   justify-content: start;
-  @media screen and (max-width:1000px){
+  @media screen and (max-width: 1000px) {
     padding: 5px;
     display: flex;
     flex-direction: column;
   }
-  @media screen and (max-width:410px){
+  @media screen and (max-width: 410px) {
     width: 99%;
-  
   }
 `;
