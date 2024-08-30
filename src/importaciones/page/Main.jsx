@@ -12,8 +12,6 @@ import { useEffect } from "react";
 import ExcelJS from "exceljs";
 
 import { saveAs } from "file-saver";
-import { BtnGeneralButton } from "../../components/BtnGeneralButton";
-import { AvisoCaja } from "../../components/Avisos/AvisoCaja";
 import { AvisoModal } from "../../components/Avisos/AvisoModal";
 
 export const Main = ({ dbOrdenes, dbBillOfLading, dbUsuario, userMaster }) => {

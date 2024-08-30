@@ -76,6 +76,7 @@ const App = () => {
   const [dbUsuario, setDBUsuario] = useState([]);
   const [dbResennias, setDBResennias] = useState([]);
   const [dbTutoriales, setDBTutoriales] = useState([]);
+  const [dbOmarMiguel, setDBOmarMiguel] = useState([]);
 
   // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
   const useDocByCondition = (
@@ -132,6 +133,7 @@ const App = () => {
   useDocByCondition("tutoriales", setDBTutoriales);
   let idUsuario = usuario?.uid ? usuario.uid : "00";
   useDocById("usuarios", setUserMaster, idUsuario);
+  useDocByCondition("omarMiguel", setDBOmarMiguel);
 
   // // ******************** CONFIRMAR EMAIL ******************** //
   const confirmarEmail = () => {
@@ -196,6 +198,7 @@ const App = () => {
               dbTutoriales={dbTutoriales}
               userMaster={userMaster}
               dbResennias={dbResennias}
+              auth={auth}
             />
           }
         />
@@ -444,7 +447,6 @@ const App = () => {
             </RutaProtegida>
           }
         />
-
         <Route
           path="/transportes"
           element={
@@ -453,13 +455,43 @@ const App = () => {
             </RutaProtegida>
           }
         />
-
         <Route
           path="/omar"
           element={
-            <RutaProtegida>
-              <Omar dbUsuario={dbUsuario} userMaster={userMaster} />
-            </RutaProtegida>
+            // <RutaProtegida>
+            <Omar
+              dbUsuario={dbUsuario}
+              userMaster={userMaster}
+              dbOmarMiguel={dbOmarMiguel}
+              setDBOmarMiguel={setDBOmarMiguel}
+            />
+            // </RutaProtegida>
+          }
+        />
+        <Route
+          path="/omar/:id"
+          element={
+            // <RutaProtegida>
+            <Omar
+              dbUsuario={dbUsuario}
+              userMaster={userMaster}
+              dbOmarMiguel={dbOmarMiguel}
+              setDBOmarMiguel={setDBOmarMiguel}
+            />
+            // </RutaProtegida>
+          }
+        />
+        <Route
+          path="/omar/:id/:param2"
+          element={
+            // <RutaProtegida>
+            <Omar
+              dbUsuario={dbUsuario}
+              userMaster={userMaster}
+              dbOmarMiguel={dbOmarMiguel}
+              setDBOmarMiguel={setDBOmarMiguel}
+            />
+            // </RutaProtegida>
           }
         />
         {/* <Route path='/mantenimiento' element={

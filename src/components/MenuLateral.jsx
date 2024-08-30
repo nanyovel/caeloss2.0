@@ -171,6 +171,15 @@ export const MenuLateral = ({ userMaster }) => {
             </Enlaces>
           )}
 
+          {/* <Enlaces to={"/enespecial"}>
+            <Option>
+              <Imagen src={iconLavamanos} />
+
+              <TituloMenu className={menuAbierto ? "menuAbierto" : ""}>
+                En especial
+              </TituloMenu>
+            </Option>
+          </Enlaces> */}
           {/* <Enlaces to={'/transportes'} >
                     <Option>
                         <Icono icon={faRoute} className={`icono debajo ${lugar==="/transportes"? "iconoSelect" : ""}`}/>

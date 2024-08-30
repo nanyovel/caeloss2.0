@@ -17,6 +17,8 @@ import { Autenticado } from "./../context/Autenticado";
 import { TutorialesParcial } from "./../components/tutoriales/TutorialesParcial";
 import { Resennias } from "./../components/Resennias";
 import { DocumentacionParcial } from "./documentacion/DocumentacionParcial.jsx";
+import { Register } from "../auth/Register.jsx";
+import { Login } from "../auth/Login.jsx";
 
 export const Home = ({
   usuario,
@@ -26,6 +28,7 @@ export const Home = ({
   dbTutoriales,
   userMaster,
   dbResennias,
+  auth,
 }) => {
   return (
     <>
@@ -102,9 +105,9 @@ export const Home = ({
                 />  */}
           {/* <CardHome
             ImagenCard={ImgCocina}
-            titulo="Omar"
-            title="Materiales linea Omar"
-            ruta="omar"
+            titulo="En especial"
+            title="Materiales en especiales para empleados"
+            ruta="enespecial"
             // nuevo={true}
             incompleto={false}
             tipo={"omar"}
