@@ -16,7 +16,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import db from "../firebase/firebaseConfig";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import {
   getDownloadURL,
@@ -26,6 +26,14 @@ import {
 } from "firebase/storage";
 import { Alerta } from "../components/Alerta.jsx";
 import { ModalLoading } from "../components/ModalLoading.jsx";
+
+// ****Tarima - Es el numero de tarima colocado en fisico
+// ****numeroDigitado - Es el orden con el que escribi lo fisico, este dato es importante para poder ordenar segun el orden fisico
+// por ejemplo el numeroItem es diferente porque por ejemplo encontramos diferentes incoherencias entre ellas:
+// -Existen item NN y EP
+// -Existen NN duplicado por lo cual le agregue el sufijo B, por ejemplo NN378 y NN378B
+// -Hay numeros que me salte por error por ejemplo NN175,NN176,NN177,NN179 etc
+// La solucion es agregar un dato aparte para ello cree numeroDigitado
 
 export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
   const storage = getStorage();
@@ -53,8 +61,6 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
 
     setNuevaDBOmar(itemsOrdenados.slice(indiceInicio, indiceFin));
 
-    // console.log(Number(params.numeroPagina));
-    console.log(typeof params.numeroPagina);
     if (
       Number(params.numeroPagina) &&
       typeof Number(params.numeroPagina == "number")
@@ -157,10 +163,10 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
                 <CajaTabla>
                   <Tabla>
                     <tbody>
-                      <Filas className="body">
+                      {/* <Filas className="body">
                         <CeldasBody>N°</CeldasBody>
                         <CeldasBody>{item.numeroDigitado}</CeldasBody>
-                      </Filas>
+                      </Filas> */}
                       <Filas className="body">
                         <CeldasBody>Tarima</CeldasBody>
                         <CeldasBody>{item.tarima}</CeldasBody>
@@ -171,7 +177,9 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
                       </Filas>
                       <Filas className="body">
                         <CeldasBody>Descripcion</CeldasBody>
-                        <CeldasBody>{item.descripcion}</CeldasBody>
+                        <CeldasBody>
+                          <Enlace to={item.id}>{item.descripcion}</Enlace>
+                        </CeldasBody>
                       </Filas>
                       <Filas className="body">
                         <CeldasBody>Qty</CeldasBody>
@@ -248,10 +256,19 @@ const CajaItem = styled.div`
   -webkit-box-shadow: 7px 7px 12px -1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 7px 7px 12px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 7px 7px 12px -1px rgba(0, 0, 0, 0.75);
+
+  @media screen and (max-width: 700px) {
+    border: 3px solid red;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const LadoIzquierdo = styled.div`
   width: 50%;
   /* border: 1px solid red; */
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const CajaTabla = styled.div`
@@ -322,5 +339,12 @@ const InputEditable = styled.input`
   border-left: 1px solid ${theme.azul1};
   &.file {
     height: auto;
+  }
+`;
+const Enlace = styled(NavLink)`
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
   }
 `;
