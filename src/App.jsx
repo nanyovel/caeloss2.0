@@ -29,10 +29,6 @@ const App = () => {
     };
   }, []);
 
-  const [dispatchAlerta, setDispatchAlerta] = useState(false);
-  const [mensajeAlerta, setMensajeAlerta] = useState("");
-  const [tipoAlerta, setTipoAlerta] = useState("");
-
   const auth = getAuth();
   const { usuario } = useAuth();
   const usuarioFireBase = auth.currentUser;
@@ -106,29 +102,6 @@ const App = () => {
   useDocById("usuarios", setUserMaster, idUsuario);
   useDocByCondition("omarMiguel", setDBOmarMiguel);
 
-  // // ******************** CONFIRMAR EMAIL ******************** //
-  const confirmarEmail = () => {
-    var actionCodeSettings = { url: "https://caeloss.com" };
-    sendEmailVerification(usuario, actionCodeSettings)
-      .then(function () {
-        setMensajeAlerta("Email enviado.");
-        setTipoAlerta("success");
-        setDispatchAlerta(true);
-        setTimeout(() => {
-          setDispatchAlerta(false);
-        }, 3000);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setMensajeAlerta("Error con la base de datos.");
-        setTipoAlerta("success");
-        setDispatchAlerta(true);
-        setTimeout(() => {
-          setDispatchAlerta(false);
-        }, 3000);
-      });
-  };
-
   // // ******************** REGISTRAR VISITAS DE USUARIOS ******************** //
   // BLoque de codigo provisional
   useEffect(() => {
@@ -178,11 +151,6 @@ const App = () => {
       />
 
       {lugar == "/" ? "" : ""}
-      <Alerta
-        estadoAlerta={dispatchAlerta}
-        tipo={tipoAlerta}
-        mensaje={mensajeAlerta}
-      />
     </ContenedorPrincipal>
   );
 };

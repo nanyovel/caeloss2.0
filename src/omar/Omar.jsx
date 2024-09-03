@@ -871,7 +871,7 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
                       </Filas>
                       <Filas className="body">
                         <CeldasBody>Descripcion</CeldasBody>
-                        <CeldasBody>
+                        <CeldasBody className="descripcion">
                           <Enlace to={item.id}>{item.descripcion}</Enlace>
                         </CeldasBody>
                       </Filas>
@@ -894,7 +894,7 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
                     </tbody>
                   </Tabla>
                 </CajaTabla>
-                <InputEditable
+                {/* <InputEditable
                   type="file"
                   multiple
                   className="file"
@@ -905,7 +905,7 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
 
                 <BtnGeneralButton onClick={() => uploadMultipleFiles(item.id)}>
                   Cargar Fotos
-                </BtnGeneralButton>
+                </BtnGeneralButton> */}
               </LadoIzquierdo>
               <LadoDerecho>
                 <CajaImg>
@@ -989,6 +989,9 @@ const CeldasBody = styled.td`
   height: 25px;
   padding-left: 5px;
   padding-right: 5px;
+  &.descripcion {
+    text-decoration: underline;
+  }
 `;
 const LadoDerecho = styled.div`
   width: 100%;
