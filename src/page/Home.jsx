@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import theme from "../config/theme";
 import styled from "styled-components";
 import logoCaeloss from "./../../public/img/logoOficial2.svg";
@@ -19,6 +19,10 @@ import { Resennias } from "./../components/Resennias";
 import { DocumentacionParcial } from "./documentacion/DocumentacionParcial.jsx";
 import { Register } from "../auth/Register.jsx";
 import { Login } from "../auth/Login.jsx";
+import { CompletInfoContext } from "../context/CompletInfoContext.jsx";
+import { AvisoTop } from "./../components/Avisos/AvisoTop.jsx";
+import { sendEmailVerification } from "firebase/auth";
+import { Alerta } from "../components/Alerta.jsx";
 
 export const Home = ({
   usuario,
@@ -30,7 +34,33 @@ export const Home = ({
   dbResennias,
   auth,
 }) => {
+  const [dispatchAlerta, setDispatchAlerta] = useState(false);
+  const [mensajeAlerta, setMensajeAlerta] = useState("");
+  const [tipoAlerta, setTipoAlerta] = useState("");
+
+  const confirmarEmail = () => {
+    var actionCodeSettings = { url: "https://caeloss.com" };
+    sendEmailVerification(usuario, actionCodeSettings)
+      .then(function () {
+        setMensajeAlerta("Email enviado.");
+        setTipoAlerta("success");
+        setDispatchAlerta(true);
+        setTimeout(() => {
+          setDispatchAlerta(false);
+        }, 3000);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setMensajeAlerta("Error con la base de datos.");
+        setTipoAlerta("success");
+        setDispatchAlerta(true);
+        setTimeout(() => {
+          setDispatchAlerta(false);
+        }, 3000);
+      });
+  };
   return (
+    // // ******************** CONFIRMAR EMAIL ******************** //
     <>
       <CabezaHome>
         <CajaLogoCaeloss>
@@ -41,6 +71,7 @@ export const Home = ({
         </CajaLogoCaeloss>
         {usuario ? <LogoCielos src={logoCielos} /> : null}
       </CabezaHome>
+      <CompletInfoContext userMaster={userMaster} />
       {usuario ? (
         usuario.emailVerified == false ? (
           <AvisoTop ctaTexto={"Enviar enlace"} cta={() => confirmarEmail()} />
@@ -167,6 +198,12 @@ export const Home = ({
           <DocumentacionParcial />
         </SeccionHome>
       </Autenticado>
+
+      <Alerta
+        estadoAlerta={dispatchAlerta}
+        tipo={tipoAlerta}
+        mensaje={mensajeAlerta}
+      />
     </>
   );
 };
