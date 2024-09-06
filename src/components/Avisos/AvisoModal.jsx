@@ -10,17 +10,22 @@ export const AvisoModal = ({
   setHasModal,
   hasModal,
   hasBtnClose,
+  tipo,
 }) => {
   return (
-    <ContenedorAvisoModal className={hasModal == true ? "" : "activo"}>
-      <CajaAviso>
+    <ContenedorAvisoModal
+      className={`${hasModal == true ? "" : " activo "}
+ 
+        `}
+    >
+      <CajaAviso className={tipo}>
         <CajaEncabezado>
           <TituloAviso>{tituloMain}</TituloAviso>
-          {/* {hasBtnClose && ( */}
-          <CajaX>
-            <Icono icon={faXmark} onClick={() => setHasModal(false)} />
-          </CajaX>
-          {/* )} */}
+          {hasBtnClose && (
+            <CajaX>
+              <Icono icon={faXmark} onClick={() => setHasModal(false)} />
+            </CajaX>
+          )}
         </CajaEncabezado>
         <TituloAviso className="subtitulo">{tituloSecond}</TituloAviso>
         {children}
@@ -68,6 +73,10 @@ const CajaAviso = styled.div`
   border: 2px solid ${theme.warning};
   border-radius: 15px 0 15px 0;
   padding: 20px;
+  &.fletes {
+    margin-top: 85px;
+    /* border: 2px solid blue; */
+  }
 `;
 
 const TituloAviso = styled.h2`

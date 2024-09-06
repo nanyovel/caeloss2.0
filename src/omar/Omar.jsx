@@ -7,9 +7,16 @@ import imgItem2 from "./image/20240814_162206.jpg";
 import theme from "../config/theme";
 import { BtnGeneralButton } from "../components/BtnGeneralButton";
 import { CarrucelImg } from "./CarrucelImg.jsx";
-import { doc, updateDoc } from "firebase/firestore";
 import db from "../firebase/firebaseConfig";
 import { NavLink, useParams } from "react-router-dom";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
 import {
   getDownloadURL,
@@ -30,7 +37,41 @@ import { BotonQuery } from "../components/BotonQuery.jsx";
 // -Hay numeros que me salte por error por ejemplo NN175,NN176,NN177,NN179 etc
 // La solucion es agregar un dato aparte para ello cree numeroDigitado
 
-export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
+export const Omar = () => {
+  const [dbOmarMiguel, setDBOmarMiguel] = useState([]);
+
+  const useDocByCondition = (
+    collectionName,
+    setState,
+    exp1,
+    condicion,
+    exp2
+  ) => {
+    useEffect(() => {
+      console.log("BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫");
+      let q = "";
+
+      if (exp1) {
+        q = query(collection(db, collectionName), where(exp1, condicion, exp2));
+      } else {
+        q = query(collection(db, collectionName));
+      }
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const colecion = [];
+        querySnapshot.forEach((doc) => {
+          // console.log(doc.data())
+          colecion.push({ ...doc.data(), id: doc.id });
+        });
+        setState(colecion);
+      });
+      // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
+      return () => unsubscribe();
+    }, [collectionName, setState, exp1, condicion, exp2]);
+  };
+
+  useDocByCondition("omarMiguel", setDBOmarMiguel);
+
   const storage = getStorage();
   const [params, setParams] = useState(useParams());
   const [nuevaDBOmar, setNuevaDBOmar] = useState([]);
@@ -745,6 +786,7 @@ export const Omar = ({ setDBOmarMiguel, dbOmarMiguel }) => {
     const indiceInicio = (numeroPagina - 1) * itemsPorPagina;
     const indiceFin = indiceInicio + itemsPorPagina;
 
+    console.log(dbOmarMiguel);
     setNuevaDBOmar(itemsOrdenados.slice(indiceInicio, indiceFin));
 
     if (

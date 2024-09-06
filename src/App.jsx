@@ -1,10 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./app.css";
 import { MenuLateral } from "./components/MenuLateral";
 import ContenedorPrincipal from "./components/ContenedorPrincipal";
 import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
-import { getAuth, sendEmailVerification } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 import {
   collection,
@@ -15,10 +15,12 @@ import {
   where,
 } from "firebase/firestore";
 import db from "./firebase/firebaseConfig";
-import { Alerta } from "./components/Alerta";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { MasterRoutes } from "./routes/MasterRoutes";
+import { AvisoModal } from "./components/Avisos/AvisoModal";
+import { BtnGeneralButton } from "./components/BtnGeneralButton";
+import styled from "styled-components";
 
 const App = () => {
   // ******************** RECURSOS GENERALES ******************** //
@@ -30,8 +32,15 @@ const App = () => {
   }, []);
 
   const auth = getAuth();
-  const { usuario } = useAuth();
-  const usuarioFireBase = auth.currentUser;
+  const usuarioPrueba = useAuth().usuario;
+  const [usuario, setUsuario] = useState(usuarioPrueba);
+
+  useEffect(() => {
+    setUsuario(usuarioPrueba);
+  }, [usuarioPrueba]);
+  // console.log(usuario);
+
+  // const emailVerified = usuario.auth.currentUser.emailVerified;
 
   let location = useLocation();
   let lugar = location.pathname;
@@ -43,7 +52,6 @@ const App = () => {
   const [dbUsuario, setDBUsuario] = useState([]);
   const [dbResennias, setDBResennias] = useState([]);
   const [dbTutoriales, setDBTutoriales] = useState([]);
-  const [dbOmarMiguel, setDBOmarMiguel] = useState([]);
 
   // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
   const useDocByCondition = (
@@ -100,7 +108,6 @@ const App = () => {
   useDocByCondition("tutoriales", setDBTutoriales);
   let idUsuario = usuario?.uid ? usuario.uid : "00";
   useDocById("usuarios", setUserMaster, idUsuario);
-  useDocByCondition("omarMiguel", setDBOmarMiguel);
 
   // // ******************** REGISTRAR VISITAS DE USUARIOS ******************** //
   // BLoque de codigo provisional
@@ -127,12 +134,60 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
+
+  // Hacer que los usuarios se registren
+  const [datosIncompletos, setDatosIncompletos] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (usuario?.emailVerified && userMaster) {
+      if (
+        userMaster.nombre == "" ||
+        userMaster.apellido == "" ||
+        userMaster.dpto == "" ||
+        userMaster.posicion == "" ||
+        userMaster.sucursal == ""
+      ) {
+        setDatosIncompletos(true);
+        if (location.pathname == "/perfil") {
+          setHasModal(false);
+        } else {
+          setHasModal(true);
+        }
+        // console.log(navigate());
+      }
+    }
+  }, [usuario, userMaster]);
+
+  const [hasModal, setHasModal] = useState(false);
+
+  const goPerfil = () => {
+    navigate("/perfil");
+    setHasModal(false);
+  };
+
   return (
     <ContenedorPrincipal>
       <MenuLateral userMaster={userMaster} />
+      {datosIncompletos ? (
+        <AvisoModal
+          tituloMain={"Debe completar datos"}
+          tituloSecond={
+            "A solicitud de la dirrecion cada usuario de Caeloss debe completar sus datos de perfil, por ejemplo nombre, apellido y demas, dirigete a perfil y presiona editar para completar tus datos."
+          }
+          setHasModal={setHasModal}
+          hasModal={hasModal}
+          hasBtnClose={false}
+          children={
+            <CajaBtnModal>
+              <BtnGeneralButton onClick={() => goPerfil()}>
+                Ir a perfil
+              </BtnGeneralButton>
+            </CajaBtnModal>
+          }
+        />
+      ) : null}
       <MasterRoutes
         usuario={usuario}
-        usuarioFireBase={usuarioFireBase}
         dbTutoriales={dbTutoriales}
         setDBTutoriales={setDBTutoriales}
         dbUsuario={dbUsuario}
@@ -143,8 +198,6 @@ const App = () => {
         setDBBillOfLading={setDBBillOfLading}
         dbOrdenes={dbOrdenes}
         setDBOrdenes={setDBOrdenes}
-        dbOmarMiguel={dbOmarMiguel}
-        setDBOmarMiguel={setDBOmarMiguel}
         useDocByCondition={useDocByCondition}
         setDBUsuario={setDBUsuario}
         setUserMaster={setUserMaster}
@@ -155,3 +208,8 @@ const App = () => {
   );
 };
 export default App;
+const CajaBtnModal = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;

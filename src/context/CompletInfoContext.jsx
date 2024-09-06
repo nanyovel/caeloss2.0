@@ -1,6 +1,7 @@
-import React, { useReducer } from "react";
+// 6 de septiembre en la mañana comentado
+// import React, { useReducer } from "react";
 
-export const CompletInfoContext = ({ userMaster }) => {
-  console.log(userMaster);
-  return <div>CompletInfoContext</div>;
-};
+// export const CompletInfoContext = ({ userMaster }) => {
+//   console.log(userMaster);
+//   return <div>CompletInfoContext</div>;
+// };

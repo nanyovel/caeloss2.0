@@ -17,9 +17,10 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
-// import { BotonQuery } from '../components/BotonQuery';
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { AvisoCaja } from "../components/Avisos/AvisoCaja.jsx";
+import { BotonQuery } from "../components/BotonQuery.jsx";
+import { AvisoTop } from "../components/Avisos/AvisoTop.jsx";
 
 export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
   // // ******************** RECURSOS GENERALES ******************** //
@@ -103,7 +104,6 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
       console.log(userMaster);
       const usuarioActualizar = doc(db, "usuarios", userMaster.id);
       setIsLoading(true);
-      console.log(userEditable);
       // return
       try {
         // Primero actualiza los valores mas importantes
@@ -200,12 +200,32 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
     }
   };
 
+  // useEffect(() => {
+  //   console.log(userEditable);
+  // }, []);
+
+  const [datosIncompletos, setDatosIncompletos] = useState(false);
+  useEffect(() => {
+    if (
+      userMaster?.nombre == "" ||
+      userMaster?.apellido == "" ||
+      userMaster?.dpto == "" ||
+      userMaster?.posicion == "" ||
+      userMaster?.sucursal == ""
+    ) {
+      setDatosIncompletos(true);
+    } else {
+      setDatosIncompletos(false);
+    }
+  }, [userMaster]);
+
   return (
     <>
       <Header titulo={"Perfil"} />
-      {/* <BotonQuery
-            userEditable={userEditable}
-        /> */}
+      {datosIncompletos && usuario.emailVerified ? (
+        <AvisoTop mensaje={"Los campos obligatorios están marcados en rojo."} />
+      ) : null}
+      {/* <BotonQuery userMaster={userMaster} userEditable={userEditable} /> */}
 
       {usuario?.emailVerified ? (
         <CajaPerfil>
@@ -221,12 +241,17 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
             </CajaImg>
             <CajaDatos>
               <div>
-                <CajitaDatos>
+                <CajitaDatos
+                  className={userMaster?.nombre == "" ? "obligatorio" : ""}
+                >
                   <Texto>Nombre:</Texto>
                   <Texto className="detalle">
                     {modoEditar ? (
                       <InputEditable
                         type="text"
+                        className={
+                          userEditable.nombre == "" ? "obligatorio" : ""
+                        }
                         value={userEditable?.nombre}
                         name="nombre"
                         autoComplete="off"
@@ -240,7 +265,9 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                     )}
                   </Texto>
                 </CajitaDatos>
-                <CajitaDatos>
+                <CajitaDatos
+                  className={userMaster?.apellido == "" ? "obligatorio" : ""}
+                >
                   <Texto>Apellido:</Texto>
                   <Texto className="detalle">
                     {modoEditar ? (
@@ -248,6 +275,9 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                         type="text"
                         value={userEditable?.apellido}
                         name="apellido"
+                        className={
+                          userEditable.apellido == "" ? "obligatorio" : ""
+                        }
                         autoComplete="off"
                         onChange={(e) => {
                           handleInput(e);
@@ -259,7 +289,9 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                     )}
                   </Texto>
                 </CajitaDatos>
-                <CajitaDatos>
+                <CajitaDatos
+                  className={userMaster?.sucursal == "" ? "obligatorio" : ""}
+                >
                   <Texto>Sucursal:</Texto>
                   <Texto className="detalle">
                     {modoEditar ? (
@@ -267,6 +299,10 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                         type="text"
                         value={userEditable?.sucursal}
                         name="sucursal"
+                        className={
+                          userEditable.sucursal == "" ? "obligatorio" : ""
+                        }
+                        // className="obligatorio"
                         autoComplete="off"
                         onChange={(e) => {
                           handleInput(e);
@@ -278,7 +314,9 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                     )}
                   </Texto>
                 </CajitaDatos>
-                <CajitaDatos>
+                <CajitaDatos
+                  className={userMaster?.dpto == "" ? "obligatorio" : ""}
+                >
                   <Texto>Departamento:</Texto>
                   <Texto className="detalle">
                     {modoEditar ? (
@@ -286,6 +324,8 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                         type="text"
                         value={userEditable?.dpto}
                         name="dpto"
+                        className={userEditable.dpto == "" ? "obligatorio" : ""}
+                        // className="obligatorio"
                         autoComplete="off"
                         onChange={(e) => {
                           handleInput(e);
@@ -297,7 +337,9 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                     )}
                   </Texto>
                 </CajitaDatos>
-                <CajitaDatos>
+                <CajitaDatos
+                  className={userMaster?.posicion == "" ? "obligatorio" : ""}
+                >
                   <Texto>Posición:</Texto>
                   <Texto className="detalle">
                     {modoEditar ? (
@@ -305,6 +347,10 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
                         type="text"
                         value={userEditable?.posicion}
                         name="posicion"
+                        className={
+                          userEditable.posicion == "" ? "obligatorio" : ""
+                        }
+                        // className="obligatorio"
                         autoComplete="off"
                         onChange={(e) => {
                           handleInput(e);
@@ -386,8 +432,8 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
         <CajaAviso>
           <AvisoCaja
             titulo={"Confirmar correo"}
-            texto={`Caeloss necesita confirmar que eres el propietario del email ${usuario.email}, para ello haz click en confirmar, y Caeloss te enviará un enlace a tu email, haz click en ese enlace para concluir el proceso.`}
-            textoCTA={"Confirmar"}
+            texto={`Caeloss necesita confirmar que eres el propietario del email ${usuario.email}, para ello haz click en enviar enlace, y Caeloss te enviará un enlace a tu email, luego haz click en ese enlace para concluir el proceso.`}
+            textoCTA={"Enviar enlace"}
             funcionCTA={confirmarEmail}
             textoCTA2={"Cerrar sesion"}
             funcionCTA2={cerrarSesion}
@@ -451,6 +497,9 @@ const CajitaDatos = styled.div`
     height: 40px;
     /* font-size: 14px; */
   }
+  &.obligatorio {
+    border-bottom: 1px solid red;
+  }
 `;
 
 const Texto = styled.h2`
@@ -490,6 +539,13 @@ const InputEditable = styled.input`
   &.file {
     /* border: 1px solid red; */
     height: auto;
+  }
+
+  /* border: 1px solid red; */
+
+  &.obligatorio {
+    border: none;
+    border-bottom: 2px solid red;
   }
 `;
 

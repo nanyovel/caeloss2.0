@@ -177,7 +177,7 @@ export const Register = ({ home, auth }) => {
           datos.correo,
           datos.password
         );
-        const auth = getAuth();
+        // const auth = getAuth();
         const usuar = auth.currentUser;
         console.log(usuar);
 

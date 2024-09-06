@@ -3,8 +3,50 @@ import styled from "styled-components";
 import { Header } from "../components/Header";
 import theme from "../config/theme";
 import { useParams } from "react-router-dom";
+import db from "../firebase/firebaseConfig";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
-export const VistaItem = ({ dbOmarMiguel, setDBOmarMiguel }) => {
+export const VistaItem = () => {
+  const [dbOmarMiguel, setDBOmarMiguel] = useState([]);
+  const useDocByCondition = (
+    collectionName,
+    setState,
+    exp1,
+    condicion,
+    exp2
+  ) => {
+    useEffect(() => {
+      console.log("BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫");
+      let q = "";
+
+      if (exp1) {
+        q = query(collection(db, collectionName), where(exp1, condicion, exp2));
+      } else {
+        q = query(collection(db, collectionName));
+      }
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const colecion = [];
+        querySnapshot.forEach((doc) => {
+          // console.log(doc.data())
+          colecion.push({ ...doc.data(), id: doc.id });
+        });
+        setState(colecion);
+      });
+      // Devolver una función de limpieza para detener la escucha cuando el componente se desmonte
+      return () => unsubscribe();
+    }, [collectionName, setState, exp1, condicion, exp2]);
+  };
+
+  useDocByCondition("omarMiguel", setDBOmarMiguel);
+
   const Item = {
     tarima: 1,
     noDigitacion: 25,
@@ -36,12 +78,14 @@ export const VistaItem = ({ dbOmarMiguel, setDBOmarMiguel }) => {
   });
 
   useEffect(() => {
-    const someItemMaster = dbOmarMiguel.find((item) => {
-      if (idItem.id == item.id) {
-        return item;
-      }
-    });
-    setItemMaster(someItemMaster);
+    if (dbOmarMiguel.length > 0) {
+      const someItemMaster = dbOmarMiguel.find((item) => {
+        if (idItem.id == item.id) {
+          return item;
+        }
+      });
+      setItemMaster(someItemMaster);
+    }
   }, [dbOmarMiguel]);
 
   return (

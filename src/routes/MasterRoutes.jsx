@@ -8,7 +8,7 @@ import { RutaPrivilegiada } from "./../context/RutaPrivilegiada";
 import { Home } from "./../page/Home.jsx";
 import { Omar } from "./../omar/Omar.jsx";
 import { RutaProtegida } from "./../context/RutaProtegida";
-// import { AvisoTop } from './components/Avisos/AvisoTop';
+// import { AvisoTop } from "./components/Avisos/AvisoTop";
 import { ResetPass } from "./../auth/ResetPass";
 import { Dashboard } from "./../dashboard/Dashboard";
 import { ListaFurgon } from "./../importaciones/Template/ListaFurgon";
@@ -35,7 +35,6 @@ import { VistaItem } from "../omar/VistaItem.jsx";
 
 export const MasterRoutes = ({
   usuario,
-  usuarioFireBase,
   setDBTutoriales,
   dbUsuario,
   dbTutoriales,
@@ -58,16 +57,18 @@ export const MasterRoutes = ({
       <Route
         path="/"
         element={
-          <Home
-            usuario={usuario}
-            usuarioFireBase={usuarioFireBase}
-            setDBTutoriales={setDBTutoriales}
-            dbUsuario={dbUsuario}
-            dbTutoriales={dbTutoriales}
-            userMaster={userMaster}
-            dbResennias={dbResennias}
-            auth={auth}
-          />
+          <RutaProtegida>
+            <Home
+              usuario={usuario}
+              // usuarioFireBase={usuario}
+              setDBTutoriales={setDBTutoriales}
+              dbUsuario={dbUsuario}
+              dbTutoriales={dbTutoriales}
+              userMaster={userMaster}
+              dbResennias={dbResennias}
+              auth={auth}
+            />
+          </RutaProtegida>
         }
       />
       {lugar !== "/version1" ? <Route path="*" element={<Page404 />} /> : ""}
@@ -340,12 +341,7 @@ export const MasterRoutes = ({
         path="/omar/:id"
         element={
           // <RutaProtegida>
-          <VistaItem
-            dbUsuario={dbUsuario}
-            userMaster={userMaster}
-            dbOmarMiguel={dbOmarMiguel}
-            setDBOmarMiguel={setDBOmarMiguel}
-          />
+          <VistaItem dbUsuario={dbUsuario} userMaster={userMaster} />
           // </RutaProtegida>
         }
       />

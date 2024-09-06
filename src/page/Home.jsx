@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import theme from "../config/theme";
 import styled from "styled-components";
 import logoCaeloss from "./../../public/img/logoOficial2.svg";
@@ -11,22 +11,19 @@ import ImagenCardFletes from "./../../public/img/cardHomeComp/truck.png";
 import ImagenCardImportacion from "./../../public/img/cardHomeComp/import33.png";
 import ImagenCardTransportes from "./../../public/img/cardHomeComp/transportes.png";
 // import ImagenCardMantenimiento from './../../public/img/cardHomeComp/mante1.png';
-import ImgCocina from "./../../public/img/cardHomeComp/cocina.png";
-
 import { Autenticado } from "./../context/Autenticado";
 import { TutorialesParcial } from "./../components/tutoriales/TutorialesParcial";
 import { Resennias } from "./../components/Resennias";
 import { DocumentacionParcial } from "./documentacion/DocumentacionParcial.jsx";
 import { Register } from "../auth/Register.jsx";
 import { Login } from "../auth/Login.jsx";
-import { CompletInfoContext } from "../context/CompletInfoContext.jsx";
 import { AvisoTop } from "./../components/Avisos/AvisoTop.jsx";
 import { sendEmailVerification } from "firebase/auth";
 import { Alerta } from "../components/Alerta.jsx";
+import { AvisoModal } from "../components/Avisos/AvisoModal.jsx";
 
 export const Home = ({
   usuario,
-  usuarioFireBase,
   dbUsuario,
   setDBTutoriales,
   dbTutoriales,
@@ -52,13 +49,20 @@ export const Home = ({
       .catch(function (error) {
         console.log(error);
         setMensajeAlerta("Error con la base de datos.");
-        setTipoAlerta("success");
+        setTipoAlerta("error");
         setDispatchAlerta(true);
         setTimeout(() => {
           setDispatchAlerta(false);
         }, 3000);
       });
   };
+
+  // const usuario = auth.currentUser;
+
+  useEffect(() => {
+    console.log(usuario);
+  }, [usuario]);
+
   return (
     // // ******************** CONFIRMAR EMAIL ******************** //
     <>
@@ -71,10 +75,13 @@ export const Home = ({
         </CajaLogoCaeloss>
         {usuario ? <LogoCielos src={logoCielos} /> : null}
       </CabezaHome>
-      <CompletInfoContext userMaster={userMaster} />
       {usuario ? (
         usuario.emailVerified == false ? (
-          <AvisoTop ctaTexto={"Enviar enlace"} cta={() => confirmarEmail()} />
+          <AvisoTop
+            mensaje={`La cuenta del email: ${(<u>{usuario.email} </u>)} ya está creada pero ahora debes confirmar que eres el propietario, para ello haz click en el siguiente boton para enviarte un enlace a tu correo, luego haz click en ese enlace, regresa aqui y recarga esta pagina.`}
+            ctaTexto={"Enviar enlace"}
+            cta={() => confirmarEmail()}
+          />
         ) : null
       ) : null}
 
@@ -146,7 +153,7 @@ export const Home = ({
           /> */}
         </PadreTarjetas>
       </SeccionHome>
-      {!usuarioFireBase ? (
+      {!usuario ? (
         <>
           <SeccionHome>
             <TituloModulo>Registrarse:</TituloModulo>
