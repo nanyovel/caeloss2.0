@@ -40,7 +40,6 @@ export const MasterRoutes = ({
   dbTutoriales,
   userMaster,
   dbResennias,
-  auth,
   dbBillOfLading,
   setDBBillOfLading,
   dbOrdenes,
@@ -66,7 +65,6 @@ export const MasterRoutes = ({
               dbTutoriales={dbTutoriales}
               userMaster={userMaster}
               dbResennias={dbResennias}
-              auth={auth}
             />
           </RutaProtegida>
         }
@@ -448,8 +446,8 @@ export const MasterRoutes = ({
         }
       />
 
-      <Route path="/registro" element={<Register auth={auth} />} />
-      <Route path="/acceder" element={<Login auth={auth} />} />
+      <Route path="/registro" element={<Register />} />
+      <Route path="/acceder" element={<Login />} />
       <Route path="/logout" element={<LogOut />} />
       <Route path="/recuperar" element={<ResetPass />} />
       <Route

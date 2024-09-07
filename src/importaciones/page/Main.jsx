@@ -152,7 +152,7 @@ export const Main = ({ dbOrdenes, dbBillOfLading, dbUsuario, userMaster }) => {
         tituloSecond="Estamos realizando cambios, por el momento el SGI no esta disponible, la informacion a visualizar podria estar desactualizada."
         setHasModal={setHasModal}
         hasModal={hasModal}
-        hasBtnClose={false}
+        hasBtnClose={true}
 
         // funcionCTA2="asd"
       />

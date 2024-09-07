@@ -1,9 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import theme from "../config/theme.jsx";
-// import { BotonQuery } from '../components/BotonQuery';
 import { BtnGeneralButton } from "../components/BtnGeneralButton";
-
 import { Alerta } from "../components/Alerta";
 import db, { autenticar } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -16,7 +14,7 @@ import { Header } from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
-export const Register = ({ home, auth }) => {
+export const Register = ({ home }) => {
   // Alertas
   const [dispatchAlerta, setDispatchAlerta] = useState(false);
   const [mensajeAlerta, setMensajeAlerta] = useState("");
@@ -25,8 +23,9 @@ export const Register = ({ home, auth }) => {
   // ******************** ENVIANDO A LA BASE DE DATOS******************** //
   const [isLoading, setIsLoading] = useState(false);
 
+  const auth = getAuth();
   auth.languageCode = "es";
-  const navegacion = useNavigate();
+  const navigate = useNavigate();
   const [datos, setDatos] = useState({
     correo: "",
     password: "",
@@ -207,7 +206,7 @@ export const Register = ({ home, auth }) => {
           }, 3000);
         }
 
-        navegacion("/");
+        navigate("/");
         setIsLoading(false);
       } catch (error) {
         console.log(error.code);

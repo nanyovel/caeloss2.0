@@ -23,6 +23,12 @@ import { BotonQuery } from "../components/BotonQuery.jsx";
 import { AvisoTop } from "../components/Avisos/AvisoTop.jsx";
 
 export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
+  useEffect(() => {
+    document.title = "Caeloss - Perfil";
+    return () => {
+      document.title = "Caeloss";
+    };
+  }, []);
   // // ******************** RECURSOS GENERALES ******************** //
   const [dispatchAlerta, setDispatchAlerta] = useState(false);
   const [mensajeAlerta, setMensajeAlerta] = useState("");
@@ -178,7 +184,7 @@ export const Perfil = ({ dbUsuario, userMaster, setUserMaster }) => {
       .catch(function (error) {
         console.log(error);
         setMensajeAlerta("Error con la base de datos.");
-        setTipoAlerta("success");
+        setTipoAlerta("error");
         setDispatchAlerta(true);
         setTimeout(() => {
           setDispatchAlerta(false);

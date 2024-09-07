@@ -20,7 +20,6 @@ import { Login } from "../auth/Login.jsx";
 import { AvisoTop } from "./../components/Avisos/AvisoTop.jsx";
 import { sendEmailVerification } from "firebase/auth";
 import { Alerta } from "../components/Alerta.jsx";
-import { AvisoModal } from "../components/Avisos/AvisoModal.jsx";
 
 export const Home = ({
   usuario,
@@ -29,8 +28,14 @@ export const Home = ({
   dbTutoriales,
   userMaster,
   dbResennias,
-  auth,
 }) => {
+  useEffect(() => {
+    document.title = "Caeloss - Home";
+    return () => {
+      document.title = "Caeloss";
+    };
+  }, []);
+
   const [dispatchAlerta, setDispatchAlerta] = useState(false);
   const [mensajeAlerta, setMensajeAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
@@ -56,12 +61,6 @@ export const Home = ({
         }, 3000);
       });
   };
-
-  // const usuario = auth.currentUser;
-
-  useEffect(() => {
-    console.log(usuario);
-  }, [usuario]);
 
   return (
     // // ******************** CONFIRMAR EMAIL ******************** //
@@ -157,12 +156,12 @@ export const Home = ({
         <>
           <SeccionHome>
             <TituloModulo>Registrarse:</TituloModulo>
-            <Register home={true} auth={auth} />
+            <Register home={true} />
           </SeccionHome>
 
           <SeccionHome>
             <TituloModulo>Acceder:</TituloModulo>
-            <Login home={true} auth={auth} />
+            <Login home={true} />
           </SeccionHome>
         </>
       ) : null}

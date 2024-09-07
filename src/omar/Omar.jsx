@@ -38,6 +38,12 @@ import { BotonQuery } from "../components/BotonQuery.jsx";
 // La solucion es agregar un dato aparte para ello cree numeroDigitado
 
 export const Omar = () => {
+  useEffect(() => {
+    document.title = "Caeloss - Omar";
+    return () => {
+      document.title = "Caeloss";
+    };
+  }, []);
   const [dbOmarMiguel, setDBOmarMiguel] = useState([]);
 
   const useDocByCondition = (
@@ -936,7 +942,7 @@ export const Omar = () => {
                     </tbody>
                   </Tabla>
                 </CajaTabla>
-                {/* <InputEditable
+                <InputEditable
                   type="file"
                   multiple
                   className="file"
@@ -947,7 +953,7 @@ export const Omar = () => {
 
                 <BtnGeneralButton onClick={() => uploadMultipleFiles(item.id)}>
                   Cargar Fotos
-                </BtnGeneralButton> */}
+                </BtnGeneralButton>
               </LadoIzquierdo>
               <LadoDerecho>
                 <CajaImg>

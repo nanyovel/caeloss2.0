@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import theme from "../config/theme.jsx";
-// import { BotonQuery } from '../components/BotonQuery';
 import { BtnGeneralButton } from "../components/BtnGeneralButton";
-
 import { autenticar } from "./../firebase/firebaseConfig.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -12,29 +10,28 @@ import { ModalLoading } from "../components/ModalLoading.jsx";
 import { Header } from "../components/Header.jsx";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {onAuthStateChanged} from 'firebase/auth'
+import { getAuth } from "firebase/auth";
 
-export const Login = ({ home, auth }) => {
+export const Login = ({ home }) => {
   const [dispatchAlerta, setDispatchAlerta] = useState(false);
   const [mensajeAlerta, setMensajeAlerta] = useState("");
   const [tipoAlerta, setTipoAlerta] = useState("");
-  const navegacion = useNavigate();
+  const navigate = useNavigate();
 
   // ******************** ENVIANDO A LA BASE DE DATOS******************** //
   const [isLoading, setIsLoading] = useState(false);
-
+  const auth = getAuth();
   auth.languageCode = "es";
-  //   const [usuario,setusuario]=useState(auth.currentUser);
   const [autenticado, setAunteticado] = useState(false);
 
   useEffect(() => {
     setAunteticado(true);
     if (auth.currentUser?.emailVerified == true) {
-      navegacion("/");
+      navigate("/");
     } else if (auth.currentUser?.emailVerified == false) {
-      navegacion("/perfil");
+      navigate("/perfil");
     }
-  }, [auth.currentUser, navegacion]);
+  }, [auth.currentUser, navigate]);
 
   const [datos, setDatos] = useState({
     correo: "",
@@ -119,7 +116,7 @@ export const Login = ({ home, auth }) => {
           datos.password
         );
 
-        navegacion("/");
+        navigate("/");
         setIsLoading(false);
       } catch (error) {
         console.log(error);

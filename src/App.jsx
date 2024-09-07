@@ -4,7 +4,6 @@ import { MenuLateral } from "./components/MenuLateral";
 import ContenedorPrincipal from "./components/ContenedorPrincipal";
 import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
-import { getAuth } from "firebase/auth";
 
 import {
   collection,
@@ -24,23 +23,14 @@ import styled from "styled-components";
 
 const App = () => {
   // ******************** RECURSOS GENERALES ******************** //
-  useEffect(() => {
-    document.title = "Caeloss - Home";
-    return () => {
-      document.title = "Caeloss";
-    };
-  }, []);
+  const userAuth = useAuth().usuario;
 
-  const auth = getAuth();
-  const usuarioPrueba = useAuth().usuario;
-  const [usuario, setUsuario] = useState(usuarioPrueba);
+  const [usuario, setUsuario] = useState(userAuth);
+  const [userMaster, setUserMaster] = useState();
 
   useEffect(() => {
-    setUsuario(usuarioPrueba);
-  }, [usuarioPrueba]);
-  // console.log(usuario);
-
-  // const emailVerified = usuario.auth.currentUser.emailVerified;
+    setUsuario(userAuth);
+  }, [userAuth]);
 
   let location = useLocation();
   let lugar = location.pathname;
@@ -48,7 +38,6 @@ const App = () => {
   // // ******************** OBTENIENDO LAS BASES DE DATOS ******************** //
   const [dbBillOfLading, setDBBillOfLading] = useState([]);
   const [dbOrdenes, setDBOrdenes] = useState([]);
-  const [userMaster, setUserMaster] = useState();
   const [dbUsuario, setDBUsuario] = useState([]);
   const [dbResennias, setDBResennias] = useState([]);
   const [dbTutoriales, setDBTutoriales] = useState([]);
@@ -135,7 +124,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  // Hacer que los usuarios se registren
+  // Hacer que los usuarios completen sus datos
   const [datosIncompletos, setDatosIncompletos] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -172,7 +161,7 @@ const App = () => {
         <AvisoModal
           tituloMain={"Debe completar datos"}
           tituloSecond={
-            "A solicitud de la dirrecion cada usuario de Caeloss debe completar sus datos de perfil, por ejemplo nombre, apellido y demas, dirigete a perfil y presiona editar para completar tus datos."
+            " solicitud de la dirección, cada usuario de Caeloss debe completar sus datos de perfil, por ejemplo, nombre, apellido y demás. Dirígete a perfil y presiona editar para completar tus datos."
           }
           setHasModal={setHasModal}
           hasModal={hasModal}
@@ -193,7 +182,6 @@ const App = () => {
         dbUsuario={dbUsuario}
         userMaster={userMaster}
         dbResennias={dbResennias}
-        auth={auth}
         dbBillOfLading={dbBillOfLading}
         setDBBillOfLading={setDBBillOfLading}
         dbOrdenes={dbOrdenes}

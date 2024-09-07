@@ -74,7 +74,7 @@ export const DetalleOrden = ({ dbOrdenes, userMaster, usuario }) => {
   }, [docEncontrado]);
 
   // // ******************** RECURSOS GENERALES ******************** //
-  const navegacion = useNavigate();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const parametro = useParams();
   const docUser = parametro.id;
@@ -747,7 +747,7 @@ export const DetalleOrden = ({ dbOrdenes, userMaster, usuario }) => {
       setRefresh(!refresh);
       setNClases([]);
       setHasDespachos(false);
-      navegacion("/importaciones/maestros/ordenescompra/" + buscarDocInput);
+      navigate("/importaciones/maestros/ordenescompra/" + buscarDocInput);
     }
     setBuscarDocInput("");
   };
@@ -1141,7 +1141,7 @@ export const DetalleOrden = ({ dbOrdenes, userMaster, usuario }) => {
         }, 7000);
 
         setTimeout(() => {
-          navegacion("/importaciones/maestros/ordenescompra/");
+          navigate("/importaciones/maestros/ordenescompra/");
         }, 500);
       } catch (error) {
         console.log(error);

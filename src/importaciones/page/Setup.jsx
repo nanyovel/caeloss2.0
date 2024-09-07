@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Header } from '../../components/Header';
-import styled from 'styled-components';
-import CajaNavegacion from '../components/CajaNavegacion';
-import { AddBL } from '../CreateDB/AddBL';
-import { AddOC } from '../CreateDB/AddOC';
-import { OpcionUnica } from '../../components/OpcionUnica';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import db from '../../firebase/firebaseConfig';
+import { useEffect, useState } from "react";
+import { Header } from "../../components/Header";
+import styled from "styled-components";
+import CajaNavegacion from "../components/CajaNavegacion";
+import { AddBL } from "../CreateDB/AddBL";
+import { AddOC } from "../CreateDB/AddOC";
+import { OpcionUnica } from "../../components/OpcionUnica";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import db from "../../firebase/firebaseConfig";
 
 export const Setup = ({
   // dbBillOfLading,
@@ -16,30 +16,35 @@ export const Setup = ({
   // dbOrdenes,
   // setDBOrdenes,
   dbUsuario,
-  userMaster
+  userMaster,
 }) => {
-
   const [dbBillOfLading, setDBBillOfLading] = useState([]);
-  const [dbOrdenes,setDBOrdenes]=useState([]);
-  const navegacion=useNavigate();
-  const auth=getAuth();
-  const usuario=auth.currentUser;
+  const [dbOrdenes, setDBOrdenes] = useState([]);
+  const navigate = useNavigate();
+  const auth = getAuth();
+  const usuario = auth.currentUser;
   let location = useLocation();
   let lugar = location.pathname;
 
   // ************************** DAME UN GRUPO DE DOC POR CONDICION**************************
-  const useDocByCondicion = (collectionName, setState, exp1,condicion,exp2) => {
+  const useDocByCondicion = (
+    collectionName,
+    setState,
+    exp1,
+    condicion,
+    exp2
+  ) => {
     useEffect(() => {
-      if(usuario){
-        console.log('BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫');
-        let q='';
+      if (usuario) {
+        console.log("BASE de Datos 📄📄📄📄👨‍🏫👨‍🏫👨‍🏫📄📄👨‍🏫👨‍🏫");
+        let q = "";
         q = query(collection(db, collectionName), where(exp1, condicion, exp2));
 
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const colecion = [];
           querySnapshot.forEach((doc) => {
             // console.log(doc.data())
-            colecion.push({...doc.data(), id:doc.id});
+            colecion.push({ ...doc.data(), id: doc.id });
           });
           setState(colecion);
         });
@@ -49,63 +54,58 @@ export const Setup = ({
     }, [collectionName, setState, exp1, condicion, exp2]);
   };
 
-  useDocByCondicion('ordenesCompra', setDBOrdenes, 'estadoDoc',"<",2);
-  useDocByCondicion('billOfLading', setDBBillOfLading, 'estadoDoc',"<",2);
+  useDocByCondicion("ordenesCompra", setDBOrdenes, "estadoDoc", "<", 2);
+  useDocByCondicion("billOfLading", setDBBillOfLading, "estadoDoc", "<", 2);
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Caeloss - Importaciones";
     return () => {
       document.title = "Caeloss";
     };
-  },[]);
+  }, []);
 
-  useEffect(()=>{
-    if(dbBillOfLading.length>0){
+  useEffect(() => {
+    if (dbBillOfLading.length > 0) {
       console.log(dbBillOfLading);
-
     }
-  },[dbBillOfLading]);
+  }, [dbBillOfLading]);
 
-  useEffect(()=>{
-    if(
-      lugar=='/importaciones/setup/'||
-      lugar=='/importaciones/setup'
-    ){
-      if(dbUsuario.length>0){
-        const userMaster=dbUsuario.find((user)=>{
-          if(user.idUsuario==usuario.uid){
+  useEffect(() => {
+    if (lugar == "/importaciones/setup/" || lugar == "/importaciones/setup") {
+      if (dbUsuario.length > 0) {
+        const userMaster = dbUsuario.find((user) => {
+          if (user.idUsuario == usuario.uid) {
             return user;
           }
         });
 
-        if(userMaster){
-          userMaster.privilegios.forEach((pri)=>{
+        if (userMaster) {
+          userMaster.privilegios.forEach((pri) => {
             if (pri.code === "fullAccessIMS" && pri.valor === false) {
-              navegacion('/');
+              navigate("/");
             }
           });
         }
-
       }
     }
-  },[usuario, dbUsuario, lugar, navegacion]);
+  }, [usuario, dbUsuario, lugar, navigate]);
 
-  const [arrayOpciones,setArrayOpciones]=useState([
+  const [arrayOpciones, setArrayOpciones] = useState([
     {
-      nombre:'Bill of Lading',
+      nombre: "Bill of Lading",
       opcion: 0,
-      select:true,
+      select: true,
     },
     {
-      nombre:'Orden de compra',
+      nombre: "Orden de compra",
       opcion: 1,
-      select:false,
+      select: false,
     },
   ]);
 
-  const handleOpciones=(e)=>{
-    let index=Number(e.target.dataset.id);
-    setArrayOpciones(prevOpciones =>
+  const handleOpciones = (e) => {
+    let index = Number(e.target.dataset.id);
+    setArrayOpciones((prevOpciones) =>
       prevOpciones.map((opcion, i) => ({
         ...opcion,
         select: i === index,
@@ -115,51 +115,40 @@ export const Setup = ({
 
   return (
     <>
-      <Header titulo='Sistema gestion de importaciones' subTitulo='Agregar'/>
+      <Header titulo="Sistema gestion de importaciones" subTitulo="Agregar" />
       <Container>
         <ContainerNav>
-
           <CajaNavegacion
             pageSelected={4}
             dbUsuario={dbUsuario}
             userMaster={userMaster}
-
           />
           <OpcionUnica
-            titulo='Pantallas'
-            name='grupoA'
+            titulo="Pantallas"
+            name="grupoA"
             arrayOpciones={arrayOpciones}
             handleOpciones={handleOpciones}
           />
-
         </ContainerNav>
 
-        {
-          arrayOpciones[0].select==true?
-            <AddBL
-              dbBillOfLading={dbBillOfLading}
-              setDBBillOfLading={setDBBillOfLading}
-              dbOrdenes={dbOrdenes}
-              setDBOrdenes={setDBOrdenes}
-            />
-            :
-            arrayOpciones[1].select==true?
-              <AddOC
-                dbOrdenes={dbOrdenes}
-                setDBOrdenes={setDBOrdenes}
-              />
-              :
-              ''
-
-        }
+        {arrayOpciones[0].select == true ? (
+          <AddBL
+            dbBillOfLading={dbBillOfLading}
+            setDBBillOfLading={setDBBillOfLading}
+            dbOrdenes={dbOrdenes}
+            setDBOrdenes={setDBOrdenes}
+          />
+        ) : arrayOpciones[1].select == true ? (
+          <AddOC dbOrdenes={dbOrdenes} setDBOrdenes={setDBOrdenes} />
+        ) : (
+          ""
+        )}
       </Container>
     </>
   );
 };
 
-const Container=styled.div`
-  
-`;
+const Container = styled.div``;
 
 const ContainerNav = styled.div`
   width: 95%;
@@ -169,13 +158,12 @@ const ContainerNav = styled.div`
   margin-top: 10px;
   gap: 15px;
   justify-content: start;
-  @media screen and (max-width:1000px){
+  @media screen and (max-width: 1000px) {
     padding: 5px;
     display: flex;
     flex-direction: column;
   }
-  @media screen and (max-width:410px){
+  @media screen and (max-width: 410px) {
     width: 99%;
-  
   }
 `;
